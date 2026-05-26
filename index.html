@@ -1305,29 +1305,14 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
             <div class="faq-section">
                 <div class="faq-header">
                     <h2><i class="fas fa-question-circle" style="color:var(--turquesa);margin-right:8px;"></i>Perguntas Frequentes — Módulo 1</h2>
-                    <p>Respostas padrão para situações comuns de atendimento.</p>
+                    <p>Respostas padrão para situações comuns de atendimento. Acesse a página FAQ para ver todas as perguntas cadastradas.</p>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Como devo cumprimentar um cliente no primeiro contato?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente insatisfeito com prazo de entrega — como proceder?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
+                <div class="empty-state" style="padding:32px;">
+                    <i class="fas fa-question-circle" style="font-size:32px;color:var(--cinza);margin-bottom:12px;"></i>
+                    <p style="color:var(--cinza);font-size:13px;">As perguntas frequentes são gerenciadas dinamicamente pelo administrador na seção FAQ.</p>
+                    <button class="btn btn-primary" style="margin-top:12px;padding:8px 16px;font-size:12px;" onclick="navigateTo('faq')">
+                        <i class="fas fa-arrow-right"></i> Ir para FAQ
+                    </button>
                 </div>
             </div>
         </div>
@@ -1429,300 +1414,26 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
         </div>
 
                 <!-- ==================== FAQ ==================== -->
+        <!-- ==================== FAQ ==================== -->
         <div class="page-section" id="page-faq">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-question-circle"></i> Central de ajuda</span>
                 <h1>Perguntas Frequentes</h1>
                 <p>Respostas padrão para as situações mais comuns do dia a dia, organizadas por área.</p>
             </div>
-
-            <!-- FAQ: Onboarding -->
-            <div class="faq-section">
-                <div class="faq-header">
-                    <h2><i class="fas fa-rocket" style="color:var(--turquesa);margin-right:8px;"></i>Onboarding — Integração</h2>
-                    <p>Dúvidas comuns de quem está começando na Canopus Construtora.</p>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Qual o horário de trabalho na Canopus Construtora?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Como solicito acesso aos sistemas internos?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Onde encontro a estrutura organizacional da empresa?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
+            <div id="faq-loading" style="text-align:center;padding:40px;">
+                <i class="fas fa-spinner fa-spin" style="font-size:32px;color:var(--turquesa);margin-bottom:16px;"></i>
+                <p style="color:var(--cinza);">Carregando perguntas frequentes...</p>
             </div>
-
-            <!-- FAQ: Relacionamento -->
-            <div class="faq-section">
-                <div class="faq-header">
-                    <h2><i class="fas fa-heart" style="color:var(--turquesa);margin-right:8px;"></i>Relacionamento — Atendimento</h2>
-                    <p>Respostas padrão para situações de atendimento ao cliente.</p>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente questiona valor do imóvel — como justificar?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente quer desistir da compra — como reter?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Problema técnico na obra — como comunicar?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente solicita visita técnica — agendamento</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Transferência de unidade — processo</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Como devo cumprimentar um cliente no primeiro contato?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente insatisfeito com prazo de entrega — como proceder?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
+            <div id="faq-dynamic-container" style="display:none;">
+                <!-- FAQ content loaded dynamically from Supabase -->
             </div>
-
-            <!-- FAQ: ASTEC -->
-            <div class="faq-section">
-                <div class="faq-header">
-                    <h2><i class="fas fa-tools" style="color:var(--turquesa);margin-right:8px;"></i>ASTEC — Assistência Técnica</h2>
-                    <p>Procedimentos de assistência técnica e pós-venda.</p>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente reporta vazamento — fluxo de atendimento</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Prazo de garantia da obra — esclarecimentos</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Vistoria de entrega — como agendar?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
+            <div id="faq-empty" style="display:none;" class="empty-state">
+                <i class="fas fa-question-circle" style="font-size:48px;color:var(--cinza);margin-bottom:16px;"></i>
+                <h3>Nenhuma pergunta cadastrada</h3>
+                <p>As perguntas frequentes serão adicionadas pelo administrador.</p>
             </div>
-
-            <!-- FAQ: Backoffice -->
-            <div class="faq-section">
-                <div class="faq-header">
-                    <h2><i class="fas fa-cogs" style="color:var(--turquesa);margin-right:8px;"></i>Backoffice — Operações</h2>
-                    <p>Procedimentos administrativos e fluxos internos.</p>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Como solicitar documentação de uma unidade?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Erro no sistema — quem contactar?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FAQ: Recuperação de Crédito -->
-            <div class="faq-section">
-                <div class="faq-header">
-                    <h2><i class="fas fa-hand-holding-usd" style="color:var(--turquesa);margin-right:8px;"></i>Recuperação de Crédito</h2>
-                    <p>Negociação, cobrança e renegociação de contratos.</p>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente inadimplente quer negociar — primeiro contato</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Opções de renegociação disponíveis</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FAQ: Jurídico -->
-            <div class="faq-section">
-                <div class="faq-header">
-                    <h2><i class="fas fa-balance-scale" style="color:var(--turquesa);margin-right:8px;"></i>Jurídico</h2>
-                    <p>Questões contratuais e procedimentos legais.</p>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente solicita distrato — procedimento inicial</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Alteração de dados cadastrais no contrato</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FAQ: Compliance -->
-            <div class="faq-section">
-                <div class="faq-header">
-                    <h2><i class="fas fa-shield-alt" style="color:var(--turquesa);margin-right:8px;"></i>Compliance — LGPD e Ética</h2>
-                    <p>Conformidade, proteção de dados e conduta.</p>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cliente solicita cópia dos dados pessoais — LGPD</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Denúncia de conduta inadequada — canal de ética</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><em>Conteúdo em atualização. Novo material será disponibilizado em breve.</em></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>        <!-- ==================== ÁREA DO USUÁRIO ==================== -->
+        </div><!-- ==================== ÁREA DO USUÁRIO ==================== -->
         <div class="page-section" id="page-user-profile">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-user-circle"></i> Meu Perfil</span>
@@ -1932,11 +1643,11 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
             </div>
             <div class="content-manager">
                 <div class="cm-tabs">
-                    <button class="cm-tab active" onclick="switchCmTab('list')">Lista de módulos</button>
-                    <button class="cm-tab" onclick="switchCmTab('add')">Adicionar material</button>
+                    <button class="cm-tab active" onclick="switchCmTab('add')">Adicionar material</button>
                     <button class="cm-tab" onclick="switchCmTab('upload')">Upload de arquivos</button>
+                    <button class="cm-tab" onclick="switchCmTab('faq')">Gerenciar FAQ</button>
                 </div>
-                <div class="cm-panel active" id="cm-panel-list">
+                <div class="cm-panel" id="cm-panel-list">
                     <h3>Módulos cadastrados</h3>
                     <div class="module-list" id="moduleList">
                         <div class="module-item">
@@ -2001,7 +1712,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         </div>
                     </div>
                 </div>
-                <div class="cm-panel" id="cm-panel-add">
+                <div class="cm-panel active" id="cm-panel-add">
                     <h3>Adicionar Novo Material</h3>
                     <div class="form-row">
                         <div class="form-group">
@@ -2055,6 +1766,26 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                 </div>
                 <div class="cm-panel" id="cm-panel-upload">
                     <h3>Upload de arquivos</h3>
+                    <div class="form-row" style="margin-bottom:16px;">
+                        <div class="form-group">
+                            <label>Módulo de destino</label>
+                            <select id="uploadModuleSelect">
+                                <option value="general">Geral</option>
+                                <option value="mod1">Módulo 1: Atendimento</option>
+                                <option value="mod2">Módulo 2: Comunicação</option>
+                                <option value="mod3">Módulo 3: SAC e Ouvidoria</option>
+                                <option value="mod4">Módulo 4: Relacionamento</option>
+                                <option value="mod5">Módulo 5: Gestão e Liderança</option>
+                                <option value="onboarding">Onboarding Geral</option>
+                                <option value="relacionamento">Relacionamento</option>
+                                <option value="astec">ASTEC</option>
+                                <option value="backoffice">Backoffice</option>
+                                <option value="recuperacao">Recuperação de Crédito</option>
+                                <option value="juridico">Jurídico</option>
+                                <option value="compliance">Compliance</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Arraste arquivos aqui ou <span>clique para selecionar</span></p>
@@ -2071,7 +1802,39 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         </button>
                     </div>
                 </div>
-            </div>
+            
+                <div class="cm-panel" id="cm-panel-faq">
+                    <h3><i class="fas fa-question-circle" style="color:var(--turquesa);margin-right:8px;"></i>Gerenciar FAQ</h3>
+                    <p style="color:var(--cinza);font-size:13px;margin-bottom:20px;">Cadastre perguntas e respostas para aparecerem na tela de FAQ dos colaboradores.</p>
+
+                    <div class="form-row single" style="margin-bottom:16px;">
+                        <div class="form-group">
+                            <label>Pergunta <span class="required">*</span></label>
+                            <input type="text" id="faqQuestion" placeholder="Digite a pergunta...">
+                        </div>
+                    </div>
+                    <div class="form-row single" style="margin-bottom:20px;">
+                        <div class="form-group">
+                            <label>Resposta <span class="required">*</span></label>
+                            <textarea id="faqAnswer" placeholder="Digite a resposta completa..." style="min-height:120px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="addFaqItem()">
+                            <i class="fas fa-plus"></i> Adicionar Pergunta
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetFaqForm()">
+                            <i class="fas fa-undo"></i> Limpar
+                        </button>
+                    </div>
+
+                    <hr style="margin: 32px 0; border: none; border-top: 1px solid var(--borda);">
+                    <h3 style="margin-bottom: 16px;"><i class="fas fa-list" style="color:var(--turquesa);margin-right:8px;"></i>Perguntas Cadastradas</h3>
+                    <div id="faqAdminList" style="display: flex; flex-direction: column; gap: 12px;">
+                        <p style="color: var(--cinza); font-size: 13px;">Carregando...</p>
+                    </div>
+                </div>
+</div>
         </div>
 
         <!-- ==================== ADMIN USERS ==================== -->
@@ -2827,12 +2590,14 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
             <div class="pdf-section">
                 <div class="pdf-section-header">
                     <h2><i class="fas fa-file-pdf" style="color:var(--danger);margin-right:8px;"></i>Materiais em PDF</h2>
-                    <span class="count">Em breve</span>
+                    <span class="count" id="mod-pdf-count">Carregando...</span>
                 </div>
-                <div class="empty-state">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>Nenhum material disponível ainda</h3>
-                    <p>Os materiais deste módulo serão adicionados em breve.</p>
+                <div class="pdf-grid" id="mod-pdf-grid">
+                    <div class="empty-state" style="grid-column:1/-1;padding:40px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size:32px;color:var(--turquesa);margin-bottom:16px;"></i>
+                        <h3>Carregando materiais...</h3>
+                        <p>Buscando arquivos do Supabase para este módulo.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -4290,15 +4055,128 @@ function removeFile(id) {
     uploadQueue = uploadQueue.filter(f => f.id !== id);
 }
 
-function processUploads() {
+// ==================== SUPABASE REAL UPLOAD ====================
+
+function initSupabase() {
+    if (typeof supabase !== 'undefined' && supabase.createClient) {
+        try {
+            supabaseClient = supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
+            console.log('Supabase client initialized');
+            return true;
+        } catch(e) {
+            console.error('Supabase init error:', e);
+            return false;
+        }
+    }
+    console.warn('Supabase library not loaded');
+    return false;
+}
+
+async function uploadFileToSupabase(file, moduleValue) {
+    if (!supabaseClient) {
+        if (!initSupabase()) {
+            throw new Error('Supabase não inicializado. Verifique a conexão.');
+        }
+    }
+
+    // Generate unique filename
+    const timestamp = Date.now();
+    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const filePath = `${moduleValue}/${timestamp}_${safeName}`;
+
+    // Upload to Supabase Storage bucket "materiais"
+    const { data: uploadData, error: uploadError } = await supabaseClient
+        .storage
+        .from(SUPABASE_CONFIG.BUCKET_NAME)
+        .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false,
+            contentType: file.type || 'application/octet-stream'
+        });
+
+    if (uploadError) {
+        throw new Error('Erro no upload: ' + uploadError.message);
+    }
+
+    // Get public URL
+    const { data: { publicUrl } } = supabaseClient
+        .storage
+        .from(SUPABASE_CONFIG.BUCKET_NAME)
+        .getPublicUrl(filePath);
+
+    // Determine file type category
+    let tipo = 'outro';
+    if (file.type.includes('pdf')) tipo = 'PDF';
+    else if (file.type.includes('video') || file.type.includes('mp4')) tipo = 'Vídeo';
+    else if (file.type.includes('presentation') || file.type.includes('powerpoint') || file.name.endsWith('.ppt') || file.name.endsWith('.pptx')) tipo = 'Apresentação';
+    else if (file.type.includes('word') || file.type.includes('document') || file.name.endsWith('.doc') || file.name.endsWith('.docx')) tipo = 'Documento';
+    else if (file.type.includes('sheet') || file.type.includes('excel') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) tipo = 'Planilha';
+    else if (file.type.includes('image')) tipo = 'Imagem';
+
+    // Map module value to readable name
+    const moduleNames = {
+        'mod1': 'Módulo 1: Atendimento',
+        'mod2': 'Módulo 2: Comunicação',
+        'mod3': 'Módulo 3: SAC e Ouvidoria',
+        'mod4': 'Módulo 4: Relacionamento',
+        'mod5': 'Módulo 5: Gestão e Liderança',
+        'onboarding': 'Onboarding Geral',
+        'relacionamento': 'Relacionamento',
+        'astec': 'ASTEC',
+        'backoffice': 'Backoffice',
+        'recuperacao': 'Recuperação de Crédito',
+        'juridico': 'Jurídico',
+        'compliance': 'Compliance',
+        'general': 'Geral'
+    };
+
+    const modulo = moduleNames[moduleValue] || moduleValue;
+
+    // Save metadata to "Arquivos" table in Supabase
+    const { data: dbData, error: dbError } = await supabaseClient
+        .from('Arquivos')
+        .insert([{
+            Nome: file.name,
+            URL: publicUrl,
+            Tipo: tipo,
+            Módulo: modulo,
+            criado_em: new Date().toISOString()
+        }]);
+
+    if (dbError) {
+        console.warn('Aviso: Arquivo enviado mas erro ao salvar metadados:', dbError.message);
+    }
+
+    return {
+        success: true,
+        url: publicUrl,
+        path: filePath,
+        name: file.name,
+        tipo: tipo,
+        modulo: modulo
+    };
+}
+
+async function processUploads() {
     if (uploadQueue.length === 0) {
         showNotification('Nenhum arquivo na fila', 'warning');
         return;
     }
 
-    uploadQueue.forEach(item => {
+    // Get selected module from the dropdown in the upload panel
+    // First check if there's a module selector in the upload panel, otherwise use general
+    let moduleValue = 'general';
+    const moduleSelect = document.getElementById('uploadModuleSelect');
+    if (moduleSelect && moduleSelect.value) {
+        moduleValue = moduleSelect.value;
+    }
+
+    let successCount = 0;
+    let failCount = 0;
+
+    for (const item of uploadQueue) {
         const el = document.getElementById(item.id);
-        if (!el) return;
+        if (!el) continue;
 
         const bar = el.querySelector('.file-progress-bar');
         const status = el.querySelector('.file-status');
@@ -4306,23 +4184,41 @@ function processUploads() {
         status.textContent = 'Enviando...';
         status.className = 'file-status pending';
 
-        // Simulate upload progress
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 30;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                status.textContent = 'Concluído';
-                status.className = 'file-status done';
-                bar.style.width = '100%';
-            } else {
-                bar.style.width = progress + '%';
-            }
-        }, 300);
-    });
+        try {
+            const result = await uploadFileToSupabase(item.file, moduleValue);
+            successCount++;
+            status.textContent = 'Concluído';
+            status.className = 'file-status done';
+            bar.style.width = '100%';
 
-    showNotification('Uploads iniciados! Arquivos serão processados.', 'success');
+            // Add download link
+            const fileInfo = el.querySelector('.file-info');
+            if (fileInfo) {
+                fileInfo.innerHTML += `<div style="font-size:11px;color:var(--turquesa);margin-top:2px;"><a href="${result.url}" target="_blank" style="color:var(--turquesa);"><i class="fas fa-external-link-alt"></i> Ver arquivo</a></div>`;
+            }
+        } catch (err) {
+            failCount++;
+            status.textContent = 'Erro: ' + err.message;
+            status.className = 'file-status pending';
+            status.style.color = 'var(--danger)';
+            console.error('Upload error:', err);
+        }
+    }
+
+    if (successCount > 0) {
+        showNotification(`${successCount} arquivo(s) enviado(s) para o Supabase com sucesso!`, 'success');
+    }
+    if (failCount > 0) {
+        showNotification(`${failCount} arquivo(s) falharam. Verifique a conexão com o Supabase.`, 'error');
+    }
+
+    // Clear completed from queue
+    uploadQueue = uploadQueue.filter(item => {
+        const el = document.getElementById(item.id);
+        if (!el) return false;
+        const status = el.querySelector('.file-status');
+        return status && !status.textContent.includes('Concluído');
+    });
 }
 
 function clearUploads() {
@@ -4330,6 +4226,76 @@ function clearUploads() {
     uploadQueue = [];
 }
 
+// ==================== LOAD FILES FROM SUPABASE ====================
+async function loadFilesFromSupabase(moduleFilter) {
+    if (!supabaseClient) {
+        if (!initSupabase()) return [];
+    }
+
+    try {
+        let query = supabaseClient.from('Arquivos').select('*').order('criado_em', { ascending: false });
+
+        if (moduleFilter && moduleFilter !== 'all') {
+            query = query.eq('Módulo', moduleFilter);
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+            console.error('Error loading files:', error);
+            return [];
+        }
+
+        return data || [];
+    } catch (e) {
+        console.error('Error:', e);
+        return [];
+    }
+}
+
+// ==================== DISPLAY FILES IN MODULE PAGE ====================
+async function renderModuleFiles(moduleId) {
+    const container = document.getElementById('mod-pdf-grid');
+    if (!container) return;
+
+    // Map moduleId to module name for filtering
+    const moduleMap = {
+        'mod1': 'Módulo 1: Atendimento',
+        'mod2': 'Módulo 2: Comunicação',
+        'mod3': 'Módulo 3: SAC e Ouvidoria',
+        'mod4': 'Módulo 4: Relacionamento',
+        'mod5': 'Módulo 5: Gestão e Liderança'
+    };
+
+    const moduloNome = moduleMap[moduleId] || moduleId;
+    const files = await loadFilesFromSupabase(moduloNome);
+
+    if (files.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-file-pdf"></i>
+                <h3>Nenhum material disponível ainda</h3>
+                <p>Os materiais deste módulo serão adicionados em breve.</p>
+            </div>
+        `;
+        return;
+    }
+
+    let html = '';
+    files.forEach(file => {
+        html += `
+            <a href="${file.URL}" target="_blank" class="pdf-btn" download="${file.Nome}">
+                <i class="fas fa-file-pdf pdf-icon"></i>
+                <div class="pdf-info">
+                    <div class="pdf-title">${escapeHtml(file.Nome)}</div>
+                    <div class="pdf-meta">${file.Tipo} — ${new Date(file.criado_em).toLocaleDateString('pt-BR')}</div>
+                </div>
+                <i class="fas fa-download pdf-arrow"></i>
+            </a>
+        `;
+    });
+    container.innerHTML = html;
+}
 // ==================== NOTIFICATIONS ====================
 
 function showNotification(message, type) {
@@ -5055,11 +5021,12 @@ function recordLogin() {
 
 // ==================== SUPABASE STORAGE INTEGRATION ====================
 // Configuration - Replace with your actual Supabase project details
+// ==================== SUPABASE CONFIGURATION ====================
+// IMPORTANTE: Substitua pelos valores reais do seu projeto Supabase
 const SUPABASE_CONFIG = {
-    // These are placeholder values - user must replace with real project credentials
-    URL: 'https://your-project.supabase.co',
-    ANON_KEY: 'your-anon-key-here',
-    BUCKET_NAME: 'training-materials'
+    URL: localStorage.getItem('sb_url') || 'https://sua-url.supabase.co',
+    ANON_KEY: localStorage.getItem('sb_key') || 'sua-anon-key-aqui',
+    BUCKET_NAME: 'materiais'
 };
 
 let supabaseClient = null;
@@ -5262,6 +5229,508 @@ if (savedConfig) {
     } catch(e) {}
 }
 
+
+
+// ==================== FAQ DYNAMIC FUNCTIONS ====================
+// Table: "Faq" with columns: pergunta, resposta, criado_em
+
+async function loadFaqForUser() {
+    const container = document.getElementById('faq-dynamic-container');
+    const loading = document.getElementById('faq-loading');
+    const empty = document.getElementById('faq-empty');
+
+    if (!container || !loading) return;
+
+    loading.style.display = 'block';
+    container.style.display = 'none';
+    empty.style.display = 'none';
+
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient) {
+            loading.style.display = 'none';
+            empty.style.display = 'block';
+            return;
+        }
+
+        const { data, error } = await supabaseClient
+            .from('Faq')
+            .select('*')
+            .order('criado_em', { ascending: true });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            loading.style.display = 'none';
+            empty.style.display = 'block';
+            return;
+        }
+
+        // Render all FAQs in a single section
+        let html = '<div class="faq-section">';
+        html += '<div class="faq-header">';
+        html += '<h2><i class="fas fa-question-circle" style="color:var(--turquesa);margin-right:8px;"></i>Perguntas Frequentes</h2>';
+        html += '<p>Respostas padrão para as situações mais comuns do dia a dia.</p>';
+        html += '</div>';
+
+        data.forEach(item => {
+            html += '<div class="faq-item">';
+            html += '<div class="faq-question" onclick="toggleFaq(this)">';
+            html += '<h3>' + escapeHtml(item.pergunta) + '</h3>';
+            html += '<i class="fas fa-chevron-down"></i>';
+            html += '</div>';
+            html += '<div class="faq-answer">';
+            html += '<div class="faq-answer-content">';
+            // Support line breaks in answers
+            const formattedAnswer = escapeHtml(item.resposta).replace(/\n/g, '<br>');
+            html += '<p>' + formattedAnswer + '</p>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        });
+
+        html += '</div>';
+
+        container.innerHTML = html;
+        container.style.display = 'block';
+        loading.style.display = 'none';
+
+    } catch (err) {
+        console.error('Error loading FAQ:', err);
+        loading.style.display = 'none';
+        empty.style.display = 'block';
+    }
+}
+
+async function addFaqItem() {
+    const pergunta = document.getElementById('faqQuestion').value.trim();
+    const resposta = document.getElementById('faqAnswer').value.trim();
+
+    if (!pergunta || !resposta) {
+        showNotification('Preencha a pergunta e a resposta.', 'error');
+        return;
+    }
+
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient) {
+            showNotification('Supabase não configurado. Configure primeiro.', 'error');
+            return;
+        }
+
+        const { data, error } = await supabaseClient
+            .from('Faq')
+            .insert([{
+                pergunta: pergunta,
+                resposta: resposta,
+                criado_em: new Date().toISOString()
+            }]);
+
+        if (error) throw error;
+
+        showNotification('Pergunta adicionada com sucesso!', 'success');
+        resetFaqForm();
+        loadFaqAdminList();
+
+    } catch (err) {
+        console.error('Error adding FAQ:', err);
+        showNotification('Erro ao salvar: ' + err.message, 'error');
+    }
+}
+
+async function loadFaqAdminList() {
+    const container = document.getElementById('faqAdminList');
+    if (!container) return;
+
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient) {
+            container.innerHTML = '<p style="color:var(--cinza);font-size:13px;">Configure o Supabase para gerenciar FAQ.</p>';
+            return;
+        }
+
+        const { data, error } = await supabaseClient
+            .from('Faq')
+            .select('*')
+            .order('criado_em', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            container.innerHTML = '<p style="color:var(--cinza);font-size:13px;">Nenhuma pergunta cadastrada ainda.</p>';
+            return;
+        }
+
+        let html = '';
+        data.forEach(item => {
+            html += '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--cinza-claro);border-radius:10px;border:1px solid var(--borda);">';
+            html += '<div style="flex:1;min-width:0;">';
+            html += '<div style="font-size:13px;font-weight:600;color:var(--azul-escuro);margin-bottom:4px;">' + escapeHtml(item.pergunta) + '</div>';
+            html += '<div style="font-size:12px;color:var(--cinza);line-height:1.5;">' + escapeHtml(item.resposta).substring(0, 100) + (item.resposta.length > 100 ? '...' : '') + '</div>';
+            html += '<div style="font-size:11px;color:var(--cinza);margin-top:4px;">' + new Date(item.criado_em).toLocaleDateString('pt-BR') + '</div>';
+            html += '</div>';
+            html += '<button class="btn btn-danger" style="padding:6px 12px;font-size:12px;flex-shrink:0;" onclick="deleteFaqItem(' + item.id + ')"><i class="fas fa-trash"></i></button>';
+            html += '</div>';
+        });
+
+        container.innerHTML = html;
+
+    } catch (err) {
+        console.error('Error loading FAQ admin:', err);
+        container.innerHTML = '<p style="color:var(--danger);font-size:13px;">Erro ao carregar perguntas.</p>';
+    }
+}
+
+async function deleteFaqItem(id) {
+    if (!confirm('Deseja realmente remover esta pergunta?')) return;
+
+    try {
+        if (!supabaseClient) initSupabase();
+        const { error } = await supabaseClient.from('Faq').delete().eq('id', id);
+        if (error) throw error;
+        showNotification('Pergunta removida.', 'success');
+        loadFaqAdminList();
+    } catch (err) {
+        showNotification('Erro ao remover: ' + err.message, 'error');
+    }
+}
+
+function resetFaqForm() {
+    document.getElementById('faqQuestion').value = '';
+    document.getElementById('faqAnswer').value = '';
+}
+
+// ==================== COMANDO 4: VER USUÁRIO - DADOS REAIS ====================
+
+async function viewUserDetail(email) {
+    // Find user data
+    const usersData = localStorage.getItem(CONFIG.STORAGE_USERS);
+    const allUsers = usersData ? JSON.parse(usersData) : [];
+    const user = allUsers.find(u => u.email === email);
+
+    if (!user) {
+        showNotification('Usuário não encontrado.', 'error');
+        return;
+    }
+
+    // Get real progress from localStorage
+    const progressKey = CONFIG.STORAGE_PROGRESS + '_' + email;
+    const progressData = localStorage.getItem(progressKey);
+    const progress = progressData ? JSON.parse(progressData) : {};
+
+    const completedModules = Object.entries(progress).filter(([k, v]) => v.completed);
+    const totalCompleted = completedModules.length;
+
+    // Get certificates count
+    const totalCerts = totalCompleted;
+
+    // Calculate progress percentage
+    const allModulesList = [
+        'mod1','mod2','mod3','mod4','mod5',
+        'mod-onboarding-1','mod-onboarding-2','mod-onboarding-3','mod-onboarding-4','mod-onboarding-5',
+        'mod-onboarding-6','mod-onboarding-7','mod-onboarding-8','mod-onboarding-9',
+        'mod-rel-1','mod-rel-2','mod-rel-3','mod-rel-4','mod-rel-5','mod-rel-6','mod-rel-7','mod-rel-8','mod-rel-9','mod-rel-10',
+        'mod-astec-1','mod-astec-2','mod-astec-3','mod-astec-4','mod-astec-5',
+        'mod-back-1','mod-back-2','mod-back-3','mod-back-4',
+        'mod-rec-1','mod-rec-2','mod-rec-3','mod-rec-4','mod-rec-5',
+        'mod-jur-1','mod-jur-2','mod-jur-3','mod-jur-4',
+        'mod-comp-1','mod-comp-2','mod-comp-3','mod-comp-4','mod-comp-5'
+    ];
+    const pct = Math.round((totalCompleted / allModulesList.length) * 100);
+
+    // Build modal content
+    let certList = '';
+    if (completedModules.length > 0) {
+        certList = '<div style="margin-top:16px;"><h4 style="font-size:14px;color:var(--azul-escuro);margin-bottom:8px;"><i class="fas fa-certificate" style="color:var(--turquesa);margin-right:6px;"></i>Certificados Obtidos (' + totalCerts + ')</h4>';
+        certList += '<div style="display:flex;flex-direction:column;gap:6px;">';
+        completedModules.forEach(([modId, modData]) => {
+            const modNames = {
+                'mod1': 'Atendimento ao Cliente',
+                'mod2': 'Comunicação Efetiva',
+                'mod3': 'SAC e Ouvidoria',
+                'mod4': 'Relacionamento com Clientes',
+                'mod5': 'Gestão e Liderança',
+                'mod-onboarding-1': 'Boas-vindas',
+                'mod-onboarding-2': 'História da Empresa',
+                'mod-onboarding-3': 'Cultura e Valores',
+                'mod-onboarding-4': 'Estrutura Organizacional',
+                'mod-onboarding-5': 'Comunicação Interna',
+                'mod-onboarding-6': 'Postura Profissional',
+                'mod-onboarding-7': 'Sistemas Utilizados',
+                'mod-onboarding-8': 'Jornada do Cliente',
+                'mod-onboarding-9': 'Encerramento',
+                'mod-rel-1': 'Jornada do Cliente',
+                'mod-rel-2': 'Atendimento Humanizado',
+                'mod-rel-3': 'Escrita Encantadora',
+                'mod-rel-4': 'Comunicação Profissional',
+                'mod-rel-5': 'Gestão de Conflitos',
+                'mod-rel-6': 'SLA e Prazos',
+                'mod-rel-7': 'Fluxos Operacionais',
+                'mod-rel-8': 'Sistemas Internos',
+                'mod-rel-9': 'Modelos de Resposta',
+                'mod-rel-10': 'FAQ Operacional',
+                'mod-astec-1': 'Fluxo de Assistência Técnica',
+                'mod-astec-2': 'Vistorias',
+                'mod-astec-3': 'Garantias',
+                'mod-astec-4': 'Chamados',
+                'mod-astec-5': 'SLA Técnico',
+                'mod-back-1': 'Fluxos Internos',
+                'mod-back-2': 'Processos Administrativos',
+                'mod-back-3': 'Comunicação entre Áreas',
+                'mod-back-4': 'Controles Internos',
+                'mod-rec-1': 'Negociação',
+                'mod-rec-2': 'Cobrança Humanizada',
+                'mod-rec-3': 'Fluxos Financeiros',
+                'mod-rec-4': 'Acordos',
+                'mod-rec-5': 'Indicadores',
+                'mod-jur-1': 'Contratos',
+                'mod-jur-2': 'Fluxos Jurídicos',
+                'mod-jur-3': 'Comunicação Jurídica',
+                'mod-jur-4': 'Padronizações',
+                'mod-comp-1': 'Ética Corporativa',
+                'mod-comp-2': 'LGPD',
+                'mod-comp-3': 'Segurança da Informação',
+                'mod-comp-4': 'Conduta Profissional',
+                'mod-comp-5': 'Políticas Internas'
+            };
+            const modName = modNames[modId] || modId;
+            const date = modData.date ? new Date(modData.date).toLocaleDateString('pt-BR') : 'Data não registrada';
+            certList += '<div style="padding:8px 12px;background:#d1fae5;border-radius:6px;font-size:12px;color:#059669;display:flex;justify-content:space-between;align-items:center;">';
+            certList += '<span><i class="fas fa-check-circle" style="margin-right:6px;"></i>' + escapeHtml(modName) + '</span>';
+            certList += '<span style="font-size:11px;opacity:0.8;">' + date + '</span>';
+            certList += '</div>';
+        });
+        certList += '</div></div>';
+    } else {
+        certList = '<div style="margin-top:16px;padding:16px;background:var(--cinza-claro);border-radius:8px;text-align:center;"><p style="color:var(--cinza);font-size:13px;">Nenhum certificado obtido ainda.</p></div>';
+    }
+
+    // Show modal
+    const modalHtml = `
+        <div class="modal-overlay active" id="userDetailModal" style="z-index:10001;">
+            <div class="modal-content" style="max-width:600px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <h2 style="margin:0;"><i class="fas fa-user" style="color:var(--turquesa);margin-right:8px;"></i>Detalhes do Colaborador</h2>
+                    <button class="modal-close" onclick="closeUserDetailModal()"><i class="fas fa-times"></i></button>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <div style="font-size:18px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;">${escapeHtml(user.name)}</div>
+                    <div style="font-size:13px;color:var(--cinza);">${escapeHtml(user.email)}</div>
+                    <div style="font-size:12px;color:var(--cinza);margin-top:4px;">Cadastrado em: ${new Date(user.registeredAt).toLocaleDateString('pt-BR')}</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;">
+                    <div style="text-align:center;padding:16px;background:var(--turquesa-light);border-radius:10px;">
+                        <div style="font-family:'Oswald',sans-serif;font-size:24px;color:var(--turquesa);">${totalCompleted}</div>
+                        <div style="font-size:11px;color:var(--texto-leve);">Módulos concluídos</div>
+                    </div>
+                    <div style="text-align:center;padding:16px;background:#fef3c7;border-radius:10px;">
+                        <div style="font-family:'Oswald',sans-serif;font-size:24px;color:#d97706;">${pct}%</div>
+                        <div style="font-size:11px;color:var(--texto-leve);">Progresso geral</div>
+                    </div>
+                    <div style="text-align:center;padding:16px;background:#e6f7f0;border-radius:10px;">
+                        <div style="font-family:'Oswald',sans-serif;font-size:24px;color:#17a87d;">${totalCerts}</div>
+                        <div style="font-size:11px;color:var(--texto-leve);">Certificados</div>
+                    </div>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:12px;font-weight:600;color:var(--azul-escuro);margin-bottom:6px;">Progresso por trilha</div>
+                    <div style="height:8px;background:var(--cinza-claro);border-radius:4px;overflow:hidden;">
+                        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--turquesa),var(--azul-medio));border-radius:4px;transition:width 0.5s;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--cinza);">
+                        <span>0%</span>
+                        <span>${pct}%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+                ${certList}
+            </div>
+        </div>
+    `;
+
+    // Remove existing modal if any
+    const existing = document.getElementById('userDetailModal');
+    if (existing) existing.remove();
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function closeUserDetailModal() {
+    const modal = document.getElementById('userDetailModal');
+    if (modal) modal.remove();
+}
+
+// ==================== COMANDO 5: MATERIAIS DINÂMICOS POR MÓDULO ====================
+
+async function renderModuleFiles(moduleId) {
+    const container = document.getElementById('mod-pdf-grid');
+    const sectionHeader = document.getElementById('mod-pdf-count');
+
+    if (!container) return;
+
+    // Map moduleId to module name for filtering
+    const moduleMap = {
+        'mod1': 'Módulo 1: Atendimento',
+        'mod2': 'Módulo 2: Comunicação',
+        'mod3': 'Módulo 3: SAC e Ouvidoria',
+        'mod4': 'Módulo 4: Relacionamento',
+        'mod5': 'Módulo 5: Gestão e Liderança',
+        'mod-onboarding-1': 'Onboarding Geral',
+        'mod-onboarding-2': 'Onboarding Geral',
+        'mod-onboarding-3': 'Onboarding Geral',
+        'mod-onboarding-4': 'Onboarding Geral',
+        'mod-onboarding-5': 'Onboarding Geral',
+        'mod-onboarding-6': 'Onboarding Geral',
+        'mod-onboarding-7': 'Onboarding Geral',
+        'mod-onboarding-8': 'Onboarding Geral',
+        'mod-onboarding-9': 'Onboarding Geral',
+        'mod-rel-1': 'Relacionamento',
+        'mod-rel-2': 'Relacionamento',
+        'mod-rel-3': 'Relacionamento',
+        'mod-rel-4': 'Relacionamento',
+        'mod-rel-5': 'Relacionamento',
+        'mod-rel-6': 'Relacionamento',
+        'mod-rel-7': 'Relacionamento',
+        'mod-rel-8': 'Relacionamento',
+        'mod-rel-9': 'Relacionamento',
+        'mod-rel-10': 'Relacionamento',
+        'mod-astec-1': 'ASTEC',
+        'mod-astec-2': 'ASTEC',
+        'mod-astec-3': 'ASTEC',
+        'mod-astec-4': 'ASTEC',
+        'mod-astec-5': 'ASTEC',
+        'mod-back-1': 'Backoffice',
+        'mod-back-2': 'Backoffice',
+        'mod-back-3': 'Backoffice',
+        'mod-back-4': 'Backoffice',
+        'mod-rec-1': 'Recuperação de Crédito',
+        'mod-rec-2': 'Recuperação de Crédito',
+        'mod-rec-3': 'Recuperação de Crédito',
+        'mod-rec-4': 'Recuperação de Crédito',
+        'mod-rec-5': 'Recuperação de Crédito',
+        'mod-jur-1': 'Jurídico',
+        'mod-jur-2': 'Jurídico',
+        'mod-jur-3': 'Jurídico',
+        'mod-jur-4': 'Jurídico',
+        'mod-comp-1': 'Compliance',
+        'mod-comp-2': 'Compliance',
+        'mod-comp-3': 'Compliance',
+        'mod-comp-4': 'Compliance',
+        'mod-comp-5': 'Compliance'
+    };
+
+    const moduloNome = moduleMap[moduleId] || moduleId;
+
+    try {
+        if (!supabaseClient) initSupabase();
+
+        let files = [];
+        if (supabaseClient) {
+            const { data, error } = await supabaseClient
+                .from('Arquivos')
+                .select('*')
+                .eq('Módulo', moduloNome)
+                .order('criado_em', { ascending: false });
+
+            if (!error) files = data || [];
+        }
+
+        if (sectionHeader) sectionHeader.textContent = files.length + ' arquivo(s)';
+
+        if (files.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>Nenhum material disponível ainda</h3>
+                    <p>Os materiais deste módulo serão adicionados em breve.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        files.forEach(file => {
+            const iconClass = file.Tipo === 'PDF' ? 'fa-file-pdf' : 
+                             file.Tipo === 'Vídeo' ? 'fa-file-video' :
+                             file.Tipo === 'Apresentação' ? 'fa-file-powerpoint' :
+                             file.Tipo === 'Documento' ? 'fa-file-word' :
+                             file.Tipo === 'Planilha' ? 'fa-file-excel' : 'fa-file';
+
+            html += `
+                <a href="${file.URL}" target="_blank" class="pdf-btn" download="${file.Nome}">
+                    <i class="fas ${iconClass} pdf-icon" style="background:var(--turquesa-light);color:var(--turquesa);"></i>
+                    <div class="pdf-info">
+                        <div class="pdf-title">${escapeHtml(file.Nome)}</div>
+                        <div class="pdf-meta">${file.Tipo} — ${new Date(file.criado_em).toLocaleDateString('pt-BR')}</div>
+                    </div>
+                    <i class="fas fa-download pdf-arrow"></i>
+                </a>
+            `;
+        });
+        container.innerHTML = html;
+
+    } catch (err) {
+        console.error('Error loading files:', err);
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-circle" style="color:var(--danger);"></i>
+                <h3>Erro ao carregar materiais</h3>
+                <p>Verifique a conexão com o Supabase.</p>
+            </div>
+        `;
+    }
+}
+
+// ==================== ENHANCED NAVIGATE TO (hook for FAQ loading) ====================
+
+const originalNavigateTo = navigateTo;
+navigateTo = function(page) {
+    // Call original first
+    originalNavigateTo(page);
+
+    // Additional hooks
+    if (page === 'faq') {
+        setTimeout(loadFaqForUser, 300);
+    }
+
+    if (page.startsWith('mod-')) {
+        setTimeout(() => renderModuleFiles(page), 500);
+    }
+};
+
+// ==================== ENHANCED LOAD MODULE CONTENT (hook for materials) ====================
+
+const originalLoadModuleContent = loadModuleContent;
+loadModuleContent = function(moduleId) {
+    originalLoadModuleContent(moduleId);
+
+    // Update the PDF section to use dynamic grid
+    const slidesContainer = document.getElementById('mod-slides-container');
+    if (slidesContainer) {
+        // Check if we need to add the dynamic PDF grid
+        const existingPdfGrid = document.getElementById('mod-pdf-grid');
+        if (!existingPdfGrid) {
+            // The PDF section already exists in the HTML, just update its ID
+            const pdfSection = slidesContainer.parentElement.querySelector('.pdf-section .pdf-grid');
+            if (pdfSection) {
+                pdfSection.id = 'mod-pdf-grid';
+            }
+        }
+    }
+
+    // Load files for this module
+    setTimeout(() => renderModuleFiles(moduleId), 600);
+};
+
+// ==================== ENHANCED SWITCH CM TAB (hook for FAQ admin) ====================
+
+const originalSwitchCmTab = switchCmTab;
+switchCmTab = function(tab) {
+    originalSwitchCmTab(tab);
+    if (tab === 'faq') {
+        setTimeout(loadFaqAdminList, 300);
+    }
+};
 </script>
 </body>
 </html>            <!-- Achievements Section -->
@@ -5274,5 +5743,3 @@ if (savedConfig) {
                     <!-- Populated by JS -->
                 </div>
             </div>
-
-
