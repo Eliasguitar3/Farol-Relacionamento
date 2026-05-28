@@ -1104,7 +1104,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                     <h3>Onboarding Geral</h3>
                     <p>Sua integração na Canopus Construtora. História, cultura, valores e estrutura organizacional.</p>
                     <div class="card-footer">
-                        <span class="card-count"><i class="fas fa-book"></i> 9 módulos</span>
+                        <span class="card-count"><i class="fas fa-book"></i> 4 módulos</span>
                         <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
                     </div>
                     <div class="progress-track" style="margin-top:12px;padding:12px;">
@@ -1116,7 +1116,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                             <div class="progress-fill" id="trail-onboarding-bar" style="width:0%"></div>
                         </div>
                         <div class="trail-progress-mini" style="margin-top:8px;">
-                            <span id="trail-onboarding-count">0/9</span>
+                            <span id="trail-onboarding-count">0/4</span>
                             <div class="bar"><div class="fill" id="trail-onboarding-mini-bar" style="width:0%"></div></div>
                         </div>
                     </div>
@@ -1190,7 +1190,19 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
             </div>
 
             <!-- Legacy Module Cards (hidden but kept for backward compatibility) -->
-            <div style="display:none;" id="legacy-modules">
+            
+        <!-- Achievements Section -->
+        <div class="faq-section" style="margin-bottom: 24px;">
+            <div class="faq-header">
+                <h2><i class="fas fa-trophy" style="color:var(--turquesa);margin-right:8px;"></i>Conquistas</h2>
+                <p>Reconhecimentos pelo seu progresso na plataforma.</p>
+            </div>
+            <div id="achievementsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+<div style="display:none;" id="legacy-modules">
                 <div class="cards-grid">
                     <div class="card animate-in delay-1" onclick="navigateTo('modulo-1')">
                         <div class="card-icon-main turquesa"><i class="fas fa-file-alt"></i></div>
@@ -1562,17 +1574,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
             </div>
         </div>
 
-            <!-- Achievements Section -->
-            <div class="faq-section" style="margin-bottom: 24px;">
-                <div class="faq-header">
-                    <h2><i class="fas fa-trophy" style="color:var(--turquesa);margin-right:8px;"></i>Conquistas</h2>
-                    <p>Reconhecimentos pelo seu progresso na plataforma.</p>
-                </div>
-                <div id="achievementsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-<!-- ==================== CERTIFICADOS ==================== -->
+            <!-- ==================== CERTIFICADOS ==================== -->
         <div class="page-section" id="page-certificados">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-certificate"></i> Certificados</span>
@@ -1951,7 +1953,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                     </button>
                 </div>
                 <!-- Module 2: Organograma - Locked until module 1 completed -->
-                <div class="card animate-in delay-2 locked" id="card-onb-2" onclick="handleLockedModule(2)">
+                <div class="card animate-in delay-2 locked" id="card-onb-2" onclick="handleLockedModule(2); return false;">
                     <div class="card-icon-main azul"><i class="fas fa-sitemap"></i></div>
                     <h3>2. Organograma</h3>
                     <p>Conheça a estrutura organizacional da Canopus, departamentos, hierarquia e fluxos de comunicação interna.</p>
@@ -1959,12 +1961,12 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <span class="card-count"><i class="fas fa-clock"></i> 45 min</span>
                         <div class="card-arrow"><i class="fas fa-lock"></i></div>
                     </div>
-                    <button class="complete-btn" id="btn-complete-mod-onboarding-2" onclick="event.stopPropagation();markCompleteOnboarding('mod-onboarding-2')" disabled style="opacity:0.5;cursor:not-allowed;">
+                    <button class="complete-btn" id="btn-complete-mod-onboarding-2" onclick="event.stopPropagation(); return false;" disabled style="opacity:0.5;cursor:not-allowed;">
                         <i class="fas fa-lock"></i> Bloqueado
                     </button>
                 </div>
                 <!-- Module 3: Nosso Jeito de Ser - Locked until module 2 completed -->
-                <div class="card animate-in delay-3 locked" id="card-onb-3" onclick="handleLockedModule(3)">
+                <div class="card animate-in delay-3 locked" id="card-onb-3" onclick="handleLockedModule(3); return false;">
                     <div class="card-icon-main verde"><i class="fas fa-heart"></i></div>
                     <h3>3. Nosso Jeito de Ser</h3>
                     <p>Cultura, valores, princípios éticos e o comportamento que esperamos de cada colaborador.</p>
@@ -1972,12 +1974,12 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <span class="card-count"><i class="fas fa-clock"></i> 40 min</span>
                         <div class="card-arrow"><i class="fas fa-lock"></i></div>
                     </div>
-                    <button class="complete-btn" id="btn-complete-mod-onboarding-3" onclick="event.stopPropagation();markCompleteOnboarding('mod-onboarding-3')" disabled style="opacity:0.5;cursor:not-allowed;">
+                    <button class="complete-btn" id="btn-complete-mod-onboarding-3" onclick="event.stopPropagation(); return false;" disabled style="opacity:0.5;cursor:not-allowed;">
                         <i class="fas fa-lock"></i> Bloqueado
                     </button>
                 </div>
                 <!-- Module 4: Guia do Cliente - Locked until module 3 completed -->
-                <div class="card animate-in delay-1 locked" id="card-onb-4" onclick="handleLockedModule(4)">
+                <div class="card animate-in delay-1 locked" id="card-onb-4" onclick="handleLockedModule(4); return false;">
                     <div class="card-icon-main laranja"><i class="fas fa-book-open"></i></div>
                     <h3>4. Guia do Cliente</h3>
                     <p>Entenda o ciclo completo do cliente na Canopus Construtora e como entregamos excelência.</p>
@@ -1985,7 +1987,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <span class="card-count"><i class="fas fa-clock"></i> 35 min</span>
                         <div class="card-arrow"><i class="fas fa-lock"></i></div>
                     </div>
-                    <button class="complete-btn" id="btn-complete-mod-onboarding-4" onclick="event.stopPropagation();markCompleteOnboarding('mod-onboarding-4')" disabled style="opacity:0.5;cursor:not-allowed;">
+                    <button class="complete-btn" id="btn-complete-mod-onboarding-4" onclick="event.stopPropagation(); return false;" disabled style="opacity:0.5;cursor:not-allowed;">
                         <i class="fas fa-lock"></i> Bloqueado
                     </button>
                 </div>
@@ -2742,8 +2744,10 @@ function loginUser() {
         setTimeout(() => {
             hideLoginScreen();
             showApp();
+            validateUrlAccess();
             updateDashboard();
             showNotification('Bem-vindo, ' + name + '!', 'success');
+            setTimeout(validateUrlAccess, 100);
         }, 800);
     }, 800);
 }
@@ -2846,6 +2850,24 @@ function logout() {
     showNotification('Você saiu da plataforma', 'info');
 }
 
+// Validate URL-based access attempts to onboarding modules
+function validateUrlAccess() {
+    // Admins bypass URL access restrictions
+    if (currentRole === 'admin') return true;
+
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#mod-onboarding-')) {
+        const moduleId = hash.substring(1);
+        if (!canAccessOnboardingModule(moduleId)) {
+            showNotification('Módulo bloqueado. Complete o módulo anterior para liberar.', 'error');
+            window.location.hash = '';
+            navigateTo('trilha-onboarding');
+            return false;
+        }
+    }
+    return true;
+}
+
 function checkAuthState() {
     // Check for existing session
     const savedUser = localStorage.getItem(CONFIG.STORAGE_USER);
@@ -2858,6 +2880,7 @@ function checkAuthState() {
             currentRole = 'admin';
             hideLoginScreen();
             showApp();
+            validateUrlAccess();
             updateAdminDashboard();
         } catch(e) {
             localStorage.removeItem(CONFIG.STORAGE_ADMIN);
@@ -2962,6 +2985,13 @@ function navigateTo(page) {
     if (isModulePage) {
         moduleId = page;
         actualPage = 'module-generic';
+        // Validate onboarding module access (real blocking)
+        if (moduleId && moduleId.startsWith('mod-onboarding-')) {
+            if (!validateOnboardingAccess(moduleId)) {
+                return; // Blocked - redirect already handled in validateOnboardingAccess
+            }
+        }
+
         // Load module content dynamically
         loadModuleContent(moduleId);
     }
@@ -3034,11 +3064,6 @@ function updateBreadcrumb(page) {
         'mod-onboarding-2': 'História da Empresa',
         'mod-onboarding-3': 'Cultura e Valores',
         'mod-onboarding-4': 'Estrutura Organizacional',
-        'mod-onboarding-5': 'Comunicação Interna',
-        'mod-onboarding-6': 'Postura Profissional',
-        'mod-onboarding-7': 'Sistemas Utilizados',
-        'mod-onboarding-8': 'Jornada do Cliente',
-        'mod-onboarding-9': 'Encerramento',
         'mod-rel-1': 'Jornada do Cliente',
         'mod-rel-2': 'Atendimento Humanizado',
         'mod-rel-3': 'Escrita Encantadora',
@@ -3250,7 +3275,39 @@ function updateModuleButton(moduleId, completed) {
 const ONBOARDING_MODULES = ['mod-onboarding-1', 'mod-onboarding-2', 'mod-onboarding-3', 'mod-onboarding-4'];
 
 function handleLockedModule(moduleNum) {
+    // Admins never see locked modules, but just in case
+    if (currentRole === 'admin') {
+        // Admin can navigate to any module
+        const modId = ONBOARDING_MODULES[moduleNum - 1];
+        if (modId) navigateTo(modId);
+        return;
+    }
     showNotification('Módulo bloqueado. Complete o módulo anterior para liberar.', 'warning');
+}
+
+// REAL BACKEND+FRONTEND BLOCKING: Check if user can access a module
+function canAccessOnboardingModule(moduleId) {
+    // Admins have full access to all modules (no blocking)
+    if (currentRole === 'admin') return true;
+
+    const idx = ONBOARDING_MODULES.indexOf(moduleId);
+    if (idx === -1) return false;
+    if (idx === 0) return true; // First module always unlocked
+    const prevModule = ONBOARDING_MODULES[idx - 1];
+    return userProgress[prevModule] && userProgress[prevModule].completed;
+}
+
+// Validate access before navigating to any onboarding module
+function validateOnboardingAccess(moduleId) {
+    // Admins bypass all access restrictions
+    if (currentRole === 'admin') return true;
+
+    if (!canAccessOnboardingModule(moduleId)) {
+        showNotification('Módulo bloqueado. Complete o módulo anterior para liberar.', 'error');
+        navigateTo('trilha-onboarding');
+        return false;
+    }
+    return true;
 }
 
 function markCompleteOnboarding(moduleId) {
@@ -3260,8 +3317,9 @@ function markCompleteOnboarding(moduleId) {
     }
 
     // Check if previous module is completed (for modules 2-4)
+    // Admins can mark any module without sequential restrictions
     const idx = ONBOARDING_MODULES.indexOf(moduleId);
-    if (idx > 0) {
+    if (currentRole !== 'admin' && idx > 0) {
         const prevModule = ONBOARDING_MODULES[idx - 1];
         if (!userProgress[prevModule] || !userProgress[prevModule].completed) {
             showNotification('Complete o módulo anterior primeiro.', 'error');
@@ -3334,17 +3392,20 @@ function updateOnboardingLocks() {
         const card = document.getElementById('card-onb-' + (idx + 1));
         const btn = document.getElementById('btn-complete-mod-' + modId);
         const isCompleted = userProgress[modId] && userProgress[modId].completed;
-        const isUnlocked = idx === 0 || (userProgress[ONBOARDING_MODULES[idx - 1]] && userProgress[ONBOARDING_MODULES[idx - 1]].completed);
+        // Admins see all modules as unlocked; users follow sequential rules
+        const isUnlocked = currentRole === 'admin' || idx === 0 || (userProgress[ONBOARDING_MODULES[idx - 1]] && userProgress[ONBOARDING_MODULES[idx - 1]].completed);
 
         if (card) {
             if (isUnlocked) {
                 card.classList.remove('locked');
                 card.onclick = function() { navigateTo(modId); };
+                card.style.cursor = 'pointer';
                 const arrow = card.querySelector('.card-arrow');
                 if (arrow) arrow.innerHTML = '<i class="fas fa-arrow-right"></i>';
             } else {
                 card.classList.add('locked');
-                card.onclick = function() { handleLockedModule(idx + 1); };
+                card.onclick = function() { handleLockedModule(idx + 1); return false; };
+                card.style.cursor = 'not-allowed';
                 const arrow = card.querySelector('.card-arrow');
                 if (arrow) arrow.innerHTML = '<i class="fas fa-lock"></i>';
             }
@@ -3863,7 +3924,7 @@ function updateAdminDashboard() {
     let totalCompleted = 0;
     let totalProgress = 0;
     let totalCerts = 0;
-    const totalModules = 37; // All modules across all trails
+    const totalModules = 42; // All modules across all trails
 
     allUsers.forEach(user => {
         const progress = localStorage.getItem(CONFIG.STORAGE_PROGRESS + '_' + user.email);
@@ -4622,6 +4683,22 @@ function formatFileSize(bytes) {
 }
 
 function setupEventListeners() {
+    // Block URL hash changes to locked onboarding modules (users only)
+    window.addEventListener('hashchange', function(e) {
+        // Admins bypass all hash restrictions
+        if (currentRole === 'admin') return;
+
+        const newHash = e.newURL.split('#')[1];
+        if (newHash && newHash.startsWith('mod-onboarding-')) {
+            if (!canAccessOnboardingModule(newHash)) {
+                showNotification('Módulo bloqueado. Complete o módulo anterior para liberar.', 'error');
+                e.preventDefault();
+                window.location.hash = e.oldURL.split('#')[1] || '';
+                navigateTo('trilha-onboarding');
+            }
+        }
+    });
+
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -5720,11 +5797,6 @@ async function renderModuleFiles(moduleId) {
         'mod-onboarding-2': 'Onboarding Geral',
         'mod-onboarding-3': 'Onboarding Geral',
         'mod-onboarding-4': 'Onboarding Geral',
-        'mod-onboarding-5': 'Onboarding Geral',
-        'mod-onboarding-6': 'Onboarding Geral',
-        'mod-onboarding-7': 'Onboarding Geral',
-        'mod-onboarding-8': 'Onboarding Geral',
-        'mod-onboarding-9': 'Onboarding Geral',
         'mod-rel-1': 'Relacionamento',
         'mod-rel-2': 'Relacionamento',
         'mod-rel-3': 'Relacionamento',
