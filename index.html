@@ -859,6 +859,73 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
 .site-footer, .modal-content, .cert-card, .slide-panel {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+
+
+/* ==================== PRINT STYLES FOR CERTIFICATE ==================== */
+@media print {
+    @page {
+        size: landscape;
+        margin: 10mm;
+    }
+
+    /* Hide everything except the certificate preview */
+    body * {
+        visibility: hidden;
+    }
+
+    .cert-preview.active,
+    .cert-preview.active * {
+        visibility: visible;
+    }
+
+    .cert-preview {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white !important;
+        padding: 0;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+    }
+
+    .cert-preview-content {
+        box-shadow: none !important;
+        border: 4px solid var(--turquesa) !important;
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+        padding: 40px;
+        page-break-inside: avoid;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .cert-preview-close {
+        display: none !important;
+    }
+
+    .cert-header h2 {
+        font-size: 28px !important;
+    }
+
+    .cert-recipient {
+        font-size: 36px !important;
+    }
+
+    .cert-body p {
+        font-size: 16px !important;
+    }
+
+    .cert-footer {
+        margin-top: 40px !important;
+    }
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <base target="_blank">
@@ -4183,7 +4250,16 @@ function closeCertPreview() {
 }
 
 function downloadCertificate(moduleName) {
-    showNotification('Certificado gerado! Download iniciado.', 'success');
+    // Open the certificate preview modal first if not already open
+    const modal = document.getElementById('certPreviewModal');
+    if (!modal.classList.contains('active')) {
+        previewCertificate(moduleName, '0h');
+    }
+
+    // Small delay to ensure modal is rendered before print
+    setTimeout(function() {
+        window.print();
+    }, 300);
 }
 
 // ==================== FAQ ====================
