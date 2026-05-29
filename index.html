@@ -965,6 +965,11 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                     <input type="email" id="userEmailInput" placeholder="Ex: joao.silva@canopus.com.br" onkeypress="if(event.key==='Enter')loginUser()">
                     <p class="domain-hint"><i class="fas fa-lock"></i> Apenas e-mails @canopus.com.br são permitidos</p>
                 </div>
+                <div class="form-group">
+                    <label>Sua senha</label>
+                    <input type="password" id="userPasswordInput" placeholder="Mínimo 6 caracteres" onkeypress="if(event.key==='Enter')loginUser()">
+                    <p class="domain-hint"><i class="fas fa-info-circle"></i> Primeiro acesso? Sua conta será criada automaticamente</p>
+                </div>
                 <button type="button" class="login-btn" id="btnLoginUser" onclick="loginUser()">
                     <i class="fas fa-sign-in-alt"></i> Acessar minha trilha
                 </button>
@@ -2137,7 +2142,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                 <i class="fas fa-heart" style="color:var(--turquesa);margin-right:8px;"></i>Relacionamento
             </h2>
             <div class="cards-grid">
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-rel-1')">
+                <div class="card animate-in delay-1" id="card-rel-1" onclick="navigateTo('mod-rel-1')">
                     <div class="card-icon-main turquesa"><i class="fas fa-route"></i></div>
                     <h3>1. Jornada do Cliente</h3>
                     <p>Mapeamento completo da experiência do cliente com a Canopus Construtora.</p>
@@ -2149,7 +2154,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-rel-2')">
+                <div class="card animate-in delay-2" id="card-rel-2" onclick="navigateTo('mod-rel-2')">
                     <div class="card-icon-main azul"><i class="fas fa-smile-beam"></i></div>
                     <h3>2. Atendimento Humanizado</h3>
                     <p>Técnicas de empatia, escuta ativa e conexão genuína com o cliente.</p>
@@ -2161,7 +2166,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('mod-rel-3')">
+                <div class="card animate-in delay-3" id="card-rel-3" onclick="navigateTo('mod-rel-3')">
                     <div class="card-icon-main verde"><i class="fas fa-pen-fancy"></i></div>
                     <h3>3. Escrita Encantadora</h3>
                     <p>Redação de e-mails, mensagens e documentos com tom profissional e acolhedor.</p>
@@ -2173,7 +2178,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-rel-4')">
+                <div class="card animate-in delay-1" id="card-rel-4" onclick="navigateTo('mod-rel-4')">
                     <div class="card-icon-main laranja"><i class="fas fa-comment-dots"></i></div>
                     <h3>4. Comunicação Profissional</h3>
                     <p>Protocolos de comunicação verbal e não verbal em todos os canais.</p>
@@ -2185,7 +2190,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-rel-5')">
+                <div class="card animate-in delay-2" id="card-rel-5" onclick="navigateTo('mod-rel-5')">
                     <div class="card-icon-main roxo"><i class="fas fa-balance-scale-right"></i></div>
                     <h3>5. Gestão de Conflitos</h3>
                     <p>Estratégias de negociação, mediação e resolução de situações delicadas.</p>
@@ -2197,7 +2202,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('mod-rel-6')">
+                <div class="card animate-in delay-3" id="card-rel-6" onclick="navigateTo('mod-rel-6')">
                     <div class="card-icon-main rosa"><i class="fas fa-stopwatch"></i></div>
                     <h3>6. SLA e Prazos</h3>
                     <p>Gerenciamento de tempos de resposta, escalação e cumprimento de acordos.</p>
@@ -2209,7 +2214,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-rel-7')">
+                <div class="card animate-in delay-1" id="card-rel-7" onclick="navigateTo('mod-rel-7')">
                     <div class="card-icon-main turquesa"><i class="fas fa-project-diagram"></i></div>
                     <h3>7. Fluxos Operacionais</h3>
                     <p>Processos, checklists e procedimentos do dia a dia do relacionamento.</p>
@@ -2221,7 +2226,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-rel-8')">
+                <div class="card animate-in delay-2" id="card-rel-8" onclick="navigateTo('mod-rel-8')">
                     <div class="card-icon-main azul"><i class="fas fa-desktop"></i></div>
                     <h3>8. Sistemas Internos</h3>
                     <p>Treinamento prático nas plataformas e ferramentas utilizadas pela área.</p>
@@ -2233,7 +2238,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('mod-rel-9')">
+                <div class="card animate-in delay-3" id="card-rel-9" onclick="navigateTo('mod-rel-9')">
                     <div class="card-icon-main verde"><i class="fas fa-reply-all"></i></div>
                     <h3>9. Modelos de Resposta</h3>
                     <p>Templates, scripts e respostas padronizadas para situações recorrentes.</p>
@@ -2245,7 +2250,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-rel-10')">
+                <div class="card animate-in delay-1" id="card-rel-10" onclick="navigateTo('mod-rel-10')">
                     <div class="card-icon-main laranja"><i class="fas fa-question-circle"></i></div>
                     <h3>10. FAQ Operacional</h3>
                     <p>Perguntas e respostas rápidas para o dia a dia operacional.</p>
@@ -2264,7 +2269,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                 <i class="fas fa-tools" style="color:var(--turquesa);margin-right:8px;"></i>ASTEC
             </h2>
             <div class="cards-grid">
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-astec-1')">
+                <div class="card animate-in delay-1" id="card-astec-1" onclick="navigateTo('mod-astec-1')">
                     <div class="card-icon-main turquesa"><i class="fas fa-clipboard-list"></i></div>
                     <h3>1. Fluxo de Assistência Técnica</h3>
                     <p>Processo completo de abertura, acompanhamento e encerramento de assistências.</p>
@@ -2276,7 +2281,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-astec-2')">
+                <div class="card animate-in delay-2" id="card-astec-2" onclick="navigateTo('mod-astec-2')">
                     <div class="card-icon-main azul"><i class="fas fa-search"></i></div>
                     <h3>2. Vistorias</h3>
                     <p>Procedimentos de vistoria técnica, checklists e documentação.</p>
@@ -2288,7 +2293,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('mod-astec-3')">
+                <div class="card animate-in delay-3" id="card-astec-3" onclick="navigateTo('mod-astec-3')">
                     <div class="card-icon-main verde"><i class="fas fa-shield-alt"></i></div>
                     <h3>3. Garantias</h3>
                     <p>Gestão de garantias, prazos legais e comunicação com o cliente.</p>
@@ -2300,7 +2305,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-astec-4')">
+                <div class="card animate-in delay-1" id="card-astec-4" onclick="navigateTo('mod-astec-4')">
                     <div class="card-icon-main laranja"><i class="fas fa-ticket-alt"></i></div>
                     <h3>4. Chamados</h3>
                     <p>Abertura, priorização, acompanhamento e resolução de chamados técnicos.</p>
@@ -2312,7 +2317,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-astec-5')">
+                <div class="card animate-in delay-2" id="card-astec-5" onclick="navigateTo('mod-astec-5')">
                     <div class="card-icon-main roxo"><i class="fas fa-clock"></i></div>
                     <h3>5. SLA Técnico</h3>
                     <p>Prazos de atendimento técnico, escalação e indicadores de performance.</p>
@@ -2331,7 +2336,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                 <i class="fas fa-cogs" style="color:var(--turquesa);margin-right:8px;"></i>Backoffice
             </h2>
             <div class="cards-grid">
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-back-1')">
+                <div class="card animate-in delay-1" id="card-back-1" onclick="navigateTo('mod-back-1')">
                     <div class="card-icon-main turquesa"><i class="fas fa-exchange-alt"></i></div>
                     <h3>1. Fluxos Internos</h3>
                     <p>Mapeamento dos processos internos e fluxos de trabalho do backoffice.</p>
@@ -2343,7 +2348,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-back-2')">
+                <div class="card animate-in delay-2" id="card-back-2" onclick="navigateTo('mod-back-2')">
                     <div class="card-icon-main azul"><i class="fas fa-tasks"></i></div>
                     <h3>2. Processos Administrativos</h3>
                     <p>Rotinas administrativas, documentação e controles operacionais.</p>
@@ -2355,7 +2360,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('mod-back-3')">
+                <div class="card animate-in delay-3" id="card-back-3" onclick="navigateTo('mod-back-3')">
                     <div class="card-icon-main verde"><i class="fas fa-network-wired"></i></div>
                     <h3>3. Comunicação entre Áreas</h3>
                     <p>Interação eficiente entre departamentos e troca de informações.</p>
@@ -2367,7 +2372,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-back-4')">
+                <div class="card animate-in delay-1" id="card-back-4" onclick="navigateTo('mod-back-4')">
                     <div class="card-icon-main laranja"><i class="fas fa-clipboard-check"></i></div>
                     <h3>4. Controles Internos</h3>
                     <p>Auditoria, conformidade e monitoramento de processos internos.</p>
@@ -2386,7 +2391,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                 <i class="fas fa-hand-holding-usd" style="color:var(--turquesa);margin-right:8px;"></i>Recuperação de Crédito
             </h2>
             <div class="cards-grid">
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-rec-1')">
+                <div class="card animate-in delay-1" id="card-rec-1" onclick="navigateTo('mod-rec-1')">
                     <div class="card-icon-main turquesa"><i class="fas fa-handshake"></i></div>
                     <h3>1. Negociação</h3>
                     <p>Técnicas de negociação para acordos e renegociações de contratos.</p>
@@ -2398,7 +2403,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-rec-2')">
+                <div class="card animate-in delay-2" id="card-rec-2" onclick="navigateTo('mod-rec-2')">
                     <div class="card-icon-main azul"><i class="fas fa-heart"></i></div>
                     <h3>2. Cobrança Humanizada</h3>
                     <p>Abordagem respeitosa e eficaz para cobrança e inadimplência.</p>
@@ -2410,7 +2415,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('mod-rec-3')">
+                <div class="card animate-in delay-3" id="card-rec-3" onclick="navigateTo('mod-rec-3')">
                     <div class="card-icon-main verde"><i class="fas fa-chart-pie"></i></div>
                     <h3>3. Fluxos Financeiros</h3>
                     <p>Entendimento dos fluxos de pagamento, repasse e conciliação.</p>
@@ -2422,7 +2427,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-rec-4')">
+                <div class="card animate-in delay-1" id="card-rec-4" onclick="navigateTo('mod-rec-4')">
                     <div class="card-icon-main laranja"><i class="fas fa-file-contract"></i></div>
                     <h3>4. Acordos</h3>
                     <p>Formalização, acompanhamento e cumprimento de acordos negociados.</p>
@@ -2434,7 +2439,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-rec-5')">
+                <div class="card animate-in delay-2" id="card-rec-5" onclick="navigateTo('mod-rec-5')">
                     <div class="card-icon-main roxo"><i class="fas fa-chart-bar"></i></div>
                     <h3>5. Indicadores</h3>
                     <p>KPIs de recuperação, taxas de sucesso e análise de resultados.</p>
@@ -2494,7 +2499,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                 <i class="fas fa-balance-scale" style="color:var(--turquesa);margin-right:8px;"></i>Módulos da Trilha
             </h2>
             <div class="cards-grid">
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-jur-1')">
+                <div class="card animate-in delay-1" id="card-jur-1" onclick="navigateTo('mod-jur-1')">
                     <div class="card-icon-main turquesa"><i class="fas fa-file-signature"></i></div>
                     <h3>1. Contratos</h3>
                     <p>Tipos de contratos, cláusulas essenciais e pontos de atenção na construtora.</p>
@@ -2506,7 +2511,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-jur-2')">
+                <div class="card animate-in delay-2" id="card-jur-2" onclick="navigateTo('mod-jur-2')">
                     <div class="card-icon-main azul"><i class="fas fa-stream"></i></div>
                     <h3>2. Fluxos Jurídicos</h3>
                     <p>Processos internos do jurídico, aprovações e tramitação de documentos.</p>
@@ -2518,7 +2523,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('mod-jur-3')">
+                <div class="card animate-in delay-3" id="card-jur-3" onclick="navigateTo('mod-jur-3')">
                     <div class="card-icon-main verde"><i class="fas fa-gavel"></i></div>
                     <h3>3. Comunicação Jurídica</h3>
                     <p>Redação jurídica, linguagem técnica e comunicação com partes externas.</p>
@@ -2530,7 +2535,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-jur-4')">
+                <div class="card animate-in delay-1" id="card-jur-4" onclick="navigateTo('mod-jur-4')">
                     <div class="card-icon-main laranja"><i class="fas fa-ruler-combined"></i></div>
                     <h3>4. Padronizações</h3>
                     <p>Modelos, templates e padrões documentais do departamento jurídico.</p>
@@ -2590,7 +2595,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                 <i class="fas fa-shield-alt" style="color:var(--turquesa);margin-right:8px;"></i>Módulos da Trilha
             </h2>
             <div class="cards-grid">
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-comp-1')">
+                <div class="card animate-in delay-1" id="card-comp-1" onclick="navigateTo('mod-comp-1')">
                     <div class="card-icon-main turquesa"><i class="fas fa-handshake"></i></div>
                     <h3>1. Ética Corporativa</h3>
                     <p>Princípios éticos, valores e condutas esperadas em todas as interações.</p>
@@ -2602,7 +2607,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-comp-2')">
+                <div class="card animate-in delay-2" id="card-comp-2" onclick="navigateTo('mod-comp-2')">
                     <div class="card-icon-main azul"><i class="fas fa-user-shield"></i></div>
                     <h3>2. LGPD</h3>
                     <p>Lei Geral de Proteção de Dados: direitos, obrigações e boas práticas.</p>
@@ -2614,7 +2619,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('mod-comp-3')">
+                <div class="card animate-in delay-3" id="card-comp-3" onclick="navigateTo('mod-comp-3')">
                     <div class="card-icon-main verde"><i class="fas fa-lock"></i></div>
                     <h3>3. Segurança da Informação</h3>
                     <p>Proteção de dados, senhas, acessos e prevenção a ameaças digitais.</p>
@@ -2626,7 +2631,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-1" onclick="navigateTo('mod-comp-4')">
+                <div class="card animate-in delay-1" id="card-comp-4" onclick="navigateTo('mod-comp-4')">
                     <div class="card-icon-main laranja"><i class="fas fa-user-check"></i></div>
                     <h3>4. Conduta Profissional</h3>
                     <p>Comportamento esperado, conflitos de interesse e relacionamento com terceiros.</p>
@@ -2638,7 +2643,7 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         <i class="fas fa-check"></i> Marcar como concluído
                     </button>
                 </div>
-                <div class="card animate-in delay-2" onclick="navigateTo('mod-comp-5')">
+                <div class="card animate-in delay-2" id="card-comp-5" onclick="navigateTo('mod-comp-5')">
                     <div class="card-icon-main roxo"><i class="fas fa-file-alt"></i></div>
                     <h3>5. Políticas Internas</h3>
                     <p>Regulamentos, normas e procedimentos internos da empresa.</p>
@@ -2755,9 +2760,10 @@ let userProgress = {};
 let allUsers = [];
 
 // ==================== INITIALIZATION ====================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     loadTheme();
-    checkAuthState();
+    initSupabase();
+    await checkAuthState();
     setupEventListeners();
     setupDragDrop();
 });
@@ -2787,11 +2793,13 @@ function reenableBtn(type) {
     }
 }
 
-function loginUser() {
+async function loginUser() {
     const nameInput = document.getElementById('userNameInput');
     const emailInput = document.getElementById('userEmailInput');
+    const passwordInput = document.getElementById('userPasswordInput');
     const name = nameInput.value.trim();
     const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput ? passwordInput.value : '';
 
     hideError('user');
     hideSuccess('user');
@@ -2831,20 +2839,87 @@ function loginUser() {
     }
     emailInput.classList.remove('error');
 
-    // Simulate loading
+    if (!password || password.length < SUPABASE_AUTH_CONFIG.MIN_PASSWORD_LENGTH) {
+        showError('user', 'Digite uma senha com pelo menos ' + SUPABASE_AUTH_CONFIG.MIN_PASSWORD_LENGTH + ' caracteres.');
+        if (passwordInput) passwordInput.classList.add('error');
+        reenableBtn('user');
+        return;
+    }
+    if (passwordInput) passwordInput.classList.remove('error');
+
+    // Loading state
     const btn = document.getElementById('btnLoginUser');
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
 
-    setTimeout(() => {
-        // Create user session
-        currentUser = { name: name, email: email, role: 'user', loginTime: new Date().toISOString() };
-        currentRole = 'user';
+    try {
+        await ensureSupabase();
 
-        // Save to localStorage
+        // Try sign in first
+        let { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        // If user doesn't exist, sign up
+        if (signInError && (signInError.message.includes('Invalid login') || signInError.message.includes('user not found'))) {
+            showSuccess('user', 'Criando sua conta...');
+
+            const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: { name: name },
+                    emailRedirectTo: window.location.origin + window.location.pathname
+                }
+            });
+
+            if (signUpError) {
+                throw new Error(signUpError.message);
+            }
+
+            // If email confirmation is disabled, session is available immediately
+            if (signUpData.session) {
+                signInData = signUpData;
+            } else if (SUPABASE_AUTH_CONFIG.DISABLE_EMAIL_CONFIRMATION) {
+                // Try sign in again after signup
+                const { data: retryData, error: retryError } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                if (retryError) throw new Error('Conta criada! Confirme seu email para acessar.');
+                signInData = retryData;
+            } else {
+                showSuccess('user', 'Conta criada! Verifique seu email para ativar.');
+                reenableBtn('user');
+                return;
+            }
+        } else if (signInError) {
+            throw new Error(signInError.message);
+        }
+
+        // Get or create user profile
+        let profile = await getUserProfile(signInData.user.id);
+
+        if (!profile) {
+            await createUserProfile(signInData.user.id, name, email, 'user');
+            profile = { name: name, email: email, role: 'user' };
+        }
+
+        // Set current user
+        currentUser = {
+            name: profile.name || name,
+            email: signInData.user.email,
+            role: profile.role || 'user',
+            id: signInData.user.id,
+            loginTime: new Date().toISOString()
+        };
+        currentRole = currentUser.role;
+
+        // Save to localStorage for backward compatibility
         localStorage.setItem(CONFIG.STORAGE_USER, JSON.stringify(currentUser));
 
-        // Initialize progress if new
+        // Initialize progress
         const savedProgress = localStorage.getItem(CONFIG.STORAGE_PROGRESS + '_' + email);
         if (savedProgress) {
             userProgress = JSON.parse(savedProgress);
@@ -2852,24 +2927,29 @@ function loginUser() {
             userProgress = {};
         }
 
-        // Register user in global list
-        registerUser(name, email);
+        // Register in global list
+        registerUser(currentUser.name, currentUser.email);
 
         showSuccess('user', 'Login realizado com sucesso! Redirecionando...');
-        addActivity('login', 'Login realizado', 'Acesso via e-mail corporativo');
+        addActivity('login', 'Login realizado', 'Acesso via Supabase Auth');
 
         setTimeout(() => {
             hideLoginScreen();
             showApp();
             validateUrlAccess();
             updateDashboard();
-            showNotification('Bem-vindo, ' + name + '!', 'success');
+            showNotification('Bem-vindo, ' + currentUser.name + '!', 'success');
             setTimeout(validateUrlAccess, 100);
         }, 800);
-    }, 800);
+
+    } catch (err) {
+        console.error('Login error:', err);
+        showError('user', err.message || 'Erro ao fazer login. Tente novamente.');
+        reenableBtn('user');
+    }
 }
 
-function loginAdmin() {
+async function loginAdmin() {
     const userInput = document.getElementById('adminUserInput');
     const passInput = document.getElementById('adminPassInput');
     const username = userInput.value.trim();
@@ -2894,12 +2974,49 @@ function loginAdmin() {
     }
     passInput.classList.remove('error');
 
-    // Simulate loading
+    // Loading state
     const btn = document.getElementById('btnLoginAdmin');
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Autenticando...';
 
-    setTimeout(() => {
+    try {
+        await ensureSupabase();
+
+        // Try Supabase Auth first (admin as regular user with role=admin)
+        const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
+            email: username,
+            password: password
+        });
+
+        if (!signInError && signInData.user) {
+            // Check if user has admin role in profile
+            const profile = await getUserProfile(signInData.user.id);
+
+            if (profile && profile.role === 'admin') {
+                currentUser = {
+                    name: profile.name || 'Administrador',
+                    email: signInData.user.email,
+                    role: 'admin',
+                    id: signInData.user.id,
+                    loginTime: new Date().toISOString()
+                };
+                currentRole = 'admin';
+
+                localStorage.setItem(CONFIG.STORAGE_ADMIN, JSON.stringify(currentUser));
+
+                showSuccess('admin', 'Acesso administrativo concedido!');
+
+                setTimeout(() => {
+                    hideLoginScreen();
+                    showApp();
+                    updateAdminDashboard();
+                    showNotification('Painel administrativo ativo', 'success');
+                }, 800);
+                return;
+            }
+        }
+
+        // Fallback to hardcoded credentials (backward compatibility)
         if (username === CONFIG.ADMIN_USER && password === CONFIG.ADMIN_PASS) {
             currentUser = { name: 'Administrador', email: 'admin@canopus.com.br', role: 'admin', loginTime: new Date().toISOString() };
             currentRole = 'admin';
@@ -2914,15 +3031,30 @@ function loginAdmin() {
                 updateAdminDashboard();
                 showNotification('Painel administrativo ativo', 'success');
             }, 800);
-        } else {
-            showError('admin', 'Usuário ou senha incorretos.');
-            passInput.classList.add('error');
-            reenableBtn('admin');
+            return;
         }
-    }, 800);
+
+        showError('admin', 'Usuário ou senha incorretos, ou acesso não autorizado.');
+        passInput.classList.add('error');
+        reenableBtn('admin');
+
+    } catch (err) {
+        console.error('Admin login error:', err);
+        showError('admin', err.message || 'Erro na autenticação.');
+        reenableBtn('admin');
+    }
 }
 
-function logout() {
+async function logout() {
+    // Sign out from Supabase Auth
+    try {
+        if (supabaseClient) {
+            await supabaseClient.auth.signOut();
+        }
+    } catch (e) {
+        console.warn('Erro ao fazer signOut do Supabase:', e);
+    }
+
     // Clear session
     currentUser = null;
     currentRole = null;
@@ -2941,6 +3073,7 @@ function logout() {
     // Reset forms
     document.getElementById('userNameInput').value = '';
     document.getElementById('userEmailInput').value = '';
+    document.getElementById('userPasswordInput').value = '';
     document.getElementById('adminUserInput').value = '';
     document.getElementById('adminPassInput').value = '';
 
@@ -2985,10 +3118,63 @@ function validateUrlAccess() {
     return true;
 }
 
-function checkAuthState() {
-    // Check for existing session
-    const savedUser = localStorage.getItem(CONFIG.STORAGE_USER);
+async function checkAuthState() {
+    // First try Supabase Auth session
+    try {
+        if (!supabaseClient) initSupabase();
+        if (supabaseClient) {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+
+            if (session && session.user) {
+                // Get user profile from Supabase
+                const profile = await getUserProfile(session.user.id);
+
+                if (profile) {
+                    currentUser = {
+                        name: profile.name || session.user.user_metadata?.name || 'Colaborador',
+                        email: session.user.email,
+                        role: profile.role || 'user',
+                        id: session.user.id,
+                        loginTime: new Date().toISOString()
+                    };
+                    currentRole = currentUser.role;
+                } else {
+                    // Fallback if no profile exists
+                    currentUser = {
+                        name: session.user.user_metadata?.name || 'Colaborador',
+                        email: session.user.email,
+                        role: 'user',
+                        id: session.user.id,
+                        loginTime: new Date().toISOString()
+                    };
+                    currentRole = 'user';
+                }
+
+                // Load progress
+                const savedProgress = localStorage.getItem(CONFIG.STORAGE_PROGRESS + '_' + currentUser.email);
+                if (savedProgress) {
+                    userProgress = JSON.parse(savedProgress);
+                }
+
+                hideLoginScreen();
+                showApp();
+                validateUrlAccess();
+
+                if (currentRole === 'admin') {
+                    updateAdminDashboard();
+                } else {
+                    updateDashboard();
+                }
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn('Supabase session check failed:', e);
+    }
+
+    // Fallback: Check localStorage for backward compatibility
     const savedAdmin = localStorage.getItem(CONFIG.STORAGE_ADMIN);
+    const savedUser = localStorage.getItem(CONFIG.STORAGE_USER);
 
     if (savedAdmin) {
         try {
@@ -3005,7 +3191,6 @@ function checkAuthState() {
     } else if (savedUser) {
         try {
             const user = JSON.parse(savedUser);
-            // Verify domain still valid
             if (user.email && user.email.endsWith(CONFIG.ALLOWED_DOMAIN)) {
                 currentUser = user;
                 currentRole = 'user';
@@ -3055,6 +3240,23 @@ function showApp() {
             document.getElementById('adminMenuSection').style.display = 'none';
         }
     }
+
+    // Sync user data with Supabase if online
+    syncUserWithSupabase();
+}
+
+async function syncUserWithSupabase() {
+    try {
+        if (!supabaseClient || !currentUser || !currentUser.id) return;
+
+        // Ensure profile exists in Supabase
+        const profile = await getUserProfile(currentUser.id);
+        if (!profile && currentUser.name && currentUser.email) {
+            await createUserProfile(currentUser.id, currentUser.name, currentUser.email, currentUser.role);
+        }
+    } catch (e) {
+        console.warn('Sync user failed:', e);
+    }
 }
 
 function showError(formId, message) {
@@ -3102,8 +3304,8 @@ function navigateTo(page) {
     if (isModulePage) {
         moduleId = page;
         actualPage = 'module-generic';
-        // Validate onboarding module access (real blocking)
-        if (moduleId && moduleId.startsWith('mod-onboarding-')) {
+        // Validate module access for ALL sequential trails (real blocking)
+        if (moduleId && (moduleId.startsWith('mod-onboarding-') || ALL_TRAIL_MODULES[moduleId])) {
             if (!validateOnboardingAccess(moduleId)) {
                 return; // Blocked - redirect already handled in validateOnboardingAccess
             }
@@ -3155,6 +3357,11 @@ function navigateTo(page) {
         setTimeout(updateOnboardingLocks, 100);
     } else if (page.startsWith('trilha-')) {
         updateDashboard(); // Refresh trail progress
+        // Apply sequential locking to trail modules (replicated from onboarding)
+        const trailName = page.replace('trilha-', '');
+        if (TRAIL_MODULES[trailName]) {
+            setTimeout(function() { updateTrailLocks(trailName); }, 100);
+        }
     }
 }
 
@@ -3365,6 +3572,16 @@ function markComplete(moduleId) {
     updateDashboard();
     updateModuleButton(moduleId, true);
 
+    // Update trail locks immediately so next module becomes unlocked
+    const trailName = ALL_TRAIL_MODULES[moduleId];
+    if (trailName) {
+        setTimeout(function() { updateTrailLocks(trailName); }, 50);
+    }
+    // Also update onboarding locks if applicable
+    if (ONBOARDING_MODULES.indexOf(moduleId) !== -1) {
+        setTimeout(updateOnboardingLocks, 50);
+    }
+
         addNotification('Módulo concluído', 'Você concluiu o módulo com sucesso. Continue sua trilha!', 'success');
         addActivity('module_complete', 'Módulo concluído', 'Módulo ' + moduleId + ' marcado como concluído');
     checkAchievements();
@@ -3391,6 +3608,22 @@ function updateModuleButton(moduleId, completed) {
 
 const ONBOARDING_MODULES = ['mod-onboarding-1', 'mod-onboarding-2', 'mod-onboarding-3', 'mod-onboarding-4'];
 
+// Trail module arrays for sequential locking (replicated from onboarding pattern)
+const TRAIL_MODULES = {
+    'relacionamento': ['mod-rel-1', 'mod-rel-2', 'mod-rel-3', 'mod-rel-4', 'mod-rel-5', 'mod-rel-6', 'mod-rel-7', 'mod-rel-8', 'mod-rel-9', 'mod-rel-10'],
+    'astec': ['mod-astec-1', 'mod-astec-2', 'mod-astec-3', 'mod-astec-4', 'mod-astec-5'],
+    'backoffice': ['mod-back-1', 'mod-back-2', 'mod-back-3', 'mod-back-4'],
+    'recuperacao': ['mod-rec-1', 'mod-rec-2', 'mod-rec-3', 'mod-rec-4', 'mod-rec-5'],
+    'juridico': ['mod-jur-1', 'mod-jur-2', 'mod-jur-3', 'mod-jur-4'],
+    'compliance': ['mod-comp-1', 'mod-comp-2', 'mod-comp-3', 'mod-comp-4', 'mod-comp-5']
+};
+
+// All sequential trails combined for validation
+const ALL_TRAIL_MODULES = {};
+for (const [trail, modules] of Object.entries(TRAIL_MODULES)) {
+    modules.forEach(mod => { ALL_TRAIL_MODULES[mod] = trail; });
+}
+
 function handleLockedModule(moduleNum) {
     // Admins never see locked modules, but just in case
     if (currentRole === 'admin') {
@@ -3414,14 +3647,39 @@ function canAccessOnboardingModule(moduleId) {
     return userProgress[prevModule] && userProgress[prevModule].completed;
 }
 
-// Validate access before navigating to any onboarding module
+// Generic module access check for ALL trails (replicated from onboarding pattern)
+function canAccessModule(moduleId) {
+    // Admins bypass all access restrictions
+    if (currentRole === 'admin') return true;
+
+    // Check onboarding modules
+    const onbIdx = ONBOARDING_MODULES.indexOf(moduleId);
+    if (onbIdx !== -1) {
+        if (onbIdx === 0) return true;
+        return userProgress[ONBOARDING_MODULES[onbIdx - 1]] && userProgress[ONBOARDING_MODULES[onbIdx - 1]].completed;
+    }
+
+    // Check other trail modules
+    const trailName = ALL_TRAIL_MODULES[moduleId];
+    if (!trailName) return true; // Non-sequential modules (legacy mod1-5) allow free access
+
+    const modules = TRAIL_MODULES[trailName];
+    const idx = modules.indexOf(moduleId);
+    if (idx === -1) return false;
+    if (idx === 0) return true; // First module of each trail always unlocked
+    const prevModule = modules[idx - 1];
+    return userProgress[prevModule] && userProgress[prevModule].completed;
+}
+
+// Validate access before navigating to any module (generic for ALL trails)
 function validateOnboardingAccess(moduleId) {
     // Admins bypass all access restrictions
     if (currentRole === 'admin') return true;
 
-    if (!canAccessOnboardingModule(moduleId)) {
+    if (!canAccessModule(moduleId)) {
+        const trailName = ALL_TRAIL_MODULES[moduleId] || 'onboarding';
         showNotification('Módulo bloqueado. Complete o módulo anterior para liberar.', 'error');
-        navigateTo('trilha-onboarding');
+        navigateTo('trilha-' + trailName);
         return false;
     }
     return true;
@@ -3579,6 +3837,82 @@ function updateOnboardingLocks() {
     const fill = document.getElementById('onboarding-fill');
     const percent = document.getElementById('onboarding-percent');
     const progress = document.getElementById('onboarding-progress');
+    if (fill) fill.style.width = pct + '%';
+    if (percent) percent.textContent = pct + '%';
+    if (progress) progress.textContent = pct + '%';
+}
+
+// Generic trail lock updater for ALL trails (replicated from onboarding pattern)
+function updateTrailLocks(trailName) {
+    const modules = TRAIL_MODULES[trailName];
+    if (!modules) return;
+
+    const prefix = trailName === 'relacionamento' ? 'rel' :
+                   trailName === 'astec' ? 'astec' :
+                   trailName === 'backoffice' ? 'back' :
+                   trailName === 'recuperacao' ? 'rec' :
+                   trailName === 'juridico' ? 'jur' :
+                   trailName === 'compliance' ? 'comp' : '';
+
+    modules.forEach((modId, idx) => {
+        const card = document.getElementById('card-' + prefix + '-' + (idx + 1));
+        const btn = document.getElementById('btn-complete-' + modId);
+        const isCompleted = userProgress[modId] && userProgress[modId].completed;
+        const isUnlocked = currentRole === 'admin' || idx === 0 || (userProgress[modules[idx - 1]] && userProgress[modules[idx - 1]].completed);
+
+        if (card) {
+            if (isUnlocked) {
+                card.classList.remove('locked');
+                card.onclick = function() { navigateTo(modId); };
+                card.style.cursor = 'pointer';
+                const arrow = card.querySelector('.card-arrow');
+                if (arrow) arrow.innerHTML = '<i class="fas fa-arrow-right"></i>';
+            } else {
+                card.classList.add('locked');
+                card.onclick = function() { showNotification('Módulo bloqueado. Complete o módulo anterior para liberar.', 'warning'); return false; };
+                card.style.cursor = 'not-allowed';
+                const arrow = card.querySelector('.card-arrow');
+                if (arrow) arrow.innerHTML = '<i class="fas fa-lock"></i>';
+            }
+
+            if (isCompleted) {
+                card.classList.add('completed');
+            } else {
+                card.classList.remove('completed');
+            }
+        }
+
+        if (btn) {
+            if (isUnlocked) {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+                if (isCompleted) {
+                    btn.classList.add('completed');
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> Concluído (clique para desmarcar)';
+                    btn.onclick = function(e) { e.stopPropagation(); markComplete(modId); };
+                } else {
+                    btn.classList.remove('completed');
+                    btn.innerHTML = '<i class="fas fa-check"></i> Marcar como concluído';
+                    btn.onclick = function(e) { e.stopPropagation(); markComplete(modId); };
+                }
+            } else {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+                btn.classList.remove('completed');
+                btn.innerHTML = '<i class="fas fa-lock"></i> Bloqueado';
+                btn.onclick = function(e) { e.stopPropagation(); };
+            }
+        }
+    });
+
+    // Update trail progress bar
+    const completedCount = modules.filter(m => userProgress[m] && userProgress[m].completed).length;
+    const pct = Math.round((completedCount / modules.length) * 100);
+    const fill = document.getElementById(trailName + '-fill');
+    const percent = document.getElementById(trailName + '-percent');
+    const progress = document.getElementById(trailName + '-progress');
     if (fill) fill.style.width = pct + '%';
     if (percent) percent.textContent = pct + '%';
     if (progress) progress.textContent = pct + '%';
@@ -4796,18 +5130,40 @@ function formatFileSize(bytes) {
 }
 
 function setupEventListeners() {
-    // Block URL hash changes to locked onboarding modules (users only)
+    // Supabase Auth state change listener
+    try {
+        if (typeof supabase !== 'undefined' && supabase.createClient) {
+            if (!supabaseClient) initSupabase();
+            if (supabaseClient) {
+                supabaseClient.auth.onAuthStateChange((event, session) => {
+                    console.log('Auth state changed:', event);
+                    if (event === 'SIGNED_OUT') {
+                        if (currentUser) logout();
+                    } else if (event === 'SIGNED_IN' && session) {
+                        checkAuthState();
+                    } else if (event === 'TOKEN_REFRESHED') {
+                        console.log('Token refreshed');
+                    }
+                });
+            }
+        }
+    } catch (e) {
+        console.warn('Could not setup auth state listener:', e);
+    }
+
+    // Block URL hash changes to locked modules (users only)
     window.addEventListener('hashchange', function(e) {
         // Admins bypass all hash restrictions
         if (currentRole === 'admin') return;
 
         const newHash = e.newURL.split('#')[1];
-        if (newHash && newHash.startsWith('mod-onboarding-')) {
-            if (!canAccessOnboardingModule(newHash)) {
+        if (newHash && (newHash.startsWith('mod-onboarding-') || ALL_TRAIL_MODULES[newHash])) {
+            if (!canAccessModule(newHash)) {
                 showNotification('Módulo bloqueado. Complete o módulo anterior para liberar.', 'error');
                 e.preventDefault();
                 window.location.hash = e.oldURL.split('#')[1] || '';
-                navigateTo('trilha-onboarding');
+                const trailName = ALL_TRAIL_MODULES[newHash] || 'onboarding';
+                navigateTo('trilha-' + trailName);
             }
         }
     });
@@ -5360,26 +5716,100 @@ function recordLogin() {
 // Configuration - Replace with your actual Supabase project details
 // ==================== SUPABASE CONFIGURATION ====================
 // IMPORTANTE: Substitua pelos valores reais do seu projeto Supabase
+// Obtenha em: Supabase Dashboard > Project Settings > API
 const SUPABASE_CONFIG = {
     URL: localStorage.getItem('sb_url') || 'https://sua-url.supabase.co',
     ANON_KEY: localStorage.getItem('sb_key') || 'sua-anon-key-aqui',
     BUCKET_NAME: 'materiais'
 };
 
+// ==================== SUPABASE AUTH CONFIGURATION ====================
+// Configurações para autenticação com Supabase Auth
+const SUPABASE_AUTH_CONFIG = {
+    // Defina como true para desativar confirmação por email (login imediato)
+    // Defina como false se quiser que usuários confirmem email antes de logar
+    DISABLE_EMAIL_CONFIRMATION: true,
+
+    // Domínio permitido para registro
+    ALLOWED_DOMAIN: '@canopus.com.br',
+
+    // Tamanho mínimo da senha
+    MIN_PASSWORD_LENGTH: 6
+};
+
 let supabaseClient = null;
 
 function initSupabase() {
-    if (typeof supabase !== 'undefined') {
+    if (typeof supabase !== 'undefined' && supabase.createClient) {
         try {
-            supabaseClient = supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
-            console.log('Supabase initialized');
+            supabaseClient = supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY, {
+                auth: {
+                    autoRefreshToken: true,
+                    persistSession: true,
+                    detectSessionInUrl: true
+                }
+            });
+            console.log('Supabase Auth initialized');
             return true;
         } catch(e) {
             console.error('Supabase init failed:', e);
             return false;
         }
     }
+    console.warn('Supabase library not loaded');
     return false;
+}
+
+// ==================== SUPABASE AUTH HELPERS ====================
+
+async function ensureSupabase() {
+    if (!supabaseClient) {
+        if (!initSupabase()) {
+            throw new Error('Supabase não inicializado. Verifique a conexão.');
+        }
+    }
+    return supabaseClient;
+}
+
+async function getUserProfile(userId) {
+    const sb = await ensureSupabase();
+    const { data, error } = await sb
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+    if (error && error.code !== 'PGRST116') {
+        console.warn('Erro ao buscar profile:', error.message);
+    }
+    return data || null;
+}
+
+async function createUserProfile(userId, name, email, role) {
+    const sb = await ensureSupabase();
+    const { error } = await sb
+        .from('profiles')
+        .insert([{
+            id: userId,
+            name: name,
+            email: email,
+            role: role || 'user',
+            created_at: new Date().toISOString()
+        }]);
+
+    if (error) {
+        console.warn('Erro ao criar profile:', error.message);
+        return false;
+    }
+    return true;
+}
+
+async function updateUserMetadata(userId, metadata) {
+    const sb = await ensureSupabase();
+    const { error } = await sb.auth.admin.updateUserById(userId, {
+        user_metadata: metadata
+    });
+    if (error) console.warn('Erro ao atualizar metadata:', error.message);
 }
 
 // ==================== REAL FILE UPLOAD ====================
