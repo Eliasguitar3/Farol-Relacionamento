@@ -554,6 +554,45 @@ input, textarea, select { font-size: 16px; }
 /* PROFILE PHOTO */
 #profilePhotoContainer:hover .photo-overlay { opacity: 1 !important; }
 
+/* BUSCA GLOBAL (resultados) */
+.search-box { position: relative; }
+.search-results { position: absolute; top: calc(100% + 8px); right: 0; width: 360px; max-width: 80vw; background: white; border-radius: 12px; box-shadow: var(--sombra-hover); border: 1px solid var(--borda); z-index: 300; max-height: 420px; overflow-y: auto; display: none; }
+.search-results.show { display: block; }
+.search-result-group { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--cinza); padding: 10px 14px 4px; }
+.search-result-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; transition: background 0.15s; }
+.search-result-item:hover, .search-result-item.active { background: var(--cinza-claro); }
+.search-result-item i { color: var(--turquesa); width: 18px; text-align: center; flex-shrink: 0; }
+.search-result-item .sr-title { font-size: 13px; font-weight: 600; color: var(--azul-escuro); }
+.search-result-item .sr-sub { font-size: 11px; color: var(--cinza); }
+.search-empty { padding: 18px 14px; font-size: 13px; color: var(--cinza); text-align: center; }
+body.dark-mode .search-results { background: #11414f; border-color: rgba(255,255,255,0.15); }
+body.dark-mode .search-result-item:hover, body.dark-mode .search-result-item.active { background: rgba(255,255,255,0.08); }
+body.dark-mode .search-result-item .sr-title { color: #e6f7f6; }
+
+/* NOTIFICAÇÕES (contador de não lidas) */
+.top-actions .top-btn { position: relative; }
+.notif-badge { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px; background: var(--danger); color: white; font-size: 10px; font-weight: 700; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(220,38,38,0.4); }
+.sidebar-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--turquesa), var(--azul-medio)); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; overflow: hidden; border: 2px solid rgba(255,255,255,0.25); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.sidebar-avatar img { width: 100%; height: 100%; object-fit: cover; display: none; }
+
+/* AJUSTE DE FOTO DE PERFIL (Identidade oficial Canopus) */
+.photo-crop-overlay { position: fixed; inset: 0; background: rgba(0,51,73,0.78); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.photo-crop-overlay.show { display: flex; }
+.photo-crop-modal { background: #ffffff; border-radius: 16px; padding: 24px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 25px 80px rgba(0,0,0,0.35); animation: fadeInUp 0.3s ease; }
+.photo-crop-modal h3 { font-family: 'Oswald', sans-serif; font-size: 18px; color: #003349; margin-bottom: 4px; }
+.photo-crop-modal p { font-size: 12px; color: #5a6b7c; margin-bottom: 16px; }
+.photo-crop-area { width: 280px; height: 280px; max-width: 100%; margin: 0 auto 16px; position: relative; overflow: hidden; border-radius: 50%; border: 3px solid #2CD5C4; background: #003349; cursor: grab; touch-action: none; }
+.photo-crop-area:active { cursor: grabbing; }
+.photo-crop-area img { position: absolute; top: 0; left: 0; max-width: none; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.photo-crop-zoom-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: #003349; font-size: 14px; }
+.photo-crop-zoom { flex: 1; accent-color: #2CD5C4; }
+.photo-crop-actions { display: flex; gap: 10px; }
+.photo-crop-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition); }
+.photo-crop-btn.cancel { background: #F0F4F4; color: #003349; }
+.photo-crop-btn.cancel:hover { background: #e2e8f0; }
+.photo-crop-btn.save { background: #2CD5C4; color: #003349; }
+.photo-crop-btn.save:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
 /* SLIDE TABS */
 .slide-tab:hover { border-color: var(--turquesa) !important; }
 .slide-tab.active { background: var(--turquesa) !important; color: white !important; }
@@ -929,7 +968,6 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <base target="_blank">
-<base target="_blank">
 </head>
 <body>
 <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
@@ -1048,6 +1086,10 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
     <!-- User info panel (hidden by default, shown after login) -->
     <div id="userInfoPanel" style="display:none">
         <div class="user-info">
+            <div class="sidebar-avatar" id="sidebarAvatar" onclick="navigateTo('user-profile')" style="cursor: pointer;" title="Abrir Meu Perfil">
+                <i class="fas fa-user" id="sidebarAvatarIcon"></i>
+                <img id="sidebarAvatarImg" alt="Foto de perfil">
+            </div>
             <div class="user-name" id="sidebarUserName">Usuario</div>
             <div class="user-email" id="sidebarUserEmail">usuario@canopus.com.br</div>
             <span class="user-role user" id="sidebarUserRole">Colaborador</span>
@@ -1063,6 +1105,9 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
             <div class="nav-section-title">Menu Principal</div>
             <div class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
                 <i class="fas fa-home"></i> Dashboard
+            </div>
+            <div class="nav-item" data-page="user-profile" onclick="navigateTo('user-profile')">
+                <i class="fas fa-user-circle"></i> Meu Perfil
             </div>
             <div class="nav-item" data-page="trilhas" onclick="toggleSubmenu('trilhas-submenu', this)">
                 <i class="fas fa-route"></i> Trilhas de Aprendizagem
@@ -1130,10 +1175,12 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
         <div class="top-actions">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar conteúdo..." id="searchInput" onkeyup="searchContent(this.value)">
+                <input type="text" placeholder="Buscar conteúdo..." id="searchInput" autocomplete="off" oninput="searchContent(this.value)" onkeydown="searchKeydown(event)">
+                <div class="search-results" id="searchResults"></div>
             </div>
             <button class="top-btn" onclick="toggleNotifications()" title="Notificações">
                 <i class="fas fa-bell"></i>
+                <span id="notifBadge" class="notif-badge"></span>
             </button>
             <button class="top-btn" onclick="toggleTheme()" title="Tema">
                 <i class="fas fa-moon"></i>
@@ -2086,8 +2133,28 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                         </div>
                     </div>
                     <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="updateProfilePhoto(this)">
+                    <!-- Modal de ajuste da foto de perfil -->
+                    <div class="photo-crop-overlay" id="photoCropOverlay">
+                        <div class="photo-crop-modal">
+                            <h3>Ajustar foto de perfil</h3>
+                            <p>Arraste a imagem para posicionar e use o controle para aproximar.</p>
+                            <div class="photo-crop-area" id="photoCropArea">
+                                <img id="photoCropImg" alt="">
+                            </div>
+                            <div class="photo-crop-zoom-row">
+                                <i class="fas fa-image" style="font-size:12px"></i>
+                                <input type="range" class="photo-crop-zoom" id="photoCropZoom" min="1" max="3" step="0.01" value="1">
+                                <i class="fas fa-image" style="font-size:18px"></i>
+                            </div>
+                            <div class="photo-crop-actions">
+                                <button type="button" class="photo-crop-btn cancel" onclick="closePhotoCrop()">Cancelar</button>
+                                <button type="button" class="photo-crop-btn save" onclick="savePhotoCrop()">Salvar foto</button>
+                            </div>
+                        </div>
+                    </div>
                     <h3 style="font-size: 20px; color: var(--azul-escuro); margin-bottom: 4px;" id="profileName">Colaborador</h3>
-                    <p style="font-size: 13px; color: var(--cinza); margin-bottom: 16px;" id="profileEmail">usuario@canopus.com.br</p>
+                    <p style="font-size: 13px; color: var(--cinza); margin-bottom: 4px;" id="profileEmail">usuario@canopus.com.br</p>
+                    <p style="font-size: 13px; color: var(--azul-medio); font-weight: 600; margin-bottom: 16px;" id="profileCargoDept">Cargo e departamento não informados</p>
                     <span class="badge-inline success" id="profileRoleBadge">Colaborador</span>
                     <p style="font-size: 12px; color: var(--cinza); margin-top: 12px;">Membro desde <span id="profileMemberSince">--/--/----</span></p>
                 </div>
@@ -2113,6 +2180,36 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                             <div style="font-size: 12px; color: var(--texto-leve);">Progresso geral</div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Meus Dados (Ajuste 002) -->
+            <div class="faq-section" style="margin-bottom: 24px;">
+                <div class="faq-header">
+                    <h2><i class="fas fa-id-card" style="color:var(--turquesa);margin-right:8px;"></i>Meus Dados</h2>
+                    <p>Visualize e atualize suas informações pessoais.</p>
+                </div>
+                <div style="max-width: 560px; padding: 0 24px 24px;">
+                    <div class="form-group">
+                        <label>Nome completo</label>
+                        <input type="text" id="profileEditNome" placeholder="Seu nome completo" maxlength="80">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" id="profileEditEmail" disabled style="opacity: 0.65; cursor: not-allowed;">
+                        <div class="domain-hint"><i class="fas fa-lock"></i> O e-mail é sua credencial de acesso e não pode ser alterado aqui.</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Cargo</label>
+                        <input type="text" id="profileEditCargo" placeholder="Ex: Analista de Relacionamento" maxlength="60">
+                    </div>
+                    <div class="form-group">
+                        <label>Departamento</label>
+                        <input type="text" id="profileEditDepartamento" placeholder="Ex: Relacionamento com o Cliente" maxlength="60">
+                    </div>
+                    <button type="button" class="login-btn" style="max-width: 260px;" id="btnSalvarPerfil" onclick="saveProfileData()">
+                        <i class="fas fa-save"></i> Salvar alterações
+                    </button>
                 </div>
             </div>
 
@@ -3353,159 +3450,86 @@ function reenableBtn(type) {
     }
 }
 
+/**
+ * AUTENTICAÇÃO SEGURA: Valida as credenciais com o Supabase Auth
+ */
 async function loginUser() {
-    const nameInput = document.getElementById('userNameInput');
-    const emailInput = document.getElementById('userEmailInput');
-    const passwordInput = document.getElementById('userPasswordInput');
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim().toLowerCase();
+    // 1. Captura os campos de e-mail e senha do formulário do site
+    const emailInput = document.getElementById('txtEmail') || document.getElementById('userEmailInput');
+    const passwordInput = document.getElementById('txtPassword') || document.getElementById('userPasswordInput');
+    const loginBtn = document.getElementById('btnLoginUser');
+
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
     const password = passwordInput ? passwordInput.value : '';
 
-    hideError('user');
-    hideSuccess('user');
-
-    // Validation
-    if (!name) {
-        showError('user', 'Por favor, digite seu nome completo.');
-        nameInput.classList.add('error');
-        reenableBtn('user');
-        return;
-    }
-    nameInput.classList.remove('error');
-
-    if (!email) {
-        showError('user', 'Por favor, digite seu e-mail corporativo.');
-        emailInput.classList.add('error');
-        reenableBtn('user');
+    // 2. Validação simples de preenchimento
+    if (!email || !password) {
+        showNotification('Por favor, preencha o e-mail e a senha.', 'warning');
         return;
     }
 
-    // Domain restriction
-    if (!email.endsWith(CONFIG.ALLOWED_DOMAIN)) {
-        showError('user', 'Apenas e-mails ' + CONFIG.ALLOWED_DOMAIN + ' são permitidos.');
-        emailInput.classList.add('error');
-        reenableBtn('user');
-        return;
+    // 3. Coloca o botão em estado de carregamento
+    if (loginBtn) {
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validando...';
     }
-    emailInput.classList.remove('error');
-
-    // Check if email is valid format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        showError('user', 'Por favor, digite um e-mail válido.');
-        emailInput.classList.add('error');
-        reenableBtn('user');
-        return;
-    }
-    emailInput.classList.remove('error');
-
-    if (!password || password.length < SUPABASE_AUTH_CONFIG.MIN_PASSWORD_LENGTH) {
-        showError('user', 'Digite uma senha com pelo menos ' + SUPABASE_AUTH_CONFIG.MIN_PASSWORD_LENGTH + ' caracteres.');
-        if (passwordInput) passwordInput.classList.add('error');
-        reenableBtn('user');
-        return;
-    }
-    if (passwordInput) passwordInput.classList.remove('error');
-
-    // Loading state
-    const btn = document.getElementById('btnLoginUser');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
 
     try {
-        await ensureSupabase();
-
-        // Try sign in first
-        let { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
+        // 4. Envia os dados para validação oficial no Supabase Auth
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ 
+            email: email, 
+            password: password 
         });
+        
+        if (error) throw error;
 
-        // If user doesn't exist, sign up
-        if (signInError && (signInError.message.includes('Invalid login') || signInError.message.includes('user not found'))) {
-            showSuccess('user', 'Criando sua conta...');
-
-            const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: { name: name },
-                    emailRedirectTo: window.location.origin + window.location.pathname
-                }
-            });
-
-            if (signUpError) {
-                throw new Error(signUpError.message);
+        showNotification('Acesso autorizado! Entrando...', 'success');
+        
+        // 5. Aguarda um momento e chama a checagem de sessão que criamos
+        setTimeout(async () => {
+            await checkAuthState();
+            if (loginBtn) {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
             }
-
-            // If email confirmation is disabled, session is available immediately
-            if (signUpData.session) {
-                signInData = signUpData;
-            } else if (SUPABASE_AUTH_CONFIG.DISABLE_EMAIL_CONFIRMATION) {
-                // Try sign in again after signup
-                const { data: retryData, error: retryError } = await supabaseClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                if (retryError) throw new Error('Conta criada! Confirme seu email para acessar.');
-                signInData = retryData;
-            } else {
-                showSuccess('user', 'Conta criada! Verifique seu email para ativar.');
-                reenableBtn('user');
-                return;
-            }
-        } else if (signInError) {
-            throw new Error(signInError.message);
-        }
-
-        // Get or create user profile
-        let profile = await getUserProfile(signInData.user.id);
-
-        if (!profile) {
-            await createUserProfile(signInData.user.id, name, email, 'user');
-            profile = { name: name, email: email, role: 'user' };
-        }
-
-        // Set current user
-        currentUser = {
-            name: profile.name || name,
-            email: signInData.user.email,
-            role: profile.role || 'user',
-            id: signInData.user.id,
-            loginTime: new Date().toISOString()
-        };
-        currentRole = currentUser.role;
-
-        // Save to localStorage for backward compatibility
-        localStorage.setItem(CONFIG.STORAGE_USER, JSON.stringify(currentUser));
-
-        // Initialize progress
-        const savedProgress = localStorage.getItem(CONFIG.STORAGE_PROGRESS + '_' + email);
-        if (savedProgress) {
-            userProgress = JSON.parse(savedProgress);
-        } else {
-            userProgress = {};
-        }
-
-        // Register in global list
-        registerUser(currentUser.name, currentUser.email);
-
-        showSuccess('user', 'Login realizado com sucesso! Redirecionando...');
-        addActivity('login', 'Login realizado', 'Acesso via Supabase Auth');
-
-        setTimeout(() => {
-            hideLoginScreen();
-            showApp();
-            validateUrlAccess();
-            updateDashboard();
-            showNotification('Bem-vindo, ' + currentUser.name + '!', 'success');
-            setTimeout(validateUrlAccess, 100);
-        }, 800);
+        }, 500);
 
     } catch (err) {
-        console.error('Login error:', err);
-        showError('user', err.message || 'Erro ao fazer login. Tente novamente.');
-        reenableBtn('user');
+        console.error('Erro ao efetuar login:', err.message);
+        showNotification('E-mail ou senha incorretos, ou usuário inativo.', 'danger');
+        
+        if (loginBtn) {
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+        }
+    }
+}
+
+/**
+ * LOGOUT SEGURO: Encerra a sessão no servidor e limpa a tela
+ */
+async function logoutUser() {
+    try {
+        if (supabaseClient) {
+            await supabaseClient.auth.signOut();
+        }
+    } catch (e) {
+        console.error('Erro ao sair da sessão:', e);
+    } finally {
+        // Reseta os estados locais na memória do navegador
+        currentUser = null;
+        currentUserProfile = null;
+        currentRole = null;
+        
+        // Limpa os campos visuais do formulário de login
+        const emailInput = document.getElementById('txtEmail') || document.getElementById('userEmailInput');
+        const passwordInput = document.getElementById('txtPassword') || document.getElementById('userPasswordInput');
+        if (emailInput) emailInput.value = '';
+        if (passwordInput) passwordInput.value = '';
+
+        // Exibe novamente a tela de login
+        exibirPainelLogin(true);
+        showNotification('Sessão encerrada com segurança.', 'info');
     }
 }
 
@@ -3799,10 +3823,121 @@ function showApp() {
             roleEl.className = 'user-role user';
             document.getElementById('adminMenuSection').style.display = 'none';
         }
+        // Exibe a foto de perfil salva (Supabase Storage) no menu lateral
+        loadProfilePhoto();
+        // Gera as notificações reais do sistema (progresso, pendências, certificados)
+        refreshSystemNotifications();
     }
 
     // Sync user data with Supabase if online
     syncUserWithSupabase();
+    // ============================================================================
+// ESTADO GLOBAL DO SISTEMA (SUPABASE NATIVO)
+// ============================================================================
+// (declarações duplicadas de currentUser/currentUserProfile/currentRole removidas:
+//  causavam erro de inicialização dentro de showApp e interrompiam a montagem da interface)
+
+/**
+ * CHECAGEM DE SESSÃO: Acionada automaticamente ao abrir a página
+ */
+async function checkAuthState() {
+    if (!supabaseClient) return;
+
+    try {
+        // 1. Pergunta ao Supabase se há alguém logado no portão
+        const { data: { session }, error } = await supabaseClient.auth.getSession();
+        if (error) throw error;
+
+        if (session && session.user) {
+            currentUser = session.user;
+            
+            // 2. Vai ao banco de dados ler o perfil da pessoa
+            const { data: profile, error: profileError } = await supabaseClient
+                .from('profiles')
+                .select('*')
+                .eq('id', currentUser.id)
+                .single();
+
+            if (profileError || !profile) {
+                console.warn('Perfil não encontrado no banco de dados. Forçando saída.');
+                await logoutUser();
+                return;
+            }
+
+            // 3. Checa se o aluno não está de castigo (inativo)
+            if (profile.ativo !== 'ativo') {
+                showNotification('Sua conta não está ativa no sistema. Fale com o Administrador.', 'warning');
+                await logoutUser();
+                return;
+            }
+
+            // 4. Salva o crachá nas variáveis do sistema
+            currentUserProfile = profile;
+            currentRole = profile.perfil;
+
+            // 5. Atualiza os botões do painel visual
+            atualizarLayoutPorPerfil(profile);
+
+            // 6. Anota a entrada no diário de auditoria do banco
+            await supabaseClient.rpc('registrar_auditoria', {
+                p_acao: 'LOGIN_SESSÃO',
+                p_recurso: 'Entrada no Painel Principal',
+                p_detalhes: { navegador: navigator.userAgent }
+            });
+
+        } else {
+            // Se não houver ninguém logado, mostra a tela de login
+            exibirPainelLogin(true);
+        }
+    } catch (err) {
+        console.error('Erro na checagem de acesso:', err);
+        exibirPainelLogin(true);
+    }
+}
+
+/**
+ * AJUSTE DE INTERFACE: Esconde ou mostra os botões baseados no crachá do usuário
+ */
+function atualizarLayoutPorPerfil(profile) {
+    const lblNome = document.querySelector('.user-info .user-name') || document.getElementById('lblUserName');
+    const lblEmail = document.querySelector('.user-info .user-email') || document.getElementById('lblUserEmail');
+    const lblRole = document.getElementById('sidebarUserRole') || document.getElementById('lblUserRole');
+
+    if (lblNome) lblNome.textContent = profile.nome;
+    if (lblEmail) lblEmail.textContent = profile.email;
+    if (lblRole) {
+        lblRole.textContent = profile.perfil.toUpperCase();
+        lblRole.className = `user-role ${profile.perfil}`;
+    }
+
+    // Regras de exibição dos menus secretos
+    const secAdmin = document.getElementById('adminMenuSection') || document.getElementById('secAdmin');
+    const secGestor = document.getElementById('gestorMenuSection') || document.getElementById('secGestor');
+    const tabUsuarios = document.getElementById('nav-item-usuarios');
+
+    if (secAdmin) secAdmin.style.display = (profile.perfil === 'admin') ? 'block' : 'none';
+    if (secGestor) secGestor.style.display = (profile.perfil === 'gestor' || profile.perfil === 'admin') ? 'block' : 'none';
+    if (tabUsuarios) tabUsuarios.style.display = (profile.perfil === 'admin' || profile.perfil === 'gestor') ? 'flex' : 'none';
+
+    // Exibe a foto de perfil salva (Supabase Storage) no menu lateral
+    loadProfilePhoto();
+
+    exibirPainelLogin(false);
+}
+
+function exibirPainelLogin(mostrar) {
+    const loginScreen = document.getElementById('loginScreen');
+    const appLayout = document.getElementById('appLayout');
+    
+    if (loginScreen) {
+        if (mostrar) loginScreen.classList.remove('hidden');
+        else loginScreen.classList.add('hidden');
+    }
+    if (appLayout) {
+        if (mostrar) appLayout.style.display = 'none';
+        else appLayout.style.display = 'block';
+    }
+}
 }
 
 async function syncUserWithSupabase() {
@@ -4146,6 +4281,7 @@ function markComplete(moduleId) {
     }
 
         addNotification('Módulo concluído', 'Você concluiu o módulo com sucesso. Continue sua trilha!', 'success');
+        refreshSystemNotifications();
         addActivity('module_complete', 'Módulo concluído', 'Módulo ' + moduleId + ' marcado como concluído');
     checkAchievements();
     showNotification('Módulo concluído! Progresso salvo.', 'success');
@@ -4305,7 +4441,8 @@ function markCompleteOnboarding(moduleId) {
         'mod-onboarding-4': 'Guia do Cliente'
     };
     showNotification('Módulo "' + moduleNames[moduleId] + '" concluído! Certificado gerado.', 'success');
-    addNotification('Certificado gerado!', 'Você concluiu ' + moduleNames[moduleId] + ' e recebeu um certificado.', 'success');
+    addNotification('Certificado gerado!', 'Você concluiu ' + moduleNames[moduleId] + ' e recebeu um certificado.', 'success', 'certificados');
+    refreshSystemNotifications();
     addActivity('module_complete', 'Módulo concluído', 'Onboarding: ' + moduleNames[moduleId]);
 
     // Unlock next module if exists
@@ -5582,97 +5719,142 @@ function showNotification(message, type) {
 
 // ==================== SEARCH ====================
 
-function searchContent(query) {
-    if (!query || !currentUser) return;
-    query = query.toLowerCase().trim();
+// ==================== BUSCA GLOBAL PRECISA ====================
 
-    if (query.length < 2) return;
+function normalizeText(s) {
+    return (s || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+}
 
-    // Search index with keywords mapped to pages
-    const searchIndex = [
-        { page: 'dashboard', keywords: ['dashboard', 'inicio', 'home', 'principal', 'trilhas', 'progresso', 'certificado'] },
-        { page: 'trilha-onboarding', keywords: ['onboarding', 'integração', 'boas-vindas', 'história', 'cultura', 'valores', 'estrutura', 'sistemas'] },
-        { page: 'trilha-relacionamento', keywords: ['relacionamento', 'atendimento', 'cliente', 'astec', 'backoffice', 'recuperação', 'crédito', 'cobrança'] },
-        { page: 'trilha-juridico', keywords: ['jurídico', 'contratos', 'distrato', 'legal', 'advogado', 'cláusulas'] },
-        { page: 'trilha-compliance', keywords: ['compliance', 'lgpd', 'ética', 'segurança', 'informação', 'conduta', 'políticas'] },
-        { page: 'faq', keywords: ['faq', 'pergunta', 'dúvida', 'resposta', 'ajuda', 'suporte', 'protocolo', 'script'] },
-        { page: 'certificados', keywords: ['certificado', 'conclusão', 'diploma', 'comprovante', 'horas'] },
-        { page: 'admin-dashboard', keywords: ['admin', 'painel', 'relatório', 'colaboradores', 'estatísticas'], admin: true },
-        { page: 'admin-content', keywords: ['conteúdo', 'material', 'upload', 'arquivo', 'pdf', 'slide'], admin: true },
-        { page: 'admin-users', keywords: ['usuários', 'colaboradores', 'cadastro', 'permissão'], admin: true }
-    ];
+// Páginas do sistema (filtradas em tempo real: só entram as que existem e que o perfil pode ver)
+const SEARCH_PAGES = [
+    { page: 'dashboard', label: 'Dashboard', icon: 'fa-home', keywords: 'inicio home principal progresso' },
+    { page: 'user-profile', label: 'Meu Perfil', icon: 'fa-user-circle', keywords: 'perfil foto senha dados cargo departamento conta' },
+    { page: 'trilha-onboarding', label: 'Trilha: Onboarding Geral', icon: 'fa-rocket', keywords: 'onboarding integracao boas-vindas historia cultura valores organograma' },
+    { page: 'trilha-relacionamento', label: 'Trilha: Relacionamento', icon: 'fa-heart', keywords: 'relacionamento atendimento cliente sac astec backoffice recuperacao credito cobranca' },
+    { page: 'trilha-juridico', label: 'Trilha: Jurídico', icon: 'fa-balance-scale', keywords: 'juridico contratos distrato legal clausulas' },
+    { page: 'trilha-compliance', label: 'Trilha: Compliance', icon: 'fa-shield-alt', keywords: 'compliance lgpd etica seguranca informacao conduta politicas' },
+    { page: 'faq', label: 'FAQ — Perguntas Frequentes', icon: 'fa-question-circle', keywords: 'faq pergunta duvida resposta ajuda suporte protocolo script' },
+    { page: 'certificados', label: 'Certificados', icon: 'fa-certificate', keywords: 'certificado conclusao diploma comprovante horas' },
+    { page: 'central-conhecimento', label: 'Central de Conhecimento', icon: 'fa-book-open', keywords: 'central conhecimento materiais arquivos biblioteca documentos' },
+    { page: 'admin-dashboard', label: 'Painel Administrativo', icon: 'fa-chart-line', keywords: 'admin painel relatorio colaboradores estatisticas', admin: true },
+    { page: 'admin-content', label: 'Gestão de Conteúdo', icon: 'fa-upload', keywords: 'conteudo material upload arquivo pdf slide', admin: true },
+    { page: 'admin-users', label: 'Gestão de Usuários', icon: 'fa-users-cog', keywords: 'usuarios colaboradores cadastro permissao', admin: true }
+];
 
-    // Module-specific search
-    const moduleKeywords = {
-        'mod-onboarding-1': ['boas-vindas', 'apresentação', 'empresa'],
-        'mod-onboarding-2': ['organograma', 'estrutura', 'organizacional', 'departamentos', 'hierarquia'],
-        'mod-onboarding-3': ['nosso jeito de ser', 'cultura', 'valores', 'princípios', 'ética', 'comportamento'],
-        'mod-onboarding-4': ['guia do cliente', 'jornada', 'cliente', 'ciclo', 'excelência'],
-        'mod-rel-1': ['jornada', 'cliente', 'experiência'],
-        'mod-rel-2': ['atendimento', 'humanizado', 'empatia'],
-        'mod-rel-3': ['escrita', 'e-mail', 'redação'],
-        'mod-rel-4': ['comunicação', 'verbal', 'protocolo'],
-        'mod-rel-5': ['conflito', 'negociação', 'mediação'],
-        'mod-rel-6': ['sla', 'prazo', 'tempo', 'resposta'],
-        'mod-rel-7': ['fluxo', 'operacional', 'processo'],
-        'mod-rel-8': ['sistemas', 'internos', 'plataformas'],
-        'mod-rel-9': ['modelos', 'templates', 'scripts', 'respostas'],
-        'mod-rel-10': ['faq', 'operacional', 'perguntas frequentes'],
-        'mod-astec-1': ['assistência', 'técnica', 'fluxo'],
-        'mod-astec-2': ['vistoria', 'inspeção', 'checklist'],
-        'mod-astec-3': ['garantia', 'prazo legal', 'defeito'],
-        'mod-astec-4': ['chamado', 'ticket', 'suporte'],
-        'mod-astec-5': ['sla técnico', 'prazo técnico'],
-        'mod-back-1': ['fluxos', 'internos', 'processos'],
-        'mod-back-2': ['administrativo', 'documentação', 'rotina'],
-        'mod-back-3': ['comunicação', 'áreas', 'departamentos'],
-        'mod-back-4': ['controles', 'auditoria', 'conformidade'],
-        'mod-rec-1': ['negociação', 'acordo', 'renegociação'],
-        'mod-rec-2': ['cobrança', 'humanizada', 'inadimplência'],
-        'mod-rec-3': ['financeiro', 'pagamento', 'repasse'],
-        'mod-rec-4': ['acordo', 'formalização', 'contrato'],
-        'mod-rec-5': ['indicadores', 'kpi', 'resultados'],
-        'mod-jur-1': ['contratos', 'cláusulas', 'documentos'],
-        'mod-jur-2': ['fluxos', 'jurídicos', 'aprovações'],
-        'mod-jur-3': ['redação', 'jurídica', 'linguagem'],
-        'mod-jur-4': ['padronizações', 'templates', 'modelos'],
-        'mod-comp-1': ['ética', 'corporativa', 'valores'],
-        'mod-comp-2': ['lgpd', 'dados', 'privacidade', 'proteção'],
-        'mod-comp-3': ['segurança', 'informação', 'senha', 'acesso'],
-        'mod-comp-4': ['conduta', 'profissional', 'comportamento'],
-        'mod-comp-5': ['políticas', 'regulamentos', 'normas']
-    };
+// Monta o índice a partir do conteúdo REAL do sistema (títulos e descrições dos módulos, FAQ carregado)
+function buildSearchIndex() {
+    const idx = [];
 
-    let results = [];
-    let matchedModules = [];
-
-    // Search pages
-    searchIndex.forEach(item => {
-        if (item.admin && currentRole !== 'admin') return;
-        const match = item.keywords.some(k => k.includes(query) || query.includes(k));
-        if (match) results.push(item.page);
+    SEARCH_PAGES.forEach(p => {
+        if (p.admin && currentRole !== 'admin') return;
+        if (!document.getElementById('page-' + p.page)) return;
+        idx.push({ tipo: 'Páginas', target: p.page, title: p.label, sub: '', icon: p.icon,
+                   text: normalizeText(p.label + ' ' + p.keywords) });
     });
 
-    // Search modules
-    for (const [modId, keywords] of Object.entries(moduleKeywords)) {
-        const match = keywords.some(k => k.includes(query) || query.includes(k));
-        if (match) matchedModules.push(modId);
-    }
+    // Módulos: lê os cards reais de cada trilha (título + descrição + nome da trilha)
+    document.querySelectorAll('.page-section [id^="card-"]').forEach(card => {
+        const oc = card.getAttribute('onclick') || '';
+        const m = oc.match(/navigateTo\('([^']+)'\)/);
+        if (!m) return;
+        const h = card.querySelector('h3');
+        if (!h) return;
+        const d = card.querySelector('p');
+        const sec = card.closest('.page-section');
+        const h1 = sec ? sec.querySelector('.page-header h1') : null;
+        const trilha = h1 ? h1.textContent.trim() : '';
+        idx.push({ tipo: 'Módulos', target: m[1], title: h.textContent.trim(), sub: trilha, icon: 'fa-play-circle',
+                   text: normalizeText(h.textContent + ' ' + (d ? d.textContent : '') + ' ' + trilha) });
+    });
 
-    // Show results
-    const totalResults = results.length + matchedModules.length;
+    // FAQ: perguntas carregadas na página
+    document.querySelectorAll('#page-faq .faq-question, #page-faq .faq-item h3, #page-faq .faq-item h4').forEach(q => {
+        const t = (q.textContent || '').trim();
+        if (t) idx.push({ tipo: 'FAQ', target: 'faq', title: t, sub: 'Perguntas Frequentes', icon: 'fa-question-circle',
+                          text: normalizeText(t) });
+    });
 
-    if (totalResults === 0) {
+    return idx;
+}
+
+let searchDebounce = null;
+function searchContent(query) {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(function() { runSearch(query); }, 180);
+}
+
+function runSearch(query) {
+    const box = document.getElementById('searchResults');
+    if (!box) return;
+    const q = normalizeText(query);
+    if (!currentUser || q.length < 2) { closeSearchResults(); return; }
+
+    const termos = q.split(/\s+/).filter(Boolean);
+    const idx = buildSearchIndex();
+    const scored = [];
+
+    idx.forEach(item => {
+        const titleNorm = normalizeText(item.title);
+        // Precisão: TODOS os termos digitados precisam aparecer no item
+        const todos = termos.every(t => titleNorm.includes(t) || item.text.includes(t));
+        if (!todos) return;
+        let score = 0;
+        termos.forEach(t => {
+            if (titleNorm === t) score += 6;
+            else if (titleNorm.split(/[^a-z0-9]+/).indexOf(t) !== -1) score += 4;
+            else if (titleNorm.includes(t)) score += 3;
+            else score += 1; // apareceu na descrição/palavras-chave
+        });
+        scored.push({ item: item, score: score });
+    });
+
+    scored.sort(function(a, b) { return b.score - a.score; });
+    const top = scored.slice(0, 8);
+
+    if (top.length === 0) {
+        box.innerHTML = '<div class="search-empty"><i class="fas fa-search" style="margin-right:6px"></i>Nenhum resultado para "' + escapeHtml(query) + '"</div>';
+        box.classList.add('show');
         return;
     }
 
-    // Navigate to first result if it's a page
-    if (results.length > 0) {
-        setTimeout(() => navigateTo(results[0]), 300);
-    } else if (matchedModules.length > 0) {
-        setTimeout(() => navigateTo(matchedModules[0]), 300);
+    let html = '';
+    let grupo = '';
+    top.forEach(function(r, i) {
+        if (r.item.tipo !== grupo) { grupo = r.item.tipo; html += '<div class="search-result-group">' + grupo + '</div>'; }
+        html += '<div class="search-result-item' + (i === 0 ? ' active' : '') + '" data-target="' + escapeHtml(r.item.target) + '" onclick="openSearchResult(this.dataset.target)">'
+              + '<i class="fas ' + r.item.icon + '"></i><div><div class="sr-title">' + escapeHtml(r.item.title) + '</div>'
+              + (r.item.sub ? '<div class="sr-sub">' + escapeHtml(r.item.sub) + '</div>' : '')
+              + '</div></div>';
+    });
+    box.innerHTML = html;
+    box.classList.add('show');
+}
+
+function openSearchResult(target) {
+    closeSearchResults();
+    const input = document.getElementById('searchInput');
+    if (input) input.value = '';
+    navigateTo(target);
+}
+
+function closeSearchResults() {
+    const box = document.getElementById('searchResults');
+    if (box) { box.classList.remove('show'); box.innerHTML = ''; }
+}
+
+function searchKeydown(ev) {
+    if (ev.key === 'Escape') { closeSearchResults(); return; }
+    if (ev.key === 'Enter') {
+        const box = document.getElementById('searchResults');
+        if (!box) return;
+        const first = box.querySelector('.search-result-item.active') || box.querySelector('.search-result-item');
+        if (first) openSearchResult(first.dataset.target);
     }
 }
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.search-box')) closeSearchResults();
+});
 
 // ==================== THEME ====================
 
@@ -5895,49 +6077,442 @@ console.log('Canopus Conecta v6.0 - Sistema inicializado');
 
 // ==================== USER PROFILE FUNCTIONS ====================
 
+// ==================== FOTO DE PERFIL (SUPABASE STORAGE) ====================
+
+const PROFILE_PHOTO_FOLDER = 'avatars';
+
+function getProfilePhotoKey() {
+    if (!currentUser) return null;
+    const raw = currentUser.id || currentUser.email || '';
+    return raw ? String(raw).replace(/[^a-zA-Z0-9_-]/g, '_') : null;
+}
+
+function applyProfilePhoto(src) {
+    // Página de perfil
+    const img = document.getElementById('profilePhotoImg');
+    const icon = document.getElementById('profilePhotoIcon');
+    if (img) { img.src = src; img.style.display = 'block'; }
+    if (icon) icon.style.display = 'none';
+    // Menu lateral
+    const sbImg = document.getElementById('sidebarAvatarImg');
+    const sbIcon = document.getElementById('sidebarAvatarIcon');
+    if (sbImg) { sbImg.src = src; sbImg.style.display = 'block'; }
+    if (sbIcon) sbIcon.style.display = 'none';
+}
+
+async function uploadProfilePhotoToSupabase(file) {
+    if (!supabaseClient && !initSupabase()) {
+        throw new Error('Supabase não inicializado. Verifique a conexão.');
+    }
+    const key = getProfilePhotoKey();
+    if (!key) throw new Error('Usuário não identificado.');
+
+    // Caminho fixo por usuário: trocar a foto sobrescreve a anterior (upsert)
+    const filePath = PROFILE_PHOTO_FOLDER + '/' + key + '/avatar';
+
+    const { error: uploadError } = await supabaseClient
+        .storage
+        .from(SUPABASE_CONFIG.BUCKET_NAME)
+        .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: true,
+            contentType: file.type || 'image/jpeg'
+        });
+
+    if (uploadError) throw new Error(uploadError.message);
+
+    const { data: { publicUrl } } = supabaseClient
+        .storage
+        .from(SUPABASE_CONFIG.BUCKET_NAME)
+        .getPublicUrl(filePath);
+
+    const version = Date.now();
+    try {
+        localStorage.setItem('re_photo_url_' + key, publicUrl);
+        localStorage.setItem('re_photo_v_' + key, String(version));
+    } catch(_) {}
+
+    // Best-effort: persiste a URL no perfil (se a coluna foto_url existir no banco)
+    try {
+        if (currentUser && currentUser.id) {
+            await supabaseClient
+                .from('profiles')
+                .update({ foto_url: publicUrl })
+                .eq('id', currentUser.id);
+        }
+    } catch (e) {
+        console.warn('Não foi possível salvar foto_url no perfil:', e);
+    }
+
+    return publicUrl + '?v=' + version;
+}
+
 function updateProfilePhoto(input) {
     if (!input.files || !input.files[0]) return;
 
     const file = input.files[0];
     if (!file.type.startsWith('image/')) {
         showNotification('Selecione uma imagem válida (JPG, PNG)', 'error');
+        input.value = '';
         return;
     }
     if (file.size > 2 * 1024 * 1024) {
         showNotification('Imagem muito grande. Máximo 2MB.', 'error');
+        input.value = '';
         return;
     }
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        const img = document.getElementById('profilePhotoImg');
-        const icon = document.getElementById('profilePhotoIcon');
-        if (img) {
-            img.src = e.target.result;
-            img.style.display = 'block';
-        }
-        if (icon) icon.style.display = 'none';
-
-        if (currentUser) {
-            localStorage.setItem('re_photo_' + currentUser.email, e.target.result);
-        }
-        showNotification('Foto de perfil atualizada!', 'success');
-        addActivity('profile_update', 'Foto atualizada', 'Foto de perfil alterada');
+        openPhotoCrop(e.target.result);
     };
     reader.readAsDataURL(file);
+    input.value = ''; // permite selecionar o mesmo arquivo novamente
+}
+
+// ---------- Ajuste de enquadramento (arrastar + zoom) ----------
+
+const photoCrop = {
+    size: 280,        // diâmetro da área de ajuste (px)
+    img: null, nw: 0, nh: 0,
+    scale: 1, minScale: 1,
+    x: 0, y: 0,
+    dragging: false, lastX: 0, lastY: 0,
+    eventsBound: false
+};
+
+function openPhotoCrop(dataUrl) {
+    const overlay = document.getElementById('photoCropOverlay');
+    const imgEl = document.getElementById('photoCropImg');
+    const zoomEl = document.getElementById('photoCropZoom');
+    if (!overlay || !imgEl || !zoomEl) return;
+
+    const probe = new Image();
+    probe.onload = function() {
+        photoCrop.img = probe;
+        photoCrop.nw = probe.naturalWidth;
+        photoCrop.nh = probe.naturalHeight;
+        const area = document.getElementById('photoCropArea');
+        photoCrop.size = area ? area.clientWidth || 280 : 280;
+        photoCrop.minScale = photoCrop.size / Math.min(photoCrop.nw, photoCrop.nh);
+        photoCrop.scale = photoCrop.minScale;
+        // Centraliza a imagem
+        photoCrop.x = (photoCrop.size - photoCrop.nw * photoCrop.scale) / 2;
+        photoCrop.y = (photoCrop.size - photoCrop.nh * photoCrop.scale) / 2;
+        zoomEl.value = '1';
+        imgEl.src = dataUrl;
+        bindPhotoCropEvents();
+        renderPhotoCrop();
+        overlay.classList.add('show');
+    };
+    probe.onerror = function() {
+        showNotification('Não foi possível ler a imagem selecionada.', 'error');
+    };
+    probe.src = dataUrl;
+}
+
+function clampPhotoCrop() {
+    const w = photoCrop.nw * photoCrop.scale;
+    const h = photoCrop.nh * photoCrop.scale;
+    photoCrop.x = Math.min(0, Math.max(photoCrop.size - w, photoCrop.x));
+    photoCrop.y = Math.min(0, Math.max(photoCrop.size - h, photoCrop.y));
+}
+
+function renderPhotoCrop() {
+    const imgEl = document.getElementById('photoCropImg');
+    if (!imgEl) return;
+    clampPhotoCrop();
+    imgEl.style.width = (photoCrop.nw * photoCrop.scale) + 'px';
+    imgEl.style.height = (photoCrop.nh * photoCrop.scale) + 'px';
+    imgEl.style.left = photoCrop.x + 'px';
+    imgEl.style.top = photoCrop.y + 'px';
+}
+
+function bindPhotoCropEvents() {
+    if (photoCrop.eventsBound) return;
+    photoCrop.eventsBound = true;
+    const area = document.getElementById('photoCropArea');
+    const zoomEl = document.getElementById('photoCropZoom');
+    if (!area || !zoomEl) return;
+
+    // Arrastar (mouse e toque, via Pointer Events)
+    area.addEventListener('pointerdown', function(ev) {
+        photoCrop.dragging = true;
+        photoCrop.lastX = ev.clientX;
+        photoCrop.lastY = ev.clientY;
+        try { area.setPointerCapture(ev.pointerId); } catch(_) {}
+        ev.preventDefault();
+    });
+    area.addEventListener('pointermove', function(ev) {
+        if (!photoCrop.dragging) return;
+        photoCrop.x += ev.clientX - photoCrop.lastX;
+        photoCrop.y += ev.clientY - photoCrop.lastY;
+        photoCrop.lastX = ev.clientX;
+        photoCrop.lastY = ev.clientY;
+        renderPhotoCrop();
+    });
+    const endDrag = function() { photoCrop.dragging = false; };
+    area.addEventListener('pointerup', endDrag);
+    area.addEventListener('pointercancel', endDrag);
+
+    // Zoom ancorado no centro do círculo
+    zoomEl.addEventListener('input', function() {
+        const novoScale = photoCrop.minScale * parseFloat(zoomEl.value || '1');
+        const c = photoCrop.size / 2;
+        const k = novoScale / photoCrop.scale;
+        photoCrop.x = c - (c - photoCrop.x) * k;
+        photoCrop.y = c - (c - photoCrop.y) * k;
+        photoCrop.scale = novoScale;
+        renderPhotoCrop();
+    });
+}
+
+function closePhotoCrop() {
+    const overlay = document.getElementById('photoCropOverlay');
+    if (overlay) overlay.classList.remove('show');
+    photoCrop.img = null;
+}
+
+function savePhotoCrop() {
+    if (!photoCrop.img) return;
+    const out = 512; // saída quadrada 512x512
+    const canvas = document.createElement('canvas');
+    canvas.width = out;
+    canvas.height = out;
+    const ctx = canvas.getContext('2d');
+    const s = photoCrop.scale;
+    // Região visível do círculo em coordenadas da imagem original
+    ctx.drawImage(
+        photoCrop.img,
+        -photoCrop.x / s, -photoCrop.y / s,
+        photoCrop.size / s, photoCrop.size / s,
+        0, 0, out, out
+    );
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+    closePhotoCrop();
+    canvas.toBlob(function(blob) {
+        if (!blob) {
+            showNotification('Erro ao processar a imagem.', 'error');
+            return;
+        }
+        const file = new File([blob], 'avatar.jpg', { type: 'image/jpeg' });
+        persistProfilePhoto(file, dataUrl);
+    }, 'image/jpeg', 0.9);
+}
+
+// ---------- Persistência (preview + cache + Supabase Storage) ----------
+
+async function persistProfilePhoto(file, dataUrl) {
+    // Preview imediato (perfil + menu lateral)
+    applyProfilePhoto(dataUrl);
+
+    // Cache local (fallback offline / carregamento instantâneo)
+    if (currentUser && currentUser.email) {
+        try { localStorage.setItem('re_photo_' + currentUser.email, dataUrl); } catch(_) {}
+    }
+
+    // Upload para o Supabase Storage (persistência após logout)
+    try {
+        const url = await uploadProfilePhotoToSupabase(file);
+        applyProfilePhoto(url);
+        showNotification('Foto de perfil atualizada!', 'success');
+    } catch (err) {
+        console.error('Erro ao enviar foto para o Supabase:', err);
+        showNotification('Foto aplicada localmente, mas houve erro ao salvar no servidor: ' + err.message, 'warning');
+    }
+
+    if (typeof addActivity === 'function') {
+        addActivity('profile_update', 'Foto atualizada', 'Foto de perfil alterada');
+    }
 }
 
 function loadProfilePhoto() {
     if (!currentUser) return;
-    const saved = localStorage.getItem('re_photo_' + currentUser.email);
-    if (saved) {
-        const img = document.getElementById('profilePhotoImg');
-        const icon = document.getElementById('profilePhotoIcon');
-        if (img) {
-            img.src = saved;
-            img.style.display = 'block';
+    const key = getProfilePhotoKey();
+
+    // 1) Cache local imediato (evita atraso visual)
+    const cachedDataUrl = currentUser.email ? localStorage.getItem('re_photo_' + currentUser.email) : null;
+    if (cachedDataUrl) applyProfilePhoto(cachedDataUrl);
+
+    // 2) URL salva no perfil do banco (se a coluna foto_url existir)
+    let remoteUrl = null;
+    if (typeof currentUserProfile !== 'undefined' && currentUserProfile && currentUserProfile.foto_url) {
+        remoteUrl = currentUserProfile.foto_url;
+    }
+
+    // 3) URL conhecida do último upload neste navegador
+    if (!remoteUrl && key) {
+        remoteUrl = localStorage.getItem('re_photo_url_' + key);
+    }
+
+    // 4) URL determinística no Storage (funciona após logout e em outros dispositivos)
+    if (!remoteUrl && key) {
+        if (!supabaseClient) initSupabase();
+        if (supabaseClient) {
+            try {
+                const { data } = supabaseClient
+                    .storage
+                    .from(SUPABASE_CONFIG.BUCKET_NAME)
+                    .getPublicUrl(PROFILE_PHOTO_FOLDER + '/' + key + '/avatar');
+                if (data && data.publicUrl) remoteUrl = data.publicUrl;
+            } catch(_) {}
         }
-        if (icon) icon.style.display = 'none';
+    }
+
+    if (remoteUrl) {
+        const version = key ? (localStorage.getItem('re_photo_v_' + key) || Date.now()) : Date.now();
+        const finalUrl = remoteUrl.indexOf('?') === -1 ? remoteUrl + '?v=' + version : remoteUrl;
+        // Confirma que a imagem existe no Storage antes de aplicar
+        const probe = new Image();
+        probe.onload = function() { applyProfilePhoto(finalUrl); };
+        probe.src = finalUrl;
+    }
+}
+
+// ==================== MEUS DADOS (AJUSTE 002) ====================
+
+function getProfileExtrasCacheKey() {
+    const key = getProfilePhotoKey();
+    return key ? 're_profile_data_' + key : null;
+}
+
+function fillProfileDataForm(dados) {
+    const nome = document.getElementById('profileEditNome');
+    const email = document.getElementById('profileEditEmail');
+    const cargo = document.getElementById('profileEditCargo');
+    const dept = document.getElementById('profileEditDepartamento');
+    if (nome) nome.value = dados.nome || '';
+    if (email) email.value = dados.email || '';
+    if (cargo) cargo.value = dados.cargo || '';
+    if (dept) dept.value = dados.departamento || '';
+
+    // Linha de exibição no cartão do perfil
+    const cardLine = document.getElementById('profileCargoDept');
+    if (cardLine) {
+        const partes = [dados.cargo, dados.departamento].filter(Boolean);
+        cardLine.textContent = partes.length ? partes.join(' • ') : 'Cargo e departamento não informados';
+    }
+}
+
+async function loadProfileData() {
+    if (!currentUser) return;
+
+    let dados = {
+        nome: currentUser.name || '',
+        email: currentUser.email || '',
+        cargo: '',
+        departamento: ''
+    };
+
+    // 1) Cache local (exibição imediata)
+    const cacheKey = getProfileExtrasCacheKey();
+    if (cacheKey) {
+        try {
+            const salvo = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+            if (salvo) dados = Object.assign(dados, salvo);
+        } catch(_) {}
+    }
+    fillProfileDataForm(dados);
+
+    // 2) Fonte oficial: tabela profiles no Supabase
+    try {
+        if (currentUser.id && (supabaseClient || initSupabase())) {
+            const profile = await getUserProfile(currentUser.id);
+            if (profile) {
+                dados.nome = profile.name || profile.nome || dados.nome;
+                dados.email = profile.email || dados.email;
+                dados.cargo = profile.cargo || dados.cargo;
+                dados.departamento = profile.departamento || dados.departamento;
+                fillProfileDataForm(dados);
+                if (cacheKey) { try { localStorage.setItem(cacheKey, JSON.stringify(dados)); } catch(_) {} }
+            }
+        }
+    } catch (e) {
+        console.warn('Não foi possível carregar dados do perfil no Supabase:', e);
+    }
+}
+
+async function saveProfileData() {
+    if (!currentUser) return;
+
+    const nomeEl = document.getElementById('profileEditNome');
+    const cargoEl = document.getElementById('profileEditCargo');
+    const deptEl = document.getElementById('profileEditDepartamento');
+    const btn = document.getElementById('btnSalvarPerfil');
+
+    const nome = nomeEl ? nomeEl.value.trim() : '';
+    const cargo = cargoEl ? cargoEl.value.trim() : '';
+    const departamento = deptEl ? deptEl.value.trim() : '';
+
+    if (!nome) {
+        showNotification('O nome não pode ficar em branco.', 'warning');
+        if (nomeEl) nomeEl.classList.add('error');
+        return;
+    }
+    if (nomeEl) nomeEl.classList.remove('error');
+
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...'; }
+
+    const dados = { nome: nome, email: currentUser.email || '', cargo: cargo, departamento: departamento };
+
+    // Atualização imediata da interface (sidebar, cartão do perfil, dashboard)
+    currentUser.name = nome;
+    const nomeSidebar = document.getElementById('sidebarUserName');
+    if (nomeSidebar) nomeSidebar.textContent = nome;
+    const nomePerfil = document.getElementById('profileName');
+    if (nomePerfil) nomePerfil.textContent = nome;
+    const nomeDash = document.getElementById('dashboardUserName');
+    if (nomeDash) nomeDash.textContent = nome;
+    fillProfileDataForm(dados);
+
+    // Cache local
+    const cacheKey = getProfileExtrasCacheKey();
+    if (cacheKey) { try { localStorage.setItem(cacheKey, JSON.stringify(dados)); } catch(_) {} }
+    try { localStorage.setItem(CONFIG.STORAGE_USER, JSON.stringify(currentUser)); } catch(_) {}
+
+    // Persistência oficial no Supabase (tabela profiles)
+    let salvouRemoto = false;
+    let avisoServidor = '';
+    try {
+        if (!currentUser.id) {
+            throw new Error('Esta conta é o acesso local de compatibilidade e não possui registro no Supabase.');
+        }
+        await ensureSupabase();
+
+        // Detecta a convenção de coluna do nome usada na tabela (name ou nome)
+        const atual = await getUserProfile(currentUser.id);
+        const updateObj = { cargo: cargo, departamento: departamento };
+        if (atual && Object.prototype.hasOwnProperty.call(atual, 'nome')) updateObj.nome = nome;
+        else updateObj.name = nome;
+
+        const { error } = await supabaseClient
+            .from('profiles')
+            .update(updateObj)
+            .eq('id', currentUser.id);
+
+        if (error) {
+            // Segunda tentativa: somente o nome (caso cargo/departamento não existam na tabela)
+            const soNome = {};
+            if (Object.prototype.hasOwnProperty.call(updateObj, 'nome')) soNome.nome = nome; else soNome.name = nome;
+            const { error: e2 } = await supabaseClient.from('profiles').update(soNome).eq('id', currentUser.id);
+            if (e2) throw new Error(error.message);
+            avisoServidor = 'Nome salvo no Supabase. Para persistir Cargo e Departamento, crie as colunas "cargo" e "departamento" (tipo text) na tabela profiles.';
+        } else {
+            salvouRemoto = true;
+        }
+    } catch (e) {
+        avisoServidor = e.message;
+    }
+
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Salvar alterações'; }
+
+    if (salvouRemoto) {
+        showNotification('Dados atualizados com sucesso!', 'success');
+    } else {
+        showNotification('Dados salvos localmente. Aviso do servidor: ' + avisoServidor, 'warning');
+    }
+    if (typeof addActivity === 'function') {
+        addActivity('profile_update', 'Dados atualizados', 'Informações do perfil alteradas');
     }
 }
 
@@ -5990,6 +6565,7 @@ function updateUserProfilePage() {
     if (globalProgressEl) globalProgressEl.textContent = pct + '%';
 
     loadProfilePhoto();
+    loadProfileData();
     loadPreferences();
     checkAchievements();
     renderRecentActivity();
@@ -6092,20 +6668,39 @@ function loadNotifications() {
 }
 
 function getDefaultNotifications() {
-    return [
-        { id: 1, title: 'Bem-vindo ao Canopus Conecta!', message: 'Complete seu onboarding para começar.', type: 'info', read: false, date: new Date().toISOString() },
-        { id: 2, title: 'Nova trilha disponível', message: 'A trilha de Compliance foi atualizada com novos conteúdos.', type: 'success', read: false, date: new Date().toISOString() },
-        { id: 3, title: 'Lembrete de estudo', message: 'Você tem módulos pendentes na trilha de Relacionamento.', type: 'warning', read: true, date: new Date(Date.now() - 86400000).toISOString() }
-    ];
+    // As notificações agora são geradas pelos eventos reais do sistema
+    // (ver refreshSystemNotifications). Nenhuma notificação fictícia.
+    return [];
 }
 
-function addNotification(title, message, type = 'info') {
+function addNotification(title, message, type = 'info', page = null, key = null) {
     if (!currentUser) return;
+
+    // Notificações de sistema têm chave única: atualiza em vez de duplicar
+    if (key) {
+        const existente = notifications.find(n => n.key === key);
+        if (existente) {
+            if (existente.title === title && existente.message === message) return; // nada mudou
+            existente.title = title;
+            existente.message = message;
+            existente.type = type;
+            existente.page = page;
+            existente.read = false;
+            existente.date = new Date().toISOString();
+            saveNotifications();
+            updateNotificationBadge();
+            renderNotifications();
+            return;
+        }
+    }
+
     const notif = {
-        id: Date.now(),
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        key: key || null,
         title: title,
         message: message,
         type: type,
+        page: page || null,
         read: false,
         date: new Date().toISOString()
     };
@@ -6114,6 +6709,59 @@ function addNotification(title, message, type = 'info') {
     saveNotifications();
     updateNotificationBadge();
     renderNotifications();
+}
+
+// ---------- Notificações reais do sistema (baseadas no progresso) ----------
+
+function getTrilhasDoSistema() {
+    const trilhas = [];
+    document.querySelectorAll('.page-section[id^="page-trilha-"]').forEach(function(sec) {
+        const page = sec.id.replace(/^page-/, '');
+        const h1 = sec.querySelector('.page-header h1');
+        const mods = [];
+        sec.querySelectorAll('[id^="card-"]').forEach(function(card) {
+            const oc = card.getAttribute('onclick') || '';
+            const m = oc.match(/navigateTo\('([^']+)'\)/);
+            if (m && mods.indexOf(m[1]) === -1) mods.push(m[1]);
+        });
+        if (mods.length) trilhas.push({ page: page, label: h1 ? h1.textContent.trim() : page, modules: mods });
+    });
+    return trilhas;
+}
+
+function refreshSystemNotifications() {
+    if (!currentUser) return;
+    const trilhas = getTrilhasDoSistema();
+    let totalConcluidos = 0;
+
+    trilhas.forEach(function(t) {
+        const feitos = t.modules.filter(function(m) { return userProgress[m] && userProgress[m].completed; }).length;
+        totalConcluidos += feitos;
+
+        if (feitos > 0 && feitos < t.modules.length) {
+            addNotification(
+                'Continue: ' + t.label,
+                'Você concluiu ' + feitos + ' de ' + t.modules.length + ' módulos. Faltam ' + (t.modules.length - feitos) + ' para o certificado.',
+                'warning', t.page, 'pend-' + t.page
+            );
+        }
+        if (t.modules.length > 0 && feitos === t.modules.length) {
+            addNotification(
+                'Trilha concluída: ' + t.label,
+                'Parabéns! Seu certificado está disponível para download.',
+                'success', 'certificados', 'done-' + t.page
+            );
+        }
+    });
+
+    if (totalConcluidos === 0) {
+        addNotification(
+            'Bem-vindo ao Canopus Conecta!',
+            'Comece sua jornada pela trilha de Onboarding Geral.',
+            'info', 'trilha-onboarding', 'welcome'
+        );
+    }
+    updateNotificationBadge();
 }
 
 function saveNotifications() {
@@ -6148,12 +6796,12 @@ function renderNotifications() {
         const colors = { info: '#3b82f6', success: '#10b981', warning: '#f59e0b', error: '#dc2626' };
         const date = new Date(notif.date).toLocaleDateString('pt-BR');
 
-        html += '<div style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; margin-bottom: 8px; background: ' + (notif.read ? 'var(--cinza-claro)' : 'white') + '; border: 1px solid ' + (notif.read ? 'var(--borda)' : colors[notif.type] + '40') + '; cursor: pointer; transition: var(--transition);" onclick="markNotificationRead(' + notif.id + ')">';
+        html += '<div style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; margin-bottom: 8px; background: ' + (notif.read ? 'var(--cinza-claro)' : 'white') + '; border: 1px solid ' + (notif.read ? 'var(--borda)' : colors[notif.type] + '40') + '; cursor: pointer; transition: var(--transition);" onclick="openNotification(' + notif.id + ')">';
         html += '<div style="width: 36px; height: 36px; border-radius: 50%; background: ' + colors[notif.type] + '15; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><i class="fas ' + icons[notif.type] + '" style="color: ' + colors[notif.type] + '; font-size: 14px;"></i></div>';
         html += '<div style="flex: 1; min-width: 0;">';
         html += '<div style="font-size: 13px; font-weight: 600; color: var(--azul-escuro); margin-bottom: 2px;">' + escapeHtml(notif.title) + (notif.read ? '' : ' <span style="width: 6px; height: 6px; background: ' + colors[notif.type] + '; border-radius: 50%; display: inline-block; margin-left: 4px;"></span>') + '</div>';
         html += '<div style="font-size: 12px; color: var(--cinza); line-height: 1.4;">' + escapeHtml(notif.message) + '</div>';
-        html += '<div style="font-size: 11px; color: var(--cinza); margin-top: 4px;">' + date + '</div>';
+        html += '<div style="font-size: 11px; color: var(--cinza); margin-top: 4px;">' + date + (notif.page ? ' &nbsp;·&nbsp; <span style="color: var(--turquesa); font-weight: 600;">Abrir <i class="fas fa-arrow-right" style="font-size:9px"></i></span>' : '') + '</div>';
         html += '</div>';
         html += '</div>';
     });
@@ -6168,6 +6816,17 @@ function markNotificationRead(id) {
         saveNotifications();
         updateNotificationBadge();
         renderNotifications();
+    }
+}
+
+function openNotification(id) {
+    const notif = notifications.find(n => n.id === id);
+    if (!notif) return;
+    markNotificationRead(id);
+    if (notif.page) {
+        const panel = document.getElementById('notificationPanel');
+        if (panel) panel.style.display = 'none';
+        navigateTo(notif.page);
     }
 }
 
@@ -6289,7 +6948,7 @@ function checkAchievements() {
             earned.push(key);
             newEarned = true;
             showNotification('🏆 Conquista desbloqueada: ' + ach.title + '!', 'success');
-            addNotification('Conquista desbloqueada!', 'Você ganhou: ' + ach.title, 'success');
+            addNotification('Conquista desbloqueada!', 'Você ganhou: ' + ach.title, 'success', 'user-profile');
         }
     }
 
@@ -7197,6 +7856,89 @@ switchCmTab = function(tab) {
   }
   document.addEventListener('DOMContentLoaded',function(){setTimeout(normalize,800);});
 })();
+// ============================================================================
+// ADMINISTRAÇÃO REAL DE COLABORADORES E EQUIPES (SUPABASE)
+// ============================================================================
+async function carregarPainelUsuariosCorporativo() {
+    if (!supabaseClient) return;
+
+    const tabela = document.getElementById('adminUsersTableBody') || document.getElementById('usersListTable') || document.querySelector('.admin-table tbody');
+    if (!tabela) return;
+
+    tabela.innerHTML = '<tr><td colspan="6" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Acessando os dados no Supabase...</td></tr>';
+
+    try {
+        const { data: lista, error } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .order('nome');
+
+        if (error) throw error;
+
+        tabela.innerHTML = '';
+
+        if (!lista || lista.length === 0) {
+            tabela.innerHTML = '<tr><td colspan="6" style="text-align:center;">Nenhum colaborador encontrado.</td></tr>';
+            return;
+        }
+
+        lista.forEach(user => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:30px; height:30px; border-radius:50%; background:var(--azul-escuro); color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:11px;">
+                            ${user.nome ? user.nome.charAt(0).toUpperCase() : 'U'}
+                        </div>
+                        <div>
+                            <div style="font-weight:600;">${user.nome || 'Sem Nome'}</div>
+                            <div style="font-size:11px; color:var(--cinza);">${user.email}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>${user.cargo || 'Não configurado'}</td>
+                <td>${user.departamento || 'Geral'}</td>
+                <td><span class="status-badge ${user.perfil === 'admin' ? 'active' : ''}" style="background:${user.perfil === 'admin' ? '#f59e0b' : '#1dbcb0'}; color:white; padding:3px 8px; border-radius:12px; font-size:10px; font-weight:700;">${String(user.perfil).toUpperCase()}</span></td>
+                <td><span class="status-badge" style="background:${user.ativo === 'ativo' ? '#d1fae5' : '#fee2e2'}; color:${user.ativo === 'ativo' ? '#065f46' : '#991b1b'}; padding:3px 8px; border-radius:12px; font-size:10px; font-weight:700;">${String(user.ativo).toUpperCase()}</span></td>
+                <td>
+                    <button onclick="showUserDetailModalFromDb('${user.id}')" style="background:none; border:none; color:var(--azul-medio); cursor:pointer;"><i class="fas fa-eye"></i> Ver</button>
+                </td>
+            `;
+            tabela.appendChild(tr);
+        });
+
+    } catch (err) {
+        console.error('Erro ao carregar lista de usuários:', err);
+        tabela.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;"><i class="fas fa-exclamation-triangle"></i> Falha ao ler dados do Supabase.</td></tr>';
+    }
+}
+
+// Vincula a função nova ao gancho de mudança de abas do seu sistema original
+const originalSwitchCmTabHook = window.switchCmTab;
+window.switchCmTab = function(tab) {
+    if (typeof originalSwitchCmTabHook === 'function') {
+        originalSwitchCmTabHook(tab);
+    }
+    if (tab === 'usuarios' || tab === 'admin-users') {
+        carregarPainelUsuariosCorporativo();
+    }
+};
+
+// Detalhes do usuário vindos do banco de dados ao clicar em "Ver"
+async function showUserDetailModalFromDb(userId) {
+    try {
+        const { data: user, error } = await supabaseClient.from('profiles').select('*').eq('id', userId).single();
+        if (error || !user) return;
+        
+        if (typeof window.showUserDetailModal === 'function') {
+            window.showUserDetailModal(user.email);
+        } else {
+            alert(`Colaborador: ${user.nome}\nE-mail: ${user.email}\nPerfil: ${user.perfil}`);
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
 </script>
 
 </body>
