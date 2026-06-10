@@ -1016,21 +1016,17 @@ body, .dashboard-card, .card, .media-card, .faq-section, .pdf-section,
                 <div class="login-error" id="error-user"><i class="fas fa-exclamation-circle"></i> <span></span></div>
                 <div class="login-success" id="success-user"><i class="fas fa-check-circle"></i> <span></span></div>
                 <div class="form-group">
-                    <label>Seu nome completo</label>
-                    <input type="text" id="userNameInput" placeholder="Ex: João Silva" onkeypress="if(event.key==='Enter')loginUser()">
-                </div>
-                <div class="form-group">
                     <label>Seu e-mail corporativo</label>
-                    <input type="email" id="userEmailInput" placeholder="Ex: joao.silva@canopus.com.br" onkeypress="if(event.key==='Enter')loginUser()">
+                    <input type="email" id="userEmailInput" placeholder="Ex: joao.silva@canopus.com.br" onkeypress="if(event.key==='Enter')loginUser()" autocomplete="email">
                     <p class="domain-hint"><i class="fas fa-lock"></i> Apenas e-mails @canopus.com.br são permitidos</p>
                 </div>
                 <div class="form-group">
                     <label>Sua senha</label>
-                    <input type="password" id="userPasswordInput" placeholder="Mínimo 6 caracteres" onkeypress="if(event.key==='Enter')loginUser()">
+                    <input type="password" id="userPasswordInput" placeholder="Mínimo 6 caracteres" onkeypress="if(event.key==='Enter')loginUser()" autocomplete="current-password">
                     <p class="domain-hint"><i class="fas fa-info-circle"></i> Primeiro acesso? Sua conta será criada automaticamente</p>
                 </div>
                 <button type="button" class="login-btn" id="btnLoginUser" onclick="loginUser()">
-                    <i class="fas fa-sign-in-alt"></i> Acessar minha trilha
+                    <i class="fas fa-sign-in-alt"></i> Entrar
                 </button>
             </div>
 
