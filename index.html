@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>Canopus Conecta — LMS Corporativo | Canopus Construtora</title>
+<title>Farol Canopus — Plataforma de Conhecimento | Todos numa só voz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -177,6 +177,10 @@ input, textarea, select { font-size: 16px; }
 .complete-btn.completed { background: #d1fae5; border-color: #17a87d; color: #059669; }
 .complete-btn.completed:hover { background: #17a87d; color: white; }
 .complete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.module-badge { position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; z-index: 5; }
+.module-badge.disponivel { background: var(--turquesa, #2CD5C4); color: #003349; }
+.module-badge.em-breve { background: #eef2f2; color: #9aacac; border: 1px solid #e2e8f0; }
+.card { position: relative; }
 
 /* MEDIA GRID */
 .media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 20px; margin-top: 20px; align-items: stretch; }
@@ -1062,6 +1066,7 @@ img, iframe, video, svg { max-width: 100%; }
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <!-- base target removido -->
 </head>
 <body>
@@ -1093,9 +1098,9 @@ img, iframe, video, svg { max-width: 100%; }
   <!-- Subtle sparkle on central star -->
   <path d="M32 20 L32 16 M32 48 L32 44 M20 32 L16 32 M48 32 L44 32" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
 </svg></div>
-            <h1>CANOPUS CONECTA</h1>
-            <p class="subtitle">Canopus Construtora</p>
-            <p class="slogan">Todos numa só voz</p>
+            <h1>FAROL CANOPUS</h1>
+            <p class="subtitle">Onde o conhecimento encontra direção</p>
+            <p class="slogan"><i class="fas fa-circle" style="font-size:6px;vertical-align:middle;margin-right:5px;color:var(--teal,#2CD5C4)"></i>Uma iniciativa do programa Todos numa só voz</p>
 
             <div class="login-tabs">
                 <button class="login-tab active" onclick="switchTab('user')" id="tab-user">
@@ -1170,8 +1175,8 @@ img, iframe, video, svg { max-width: 100%; }
   <line x1="32" y1="32" x2="14" y2="41" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
   <line x1="32" y1="32" x2="14" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
 </svg></div>
-        <div class="sidebar-title">CANOPUS<br>CONECTA</div>
-        <div class="sidebar-subtitle">Canopus Construtora</div>
+        <div class="sidebar-title">FAROL<br>CANOPUS</div>
+        <div class="sidebar-subtitle">Todos numa só voz</div>
     </div>
 
     <!-- User info panel (hidden by default, shown after login) -->
@@ -2244,7 +2249,7 @@ img, iframe, video, svg { max-width: 100%; }
                     <h3 style="font-size: 20px; color: var(--azul-escuro); margin-bottom: 4px;" id="profileName">Colaborador</h3>
                     <p style="font-size: 13px; color: var(--cinza); margin-bottom: 4px;" id="profileEmail">usuario@canopus.com.br</p>
                     <p style="font-size: 13px; color: var(--azul-medio); font-weight: 600; margin-bottom: 16px;" id="profileCargoDept">Cargo e departamento não informados</p>
-                    <span class="badge-inline success" id="profileRoleBadge">Colaborador</span>
+                    <span class="badge-inline success" id="profileRoleBadge" style="align-self: center;">Colaborador</span>
                     <p style="font-size: 12px; color: var(--cinza); margin-top: 12px;">Membro desde <span id="profileMemberSince">--/--/----</span></p>
                 </div>
 
@@ -4323,6 +4328,36 @@ function updateDashboard() {
     }
 }
 
+// ==================== NOTA MÍNIMA PARA CONCLUSÃO (70%) ====================
+// Guarda a melhor nota (%) obtida no quiz de cada módulo interativo
+window.NOTA_MINIMA = 70;
+window.notasModulos = window.notasModulos || {};
+
+// Mapeia o moduleId para a variável de acertos do quiz correspondente
+function obterNotaQuiz(moduleId) {
+    var total = 5; // todos os módulos interativos têm 5 casos
+    var acertos = null;
+    if (moduleId === 'mod-rel-2' && typeof window.cnAcertosPrimeira !== 'undefined') acertos = window.cnAcertosPrimeira;
+    else if (moduleId === 'mod-rel-3' && typeof window.m3AcertosPrimeira !== 'undefined') acertos = window.m3AcertosPrimeira;
+    else if (moduleId === 'mod-rel-4' && typeof window.m4AcertosPrimeira !== 'undefined') acertos = window.m4AcertosPrimeira;
+    if (acertos === null) return null; // módulo sem quiz interativo
+    return Math.round((acertos / total) * 100);
+}
+
+// Lista de módulos que exigem nota mínima (têm quiz)
+var MODULOS_COM_QUIZ = ['mod-rel-2', 'mod-rel-3', 'mod-rel-4'];
+
+// Verifica se o módulo pode ser concluído (passou na nota mínima, se tiver quiz)
+function podeConcluirModulo(moduleId) {
+    if (MODULOS_COM_QUIZ.indexOf(moduleId) === -1) return true; // sem quiz, libera
+    var nota = obterNotaQuiz(moduleId);
+    if (nota === null) {
+        // Quiz ainda não foi feito nesta sessão — exige que faça
+        return false;
+    }
+    return nota >= window.NOTA_MINIMA;
+}
+
 function markComplete(moduleId) {
     if (!currentUser) {
         showNotification('Faça login para marcar progresso', 'error');
@@ -4337,6 +4372,17 @@ function markComplete(moduleId) {
             updateDashboard();
             updateModuleButton(moduleId, false);
             showNotification('Conclusão removida.', 'info');
+        }
+        return;
+    }
+
+    // TRAVA DE NOTA MÍNIMA: módulos com quiz só concluem com 70%+
+    if (!podeConcluirModulo(moduleId)) {
+        var nota = obterNotaQuiz(moduleId);
+        if (nota === null) {
+            showNotification('Para concluir este módulo, você precisa fazer os estudos de caso e atingir no mínimo ' + window.NOTA_MINIMA + '%.', 'error');
+        } else {
+            showNotification('Você atingiu ' + nota + '% nos estudos de caso. É necessário no mínimo ' + window.NOTA_MINIMA + '% para concluir. Refaça os casos para melhorar sua nota.', 'error');
         }
         return;
     }
@@ -5463,7 +5509,7 @@ function updateCertificates() {
                     <div class="cert-hours"><i class="fas fa-clock"></i> ${mod.hours} de estudo</div>
                     <div class="cert-actions">
                         <button class="primary" onclick="previewCertificate('${mod.name}', '${mod.hours}')"><i class="fas fa-eye"></i> Visualizar</button>
-                        <button onclick="downloadCertificate('${mod.name}')"><i class="fas fa-download"></i> Baixar</button>
+                        <button onclick="downloadCertificate('${mod.name}', '${mod.hours}')"><i class="fas fa-download"></i> Baixar</button>
                     </div>
                 </div>
             `;
@@ -5484,7 +5530,7 @@ function updateCertificates() {
                     <div class="cert-hours"><i class="fas fa-clock"></i> ${cert.hours} de estudo</div>
                     <div class="cert-actions">
                         <button class="primary" onclick="previewCertificate('${cert.moduleName}', '${cert.hours}')"><i class="fas fa-eye"></i> Visualizar</button>
-                        <button onclick="downloadCertificate('${cert.moduleName}')"><i class="fas fa-download"></i> Baixar</button>
+                        <button onclick="downloadCertificate('${cert.moduleName}', '${cert.hours}')"><i class="fas fa-download"></i> Baixar</button>
                     </div>
                 </div>
             `;
@@ -5504,6 +5550,17 @@ function previewCertificate(moduleName, hours) {
     document.getElementById('certUserNameDisplay').textContent = currentUser ? currentUser.name : 'Colaborador';
     document.getElementById('certHours').textContent = hours;
     document.getElementById('certDate').textContent = new Date().toLocaleDateString('pt-BR');
+    // Mostrar aproveitamento se houver
+    var notaEl = document.getElementById('certNota');
+    if (notaEl) {
+        var nota = (typeof obterNotaCertificado === 'function') ? obterNotaCertificado(moduleName) : null;
+        if (nota !== null) {
+            notaEl.style.display = 'block';
+            notaEl.innerHTML = 'Aproveitamento nos estudos de caso: <strong style="color:var(--turquesa)">' + nota + '%</strong>';
+        } else {
+            notaEl.style.display = 'none';
+        }
+    }
     modal.classList.add('active');
 }
 
@@ -5511,17 +5568,158 @@ function closeCertPreview() {
     document.getElementById('certPreviewModal').classList.remove('active');
 }
 
-function downloadCertificate(moduleName) {
-    // Open the certificate preview modal first if not already open
-    const modal = document.getElementById('certPreviewModal');
-    if (!modal.classList.contains('active')) {
-        previewCertificate(moduleName, '0h');
+function obterNotaCertificado(modulo) {
+    // Tenta achar a nota do quiz pelo nome do módulo
+    var mapa = {
+        'Atendimento Humanizado': window.cnAcertosPrimeira,
+        'Perfis de Cliente': window.m3AcertosPrimeira,
+        'Comunicação Profissional': window.m4AcertosPrimeira,
+        'Escrita Encantadora': window.m4AcertosPrimeira
+    };
+    var ac = mapa[modulo];
+    if (typeof ac === 'undefined' || ac === null) return null;
+    return Math.round((ac / 5) * 100);
+}
+
+function downloadCertificate(moduleName, hours) {
+    var nome = currentUser && currentUser.name ? currentUser.name : 'Colaborador';
+    var modulo = moduleName || (document.getElementById('certModuleName') ? document.getElementById('certModuleName').textContent : 'Módulo');
+    var carga = hours || (document.getElementById('certHours') ? document.getElementById('certHours').textContent : '');
+    var data = new Date().toLocaleDateString('pt-BR');
+    var nota = obterNotaCertificado(modulo);
+
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+        showNotification('Gerando certificado... tente novamente em instantes.', 'info');
+        return;
     }
 
-    // Small delay to ensure modal is rendered before print
-    setTimeout(function() {
-        window.print();
-    }, 300);
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    var W = 297, H = 210;
+
+    // Fundo branco
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, W, H, 'F');
+
+    // Header azul escuro (espelha o modal da plataforma)
+    doc.setFillColor(0, 51, 73);
+    doc.rect(0, 0, W, 40, 'F');
+    // Faixa teal sob o header
+    doc.setFillColor(44, 213, 196);
+    doc.rect(0, 40, W, 3, 'F');
+
+    // Ícone de medalha (círculo teal + estrela) à esquerda do título
+    var titY = 20;
+    // Título centralizado
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(24);
+    doc.text('Certificado de Conclusão', W / 2 + 6, titY, { align: 'center' });
+    // Medalha à esquerda do título
+    var medX = W / 2 - doc.getTextWidth('Certificado de Conclusão') / 2 - 8;
+    doc.setFillColor(44, 213, 196);
+    doc.circle(medX, titY - 3, 5, 'F');
+    doc.setFillColor(255, 255, 255);
+    doc.setFontSize(9);
+    doc.text('\u2605', medX, titY - 1, { align: 'center' });
+    // Subtítulo
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(180, 230, 226);
+    doc.text('Farol Canopus — Todos numa só voz', W / 2, 31, { align: 'center' });
+
+    // Moldura interna teal (como no preview)
+    doc.setDrawColor(44, 213, 196);
+    doc.setLineWidth(0.5);
+    doc.rect(14, 52, W - 28, H - 68);
+
+    // "Certificamos que"
+    doc.setTextColor(90, 107, 124);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(13);
+    doc.text('Certificamos que', W / 2, 74, { align: 'center' });
+
+    // Nome do colaborador (teal, grande)
+    doc.setTextColor(23, 168, 158);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(30);
+    doc.text(nome, W / 2, 90, { align: 'center' });
+    // Linha teal sob o nome
+    var nomeW = doc.getTextWidth(nome);
+    doc.setDrawColor(44, 213, 196);
+    doc.setLineWidth(0.8);
+    var lx = Math.max(W / 2 - nomeW / 2 - 6, 50);
+    var rx = Math.min(W / 2 + nomeW / 2 + 6, W - 50);
+    doc.line(lx, 95, rx, 95);
+
+    // "concluiu com êxito o módulo NOME, com carga horária de Xmin de estudo."
+    doc.setTextColor(90, 107, 124);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(13);
+    doc.text('concluiu com êxito o módulo', W / 2, 108, { align: 'center' });
+    doc.setTextColor(0, 51, 73);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(15);
+    doc.text(modulo, W / 2, 117, { align: 'center', maxWidth: W - 80 });
+    if (carga) {
+        doc.setTextColor(90, 107, 124);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(12);
+        doc.text('com carga horária de ' + carga + ' de estudo.', W / 2, 126, { align: 'center' });
+    }
+
+    // Aproveitamento (nota do quiz)
+    if (nota !== null) {
+        doc.setTextColor(23, 168, 158);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.text('Aproveitamento nos estudos de caso: ' + nota + '%', W / 2, 137, { align: 'center' });
+    }
+
+    // Data de emissão
+    doc.setTextColor(120, 130, 140);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.text('Data de emissão: ' + data, W / 2, 150, { align: 'center' });
+
+    // Assinatura (esquerda)
+    doc.setDrawColor(150, 160, 170);
+    doc.setLineWidth(0.4);
+    doc.line(50, 170, 130, 170);
+    doc.setTextColor(90, 107, 124);
+    doc.setFontSize(10);
+    doc.text('Diretoria de Relacionamento', 90, 176, { align: 'center' });
+    doc.text('Canopus Construtora', 90, 181, { align: 'center' });
+
+    // Selo de autenticidade (constelação) — direita, espelha o preview
+    var selX = W - 55, selY = 168;
+    doc.setFillColor(23, 168, 158);
+    doc.circle(selX, selY, 13, 'F');
+    doc.setFillColor(44, 213, 196);
+    doc.circle(selX, selY - 1, 11.5, 'F');
+    // Constelação branca: estrela central + 6 pontos + linhas
+    doc.setDrawColor(255, 255, 255);
+    doc.setLineWidth(0.5);
+    doc.setFillColor(255, 255, 255);
+    var raio = 6;
+    var centroY = selY - 1;
+    doc.circle(selX, centroY, 2.2, 'F'); // centro
+    for (var a = 0; a < 6; a++) {
+        var ang = (Math.PI / 3) * a - Math.PI / 2;
+        var px = selX + Math.cos(ang) * raio;
+        var py = centroY + Math.sin(ang) * raio;
+        doc.line(selX, centroY, px, py);
+        doc.circle(px, py, 1.3, 'F');
+    }
+    // Texto do selo
+    doc.setTextColor(120, 130, 140);
+    doc.setFontSize(8);
+    doc.text('Selo de autenticidade', selX, selY + 19, { align: 'center' });
+    doc.text('Farol Canopus', selX, selY + 23, { align: 'center' });
+
+    var nomeArq = 'Certificado_' + modulo.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
+    doc.save(nomeArq);
+    showNotification('Certificado baixado com sucesso!', 'success');
 }
 
 // ==================== FAQ ====================
@@ -6114,7 +6312,7 @@ function loadTheme() {
 // ==================== MODALS ====================
 
 function showAboutModal() {
-    showNotification('Canopus Conecta v6.0 — Plataforma de Treinamento Canopus', 'info');
+    showNotification('Farol Canopus — Plataforma de Conhecimento', 'info');
 }
 
 // viewUserDetail: versão completa definida abaixo
@@ -6191,12 +6389,13 @@ const certModalHtml = `
         <button class="cert-preview-close" onclick="closeCertPreview()"><i class="fas fa-times"></i></button>
         <div class="cert-header">
             <h2><i class="fas fa-award" style="color:var(--turquesa);margin-right:8px;"></i>Certificado de Conclusão</h2>
-            <p>Canopus Construtora — Canopus Conecta</p>
+            <p>Farol Canopus — Todos numa só voz</p>
         </div>
         <div class="cert-body">
             <h3>Certificamos que</h3>
             <div class="cert-recipient" id="certUserNameDisplay">Colaborador</div>
             <p>concluiu com êxito o módulo <strong id="certModuleName">Módulo</strong>,<br>com carga horária de <strong id="certHours">0h</strong> de estudo.</p>
+            <p id="certNota" style="margin-top:10px;font-size:14px;color:var(--cinza);display:none;">Aproveitamento nos estudos de caso: <strong>--%</strong></p>
             <p style="margin-top:16px;font-size:13px;color:var(--cinza);">Data de emissão: <span id="certDate">--/--/----</span></p>
         </div>
         <div class="cert-footer">
@@ -6223,8 +6422,13 @@ const certModalHtml = `
   <line x1="32" y1="32" x2="14" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
 </svg>
                 </div>
-                <p style="font-size:11px;color:var(--cinza);">Selo de autenticidade<br>Canopus Conecta</p>
+                <p style="font-size:11px;color:var(--cinza);">Selo de autenticidade<br>Farol Canopus</p>
             </div>
+        </div>
+        <div style="text-align:center;margin-top:20px;">
+            <button onclick="downloadCertificate()" style="display:inline-flex;align-items:center;gap:8px;padding:11px 26px;background:var(--azul-escuro,#003349);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;">
+                <i class="fas fa-download"></i> Baixar certificado em PDF
+            </button>
         </div>
     </div>
 </div>
@@ -6296,7 +6500,41 @@ function renderCentralConhecimento(data) {
     }).join('');
 }
 
-console.log('Canopus Conecta v6.0 - Sistema inicializado');
+console.log('Farol Canopus - Sistema inicializado');
+
+// ==================== SELOS DE STATUS DOS MÓDULOS ====================
+// Lista dos módulos que já têm conteúdo completo.
+// Para marcar um módulo como disponível no futuro, basta adicionar o ID aqui.
+var MODULOS_COM_CONTEUDO = ['mod-rel-2', 'mod-rel-3', 'mod-rel-4'];
+
+function aplicarSelosModulos() {
+    // Mapear cada card pelo onclick navigateTo('mod-xxx')
+    var cards = document.querySelectorAll('.card');
+    cards.forEach(function(card) {
+        var onclick = card.getAttribute('onclick') || '';
+        var match = onclick.match(/navigateTo\('([^']+)'\)/);
+        if (!match) return;
+        var moduleId = match[1];
+        // Evitar duplicar selo
+        if (card.querySelector('.module-badge')) return;
+        // Não colocar selo em cards bloqueados (já têm cadeado)
+        if (card.classList.contains('locked')) return;
+        var badge = document.createElement('span');
+        if (MODULOS_COM_CONTEUDO.indexOf(moduleId) !== -1) {
+            badge.className = 'module-badge disponivel';
+            badge.innerHTML = '<i class="fas fa-circle-check" style="font-size:9px"></i> Disponível';
+        } else {
+            badge.className = 'module-badge em-breve';
+            badge.innerHTML = 'Em breve';
+        }
+        card.appendChild(badge);
+    });
+}
+
+// Aplicar selos quando a página carrega e sempre que navegar para uma trilha
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(aplicarSelosModulos, 300);
+});
 
 
 // ==================== USER PROFILE FUNCTIONS ====================
@@ -6980,7 +7218,7 @@ function refreshSystemNotifications() {
 
     if (totalConcluidos === 0) {
         addNotification(
-            'Bem-vindo ao Canopus Conecta!',
+            'Bem-vindo ao Farol Canopus!',
             'Comece sua jornada pela trilha de Onboarding Geral.',
             'info', 'trilha-onboarding', 'welcome'
         );
@@ -8132,6 +8370,14 @@ var CSS = '<style>'
 + '.m3-btn.p{background:#003349;color:#fff;border-color:#003349}'
 + '.m3-btn.p:hover{background:#004d6b}'
 + '.m3-btn:disabled{opacity:.35;cursor:not-allowed}'
++ '.m3-fade-in{animation:m3fade .35s ease both}'
++ '.m3-slide-up{animation:m3slideup .4s ease both}'
++ '.m3-caso-prog{display:flex;gap:8px;justify-content:center;margin-bottom:1rem}'
++ '.m3-caso-dot{width:28px;height:28px;border-radius:50%;background:#eef2f2;color:#9aacac;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .3s;border:1px solid #e2e8f0}'
++ '.m3-caso-dot.ativo{background:#003349;color:#fff;border-color:#003349;transform:scale(1.1)}'
++ '.m3-caso-dot.ok{background:#e6f7f6;color:#0F6E56;border-color:#1DBCB0}'
++ '.m3-tent{font-size:12px;color:#78A0A0;margin-bottom:10px;font-weight:600}'
++ '@keyframes m3slideup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}'
 + '@media(max-width:600px){.m3-titulo{font-size:17px}.m3-corpo{padding:12px 14px}.m3-topo{padding:12px 14px}}'
 + '</style>';
 
@@ -8155,21 +8401,11 @@ function html_conteudo() {
 
 function html_caso() {
     return '<div id="m3-caso" style="display:none">'
-        + '<div class="m3-badge">Estudo de caso</div>'
+        + '<div class="m3-badge">Estudos de caso</div>'
         + '<div class="m3-titulo">Agora &eacute; com voc&ecirc;</div>'
-        + '<div class="m3-intro">Voc&ecirc; aprendeu os 4 perfis. Leia a situa&ccedil;&atilde;o abaixo e identifique qual perfil descreve esse cliente &mdash; e como voc&ecirc; deve atend&ecirc;-lo.</div>'
-        + '<div class="m3-caso">'
-        + '<div style="font-size:11px;font-weight:700;color:#003349;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Situa&ccedil;&atilde;o real</div>'
-        + '<div style="font-size:14px;color:#5a6b7c;line-height:1.7;margin-bottom:14px;font-style:italic;padding:11px 14px;background:#f0f4f4;border-radius:10px">Ricardo liga para o setor de Relacionamento. Antes de expor a d&uacute;vida, ele j&aacute; menciona que leu o contrato inteiro, anotou os prazos e quer confirmar se o que entendeu est&aacute; correto. Ele pergunta sobre um &iacute;ndice de corre&ccedil;&atilde;o espec&iacute;fico e quer saber exatamente como &eacute; calculado.</div>'
-        + '<div style="font-size:14px;font-weight:600;color:#1a2b3c;margin-bottom:12px;line-height:1.5">Qual &eacute; o perfil do Ricardo e qual abordagem usar?</div>'
-        + '<div class="m3-opts">'
-        + '<button class="m3-opt" onclick="m3Resp(0)"><span class="m3-ol">A</span>Controlador &mdash; ele quer uma solu&ccedil;&atilde;o r&aacute;pida, sem explica&ccedil;&otilde;es longas.</button>'
-        + '<button class="m3-opt" onclick="m3Resp(1)"><span class="m3-ol">B</span>Anal&iacute;tico &mdash; ele pesquisa tudo e precisa de informa&ccedil;&otilde;es precisas e fundamentadas.</button>'
-        + '<button class="m3-opt" onclick="m3Resp(2)"><span class="m3-ol">C</span>Amig&aacute;vel &mdash; ele gosta de conversa e precisa de calor humano antes da informa&ccedil;&atilde;o.</button>'
-        + '<button class="m3-opt" onclick="m3Resp(3)"><span class="m3-ol">D</span>Expressivo &mdash; ele est&aacute; animado e precisa de reconhecimento antes de qualquer coisa.</button>'
-        + '</div>'
-        + '<div class="m3-fb" id="m3-fb"></div>'
-        + '</div>'
+        + '<div class="m3-intro">Voc&ecirc; aprendeu os 4 perfis. Agora identifique o perfil em 5 situa&ccedil;&otilde;es reais. Voc&ecirc; tem at&eacute; 3 tentativas em cada uma.</div>'
+        + '<div id="m3-caso-prog" class="m3-caso-prog"></div>'
+        + '<div id="m3-caso-wrap"></div>'
         + '<div class="m3-nav">'
         + '<button class="m3-btn" onclick="m3Tela(\'conteudo\')">&larr; Voltar</button>'
         + '<button class="m3-btn p" id="m3-ir-enc" onclick="m3Tela(\'enc\')" disabled>Encerramento &rarr;</button>'
@@ -8190,7 +8426,7 @@ function html_enc() {
         + '<span class="m3-enc-pill">Expressivo</span>'
         + '</div>'
         + '<div class="m3-enc-btn" id="m3-enc-btn" style="position:relative;z-index:2">'
-        + '<button class="m3-btn p" onclick="history.back()" style="border-radius:10px;padding:10px 28px;font-size:14px">Avan&ccedil;ar &rarr;</button>'
+        + '<button class="m3-btn p" onclick="history.back()" style="border-radius:10px;padding:10px 28px;font-size:14px">Voltar &agrave; trilha &rarr;</button>'
         + '</div>'
         + '<div id="m3-parts" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></div>'
         + '</div></div>';
@@ -8204,14 +8440,14 @@ window.m3QDone = false;
 window.m3RenderPerfil = function(i) {
     window.m3Atual = i;
     var p = PERFIS[i];
-    var sc = p.scripts.map(function(s){
-        return '<div class="m3-script" style="background:'+p.corClaro+';margin-bottom:7px;border-radius:10px;padding:11px 14px">'
+    var sc = p.scripts.map(function(s,si){
+        return '<div class="m3-script m3-slide-up" style="background:'+p.corClaro+';margin-bottom:7px;border-radius:10px;padding:11px 14px;animation-delay:'+(0.2+si*0.08)+'s">'
             + '<div class="m3-sctx" style="color:'+p.cor+'">' + s.ctx + '</div>'
             + '<div class="m3-sfala" style="color:#1a2b3c;font-size:13px;line-height:1.6">' + s.fala + '</div>'
             + '</div>';
     }).join('');
-    var ev = p.evitar.map(function(e){
-        return '<div class="m3-evit-item"><span class="m3-evit-x">&#10007;</span><span>' + e + '</span></div>';
+    var ev = p.evitar.map(function(e,ei){
+        return '<div class="m3-evit-item m3-slide-up" style="animation-delay:'+(0.4+ei*0.05)+'s"><span class="m3-evit-x">&#10007;</span><span>' + e + '</span></div>';
     }).join('');
     document.getElementById('m3-perfil-wrap').innerHTML =
         '<div class="m3-card">'
@@ -8220,12 +8456,12 @@ window.m3RenderPerfil = function(i) {
         + '<div class="m3-info"><h3>' + p.nome + '</h3><p>' + p.palavras + '</p></div>'
         + '</div>'
         + '<div class="m3-corpo">'
-        + '<div class="m3-desc">' + p.descricao + '</div>'
-        + '<div class="m3-stit">Como atender bem</div>'
-        + '<div class="m3-como">' + p.como + '</div>'
-        + '<div class="m3-stit">Scripts prontos para usar</div>'
+        + '<div class="m3-desc m3-slide-up" style="animation-delay:.05s">' + p.descricao + '</div>'
+        + '<div class="m3-stit m3-slide-up" style="animation-delay:.1s">Como atender bem</div>'
+        + '<div class="m3-como m3-slide-up" style="animation-delay:.14s">' + p.como + '</div>'
+        + '<div class="m3-stit m3-slide-up" style="animation-delay:.18s">Scripts prontos para usar</div>'
         + sc
-        + '<div class="m3-evitar"><div class="m3-stit" style="margin-bottom:7px">O que nunca fazer</div>' + ev + '</div>'
+        + '<div class="m3-evitar m3-slide-up" style="animation-delay:'+(0.4+p.evitar.length*0.05+0.05)+'s"><div class="m3-stit" style="margin-bottom:7px">O que nunca fazer</div>' + ev + '</div>'
         + '</div></div>';
     document.querySelectorAll('.m3-tab').forEach(function(b, idx){
         b.classList.remove('ativo');
@@ -8261,29 +8497,124 @@ window.m3Tela = function(nome) {
     });
     var el = document.getElementById('m3-' + nome);
     if(el) el.style.display = 'block';
+    if(nome === 'caso') window.m3RenderCaso();
     if(nome === 'enc') m3Animar();
 };
 
-var M3_RESPS = [
-    {c:false, f:'N&atilde;o &eacute; o perfil Controlador. Ele &eacute; objetivo e direto, mas n&atilde;o costuma ler o contrato inteiro antes de ligar. O Controlador quer a solu&ccedil;&atilde;o r&aacute;pida, n&atilde;o o detalhamento.'},
-    {c:true,  f:'Correto! O Ricardo &eacute; Anal&iacute;tico. Ele j&aacute; pesquisou, j&aacute; leu o contrato e quer confirma&ccedil;&atilde;o precisa. A abordagem certa &eacute; ser t&eacute;cnico, fundamentado e nunca inventar informa&ccedil;&atilde;o. Se n&atilde;o souber na hora, diga que vai confirmar e retorne com precis&atilde;o.'},
-    {c:false, f:'O Amig&aacute;vel &eacute; receptivo e evita conflito, mas n&atilde;o &eacute; o que chega com o contrato lido e perguntas t&eacute;cnicas espec&iacute;ficas. Esse comportamento &eacute; t&iacute;pico do perfil Anal&iacute;tico.'},
-    {c:false, f:'O Expressivo &eacute; animado e comunicativo, mas raramente chega com o contrato lido e d&uacute;vidas sobre &iacute;ndices. Esse n&iacute;vel de prepara&ccedil;&atilde;o &eacute; marca do perfil Anal&iacute;tico.'}
+var M3_CASOS = [
+  {
+    sit:'Ricardo liga e, antes de expor a d&uacute;vida, menciona que leu o contrato inteiro, anotou os prazos e quer confirmar um &iacute;ndice de corre&ccedil;&atilde;o espec&iacute;fico e como &eacute; calculado.',
+    perg:'Qual &eacute; o perfil do Ricardo?',
+    opts:['Controlador &mdash; quer solu&ccedil;&atilde;o r&aacute;pida, sem detalhes.','Anal&iacute;tico &mdash; pesquisa tudo e precisa de informa&ccedil;&otilde;es precisas.','Amig&aacute;vel &mdash; precisa de calor humano antes da informa&ccedil;&atilde;o.','Expressivo &mdash; precisa de reconhecimento antes de qualquer coisa.'],
+    correta:1,
+    fb:['O Controlador &eacute; direto, mas n&atilde;o costuma ler o contrato inteiro antes de ligar. Ele quer solu&ccedil;&atilde;o, n&atilde;o detalhamento.','Correto! O Ricardo &eacute; Anal&iacute;tico: pesquisou, leu o contrato e quer precis&atilde;o. Seja t&eacute;cnico e fundamentado &mdash; nunca invente informa&ccedil;&atilde;o.','O Amig&aacute;vel evita conflito e gosta de conversa, mas n&atilde;o chega com o contrato lido e d&uacute;vidas t&eacute;cnicas.','O Expressivo &eacute; animado e comunicativo. Esse n&iacute;vel de prepara&ccedil;&atilde;o t&eacute;cnica &eacute; marca do Anal&iacute;tico.']
+  },
+  {
+    sit:'Patr&iacute;cia liga e em menos de dez segundos j&aacute; diz: &#8220;N&atilde;o tenho tempo. Preciso da segunda via do boleto e do prazo exato da vistoria. Pode me mandar agora?&#8221;',
+    perg:'Qual &eacute; o perfil da Patr&iacute;cia e como atender?',
+    opts:['Controladora &mdash; v&aacute; direto ao ponto, entregue rápido e confirme prazos.','Anal&iacute;tica &mdash; explique detalhadamente cada cl&aacute;usula do contrato.','Amig&aacute;vel &mdash; comece perguntando como ela est&aacute; se sentindo.','Expressiva &mdash; celebre com entusiasmo a conquista do apartamento.'],
+    correta:0,
+    fb:['Exato! Patr&iacute;cia &eacute; Controladora: objetiva e com pressa. Entregue o que ela pediu de forma direta, com prazos claros. Sem rodeios.','Detalhar cl&aacute;usulas para quem disse que n&atilde;o tem tempo s&oacute; gera irrita&ccedil;&atilde;o. Ela quer agilidade.','Perguntas pessoais para quem declarou pressa soam como enrola&ccedil;&atilde;o. Respeite o tempo dela.','Entusiasmo fora de hora atrapalha quem &eacute; objetivo. Leia o sinal: ela quer efici&ecirc;ncia.']
+  },
+  {
+    sit:'Seu Jorge liga pela terceira vez na semana. Ele sempre conversa bastante, pergunta sobre a fam&iacute;lia do atendente e demora a dizer o que precisa. Hoje quer saber sobre a taxa de condom&iacute;nio, mas parece inseguro para decidir algo.',
+    perg:'Qual &eacute; o perfil do Seu Jorge e como conduzir?',
+    opts:['Controlador &mdash; corte a conversa e v&aacute; direto &agrave; taxa.','Anal&iacute;tico &mdash; envie uma planilha completa com todos os c&aacute;lculos.','Amig&aacute;vel &mdash; acolha com paci&ecirc;ncia, crie v&iacute;nculo e ajude a organizar a decis&atilde;o sem press&atilde;o.','Expressivo &mdash; pe&ccedil;a que ele seja mais breve nas liga&ccedil;&otilde;es.'],
+    correta:2,
+    fb:['Cortar a conversa de um cliente Amig&aacute;vel quebra o v&iacute;nculo que ele mais valoriza.','Planilha fria n&atilde;o resolve a inseguran&ccedil;a dele. Ele precisa de acolhimento, n&atilde;o de dados.','Perfeito! Seu Jorge &eacute; Amig&aacute;vel: gosta de v&iacute;nculo e evita decis&otilde;es sob press&atilde;o. Paci&ecirc;ncia e organiza&ccedil;&atilde;o das op&ccedil;&otilde;es s&atilde;o o caminho.','Pedir brevidade a um Amig&aacute;vel soa como rejei&ccedil;&atilde;o. Ele pode se afastar sem reclamar &mdash; e sem voltar.']
+  },
+  {
+    sit:'Camila manda &aacute;udio no WhatsApp super animada: &#8220;Genteee, comprei meu primeiro apart&ocirc;! T&ocirc; muito feliz! Me conta tudo que vem agora, quero saber de cada detalhe dessa nova fase!&#8221;',
+    perg:'Qual &eacute; o perfil da Camila e como responder?',
+    opts:['Anal&iacute;tica &mdash; responda com uma lista t&eacute;cnica de prazos e documentos.','Expressiva &mdash; corresponda ao entusiasmo, celebre a conquista e conduza com energia.','Controladora &mdash; seja breve: &#8220;os pr&oacute;ximos passos s&atilde;o assinatura e vistoria&#8221;.','Amig&aacute;vel &mdash; pergunte com calma se ela tem alguma inseguran&ccedil;a.'],
+    correta:1,
+    fb:['Lista t&eacute;cnica fria apaga a empolga&ccedil;&atilde;o dela. A informa&ccedil;&atilde;o vem, mas embrulhada em entusiasmo.','Isso! Camila &eacute; Expressiva: comunicativa e animada. Celebre com ela, corresponda &agrave; energia e conduza os pr&oacute;ximos passos mantendo o clima positivo.','Brevidade seca com quem est&aacute; celebrando soa como indiferen&ccedil;a.','Ela n&atilde;o demonstrou inseguran&ccedil;a &mdash; demonstrou euforia. Leia a emo&ccedil;&atilde;o certa.']
+  },
+  {
+    sit:'Andr&eacute; responde o e-mail da Canopus com uma tabela que ele mesmo montou comparando os valores cobrados com os previstos no contrato, e aponta uma diferen&ccedil;a de R$ 47,12 que quer ver explicada linha a linha.',
+    perg:'Qual &eacute; o perfil do Andr&eacute; e qual a melhor resposta?',
+    opts:['Expressivo &mdash; elogie a tabela com entusiasmo e mude de assunto.','Amig&aacute;vel &mdash; ligue para conversar e criar v&iacute;nculo antes de responder.','Controlador &mdash; responda em uma linha: &#8220;valor correto, pode pagar&#8221;.','Anal&iacute;tico &mdash; responda com a mesma precis&atilde;o: explique a diferen&ccedil;a linha a linha, com base no contrato.'],
+    correta:3,
+    fb:['Elogiar e desviar &eacute; o que mais irrita um Anal&iacute;tico. Ele quer a explica&ccedil;&atilde;o, n&atilde;o o elogio.','O Andr&eacute; n&atilde;o pediu conversa &mdash; pediu precis&atilde;o por escrito. Respeite o canal e o estilo dele.','Resposta de uma linha para quem montou uma tabela soa como descaso e gera nova cobran&ccedil;a.','Exato! Andr&eacute; &eacute; Anal&iacute;tico. Responda &agrave; altura: linha a linha, com fundamento contratual. &Eacute; assim que ele constr&oacute;i confian&ccedil;a.']
+  }
 ];
 
+window.m3CasoAtual = 0;
+window.m3CasoTentativas = 0;
+window.m3CasosResolvidos = [];
+window.m3AcertosPrimeira = 0;
+
+window.m3RenderCaso = function() {
+    if(window.m3CasosResolvidos.length === 0){ window.m3AcertosPrimeira = 0; window.m3CasoAtual = 0; }
+    var idx = window.m3CasoAtual;
+    var caso = M3_CASOS[idx];
+    window.m3CasoTentativas = 0;
+    var prog = '';
+    for(var k=0;k<M3_CASOS.length;k++){
+        var estado = window.m3CasosResolvidos.indexOf(k) !== -1 ? 'ok' : (k===idx ? 'ativo' : '');
+        prog += '<div class="m3-caso-dot '+estado+'">'+(k+1)+'</div>';
+    }
+    document.getElementById('m3-caso-prog').innerHTML = prog;
+    var letras = ['A','B','C','D'];
+    var optsHtml = '';
+    for(var j=0;j<caso.opts.length;j++){
+        optsHtml += '<button class="m3-opt m3-slide-up" style="animation-delay:'+(0.05*j)+'s" onclick="m3Resp('+j+')"><span class="m3-ol">'+letras[j]+'</span>'+caso.opts[j]+'</button>';
+    }
+    document.getElementById('m3-caso-wrap').innerHTML =
+        '<div class="m3-caso">'
+        + '<div class="m3-fade-in" style="font-size:11px;font-weight:700;color:#003349;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Caso '+(idx+1)+' de '+M3_CASOS.length+'</div>'
+        + '<div class="m3-slide-up" style="font-size:14px;color:#5a6b7c;line-height:1.7;margin-bottom:14px;font-style:italic;padding:11px 14px;background:#f0f4f4;border-radius:10px">'+caso.sit+'</div>'
+        + '<div class="m3-slide-up" style="animation-delay:.08s;font-size:14px;font-weight:600;color:#1a2b3c;margin-bottom:10px;line-height:1.5">'+caso.perg+'</div>'
+        + '<div class="m3-tent" id="m3-tent">Tentativa 1 de 3</div>'
+        + '<div class="m3-opts">'+optsHtml+'</div>'
+        + '<div class="m3-fb" id="m3-fb"></div>'
+        + '</div>';
+};
+
 window.m3Resp = function(i) {
-    if(window.m3QDone) return;
-    window.m3QDone = true;
-    var r = M3_RESPS[i];
-    document.querySelectorAll('.m3-opt').forEach(function(el, idx){
-        el.disabled = true;
-        if(M3_RESPS[idx].c) el.classList.add('certa');
-        else if(idx === i && !r.c) el.classList.add('errada');
-    });
+    var caso = M3_CASOS[window.m3CasoAtual];
+    var opts = document.querySelectorAll('.m3-opt');
     var fb = document.getElementById('m3-fb');
-    fb.className = 'm3-fb show ' + (r.c ? 'ok' : 'err');
-    fb.innerHTML = (r.c ? '&#10003; ' : '&#10007; ') + r.f;
-    if(r.c) document.getElementById('m3-ir-enc').disabled = false;
+    if(i === caso.correta) {
+        if(window.m3CasoTentativas === 0) window.m3AcertosPrimeira++;
+        opts.forEach(function(el,idx){ el.disabled = true; if(idx===caso.correta) el.classList.add('certa'); });
+        fb.className = 'm3-fb show ok';
+        fb.innerHTML = '&#10003; ' + caso.fb[i];
+        if(window.m3CasosResolvidos.indexOf(window.m3CasoAtual) === -1) window.m3CasosResolvidos.push(window.m3CasoAtual);
+        if(window.m3CasoAtual + 1 < M3_CASOS.length) {
+            fb.innerHTML += '<div style="margin-top:10px"><button class="m3-btn p" style="padding:7px 18px;font-size:13px" onclick="m3ProximoCaso()">Pr&oacute;ximo caso &rarr;</button></div>';
+        } else {
+            fb.innerHTML += '<div style="margin-top:10px;font-weight:600;color:#0F6E56">Voc&ecirc; concluiu todos os casos!</div>';
+            document.getElementById('m3-ir-enc').disabled = false;
+        }
+    } else {
+        window.m3CasoTentativas++;
+        var restantes = 3 - window.m3CasoTentativas;
+        opts[i].classList.add('errada');
+        opts[i].disabled = true;
+        if(restantes > 0) {
+            document.getElementById('m3-tent').textContent = 'Tentativa ' + (window.m3CasoTentativas+1) + ' de 3';
+            fb.className = 'm3-fb show err';
+            fb.innerHTML = '&#10007; ' + caso.fb[i] + '<div style="margin-top:6px;font-size:12px">Voc&ecirc; ainda tem ' + restantes + (restantes===1?' tentativa.':' tentativas.') + '</div>';
+        } else {
+            opts.forEach(function(el,idx){ el.disabled = true; if(idx===caso.correta) el.classList.add('certa'); });
+            fb.className = 'm3-fb show err';
+            fb.innerHTML = '&#10007; ' + caso.fb[i] + '<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">A resposta certa era a op&ccedil;&atilde;o destacada. ' + caso.fb[caso.correta] + '</div>';
+            if(window.m3CasosResolvidos.indexOf(window.m3CasoAtual) === -1) window.m3CasosResolvidos.push(window.m3CasoAtual);
+            if(window.m3CasoAtual + 1 < M3_CASOS.length) {
+                fb.innerHTML += '<div style="margin-top:10px"><button class="m3-btn p" style="padding:7px 18px;font-size:13px" onclick="m3ProximoCaso()">Pr&oacute;ximo caso &rarr;</button></div>';
+            } else {
+                document.getElementById('m3-ir-enc').disabled = false;
+            }
+        }
+    }
+};
+
+window.m3ProximoCaso = function() {
+    if(window.m3CasoAtual < M3_CASOS.length - 1) {
+        window.m3CasoAtual++;
+        window.m3RenderCaso();
+    }
 };
 
 function m3Animar() {
@@ -8304,15 +8635,43 @@ function m3Animar() {
     if(lw) setTimeout(function(){ lw.classList.add('vis'); }, 150);
     var rc = document.getElementById('m3-ring');
     if(rc) setTimeout(function(){ rc.style.strokeDashoffset = '0'; }, 800);
+    var pctAprov3 = Math.round(((window.m3AcertosPrimeira||0)/M3_CASOS.length)*100);
+    var passou3 = pctAprov3 >= 70;
     var t1 = document.getElementById('m3-enc-t1');
-    if(t1) setTimeout(function(){ t1.classList.add('vis'); }, 1100);
+    if(t1){ t1.innerHTML = passou3 ? 'Voc&ecirc; concluiu o m&oacute;dulo!' : 'Quase l&aacute;!'; setTimeout(function(){ t1.classList.add('vis'); }, 1100); }
     var t2 = document.getElementById('m3-enc-t2');
-    if(t2) setTimeout(function(){ t2.classList.add('vis'); }, 1300);
+    if(t2){
+        var total = M3_CASOS.length;
+        var acertos = window.m3AcertosPrimeira || 0;
+        var pct = Math.round((acertos/total)*100);
+        var aprovado = pct >= 70;
+        var cor = aprovado ? '#2CD5C4' : '#F0A33E';
+        t2.innerHTML = 'Seu aproveitamento nos estudos de caso:'
+            + '<div style="margin-top:10px;font-size:26px;font-weight:700;color:'+cor+'">'+pct+'%</div>'
+            + '<div style="font-size:12px;margin-top:2px">'+acertos+' de '+total+' casos acertados na primeira tentativa</div>'
+            + '<div style="margin-top:8px;font-size:12px;color:'+cor+';font-weight:600">'+(aprovado ? '&#10003; Aprovado &mdash; voc&ecirc; domina os perfis!' : 'Voc&ecirc; precisa de no m&iacute;nimo 70% para concluir. Refa&ccedil;a os estudos de caso.')+'</div>';
+        setTimeout(function(){ t2.classList.add('vis'); }, 1300);
+    }
     var pl = document.getElementById('m3-enc-pills');
     if(pl) setTimeout(function(){ pl.classList.add('vis'); }, 1500);
     var bt = document.getElementById('m3-enc-btn');
-    if(bt) setTimeout(function(){ bt.classList.add('vis'); }, 1800);
+    if(bt){
+        if(!passou3){
+            bt.innerHTML = '<button class="m3-btn p" onclick="m3RefazerCasos()" style="border-radius:10px;padding:10px 28px;font-size:14px;background:#F0A33E;border-color:#F0A33E">&#8634; Refazer estudos de caso</button>';
+        } else {
+            bt.innerHTML = '<button class="m3-btn p" onclick="history.back()" style="border-radius:10px;padding:10px 28px;font-size:14px">Voltar &agrave; trilha &rarr;</button>';
+        }
+        setTimeout(function(){ bt.classList.add('vis'); }, 1800);
+    }
 }
+window.m3RefazerCasos = function(){
+    window.m3CasoAtual = 0;
+    window.m3CasosResolvidos = [];
+    window.m3AcertosPrimeira = 0;
+    window.m3CasoTentativas = 0;
+    document.getElementById('m3-ir-enc').disabled = true;
+    m3Tela('caso');
+};
 
 window.m3RenderPerfil(0);
 }
@@ -8456,53 +8815,64 @@ var CSS = '<style>'
 + '.m4-btn.p{background:#003349;color:#fff;border-color:#003349}'
 + '.m4-btn.p:hover{background:#004d6b}'
 + '.m4-btn:disabled{opacity:.35;cursor:not-allowed}'
++ '.m4-fade-in{animation:m4fadein .35s ease both}'
++ '.m4-slide-up{animation:m4slideup .4s ease both}'
++ '.m4-caso-prog{display:flex;gap:8px;justify-content:center;margin-bottom:1rem}'
++ '.m4-caso-dot{width:28px;height:28px;border-radius:50%;background:#eef2f2;color:#9aacac;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .3s;border:1px solid #e2e8f0}'
++ '.m4-caso-dot.ativo{background:#003349;color:#fff;border-color:#003349;transform:scale(1.1)}'
++ '.m4-caso-dot.ok{background:#e6f7f6;color:#0F6E56;border-color:#1DBCB0}'
++ '.m4-tent{font-size:12px;color:#78A0A0;margin-bottom:10px;font-weight:600}'
++ '@keyframes m4fadein{from{opacity:0}to{opacity:1}}'
++ '@keyframes m4slideup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}'
 + '@media(max-width:600px){.m4-titulo{font-size:17px}.m4-corpo{padding:12px 14px}.m4-topo{padding:12px 14px}}'
 + '</style>';
 
 function m4TijoloCor(n){
     var F='#C8502A',S='#9B3A1C',T='#E8724A';
-    function tj(x,y,w,h){return '<polygon points="'+x+','+y+' '+(x+w)+','+y+' '+(x+w+5)+','+(y-4)+' '+(x+5)+','+(y-4)+'" fill="'+T+'"/><polygon points="'+(x+w)+','+y+' '+(x+w)+','+(y+h)+' '+(x+w+5)+','+(y+h-4)+' '+(x+w+5)+','+(y-4)+'" fill="'+S+'"/><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+F+'">';}
+    function tj(x,y,w,h){return '<polygon points="'+x+','+y+' '+(x+w)+','+y+' '+(x+w+5)+','+(y-4)+' '+(x+5)+','+(y-4)+'" fill="'+T+'"/><polygon points="'+(x+w)+','+y+' '+(x+w)+','+(y+h)+' '+(x+w+5)+','+(y+h-4)+' '+(x+w+5)+','+(y-4)+'" fill="'+S+'"/><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+F+'"/>';}
     var W=52,H=14,g=3,hw=24,svg='',rows=[];
     for(var i=0;i<n;i++){var y=(H+g)*i;rows.push(i%2===0?{full:true,y:y}:{full:false,y:y});}
     rows.forEach(function(r){svg+=r.full?tj(0,r.y,W,H):(tj(0,r.y,hw,H)+tj(hw+g,r.y,hw-g,H));});
-    return '<svg width="62" height="'+(H+g)*n+8+'" viewBox="-4 -6 66 '+(H+g)*n+8+'" xmlns="http://www.w3.org/2000/svg">'+svg+'</svg>';
+    var totalH=(H+g)*n+8;
+    return '<svg width="62" height="'+totalH+'" viewBox="-4 -6 66 '+totalH+'" xmlns="http://www.w3.org/2000/svg">'+svg+'</svg>';
 }
 
 function renderPasso4(i) {
     window.m4Atual = i;
     var p = PASSOS[i];
     var corpo = '';
+    var d = 0.12;
     if(i === 0) {
-        corpo = p.pilares.map(function(pl){
-            return '<div class="m4-pilar"><div class="m4-pilar-n">'+pl.n+'</div><div><div class="m4-pilar-titulo">'+pl.titulo+'</div><div class="m4-pilar-desc">'+pl.desc+'</div></div></div>';
+        corpo = '<div class="m4-stit m4-slide-up" style="animation-delay:.1s">Os 7 pilares</div>';
+        corpo += p.pilares.map(function(pl,pi){
+            return '<div class="m4-pilar m4-slide-up" style="animation-delay:'+(d+pi*0.06)+'s"><div class="m4-pilar-n">'+pl.n+'</div><div><div class="m4-pilar-titulo">'+pl.titulo+'</div><div class="m4-pilar-desc">'+pl.desc+'</div></div></div>';
         }).join('');
-        corpo = '<div class="m4-stit">Os 7 pilares</div>' + corpo;
     } else if(i === 1) {
-        corpo = '<div class="m4-stit">Estrutura de sucesso</div>';
-        corpo += p.estrutura.map(function(e){
-            return '<div class="m4-item"><div class="m4-item-icon">&#10004;</div><div><div class="m4-item-titulo">'+e.titulo+'</div><div class="m4-item-desc">'+e.desc+'</div></div></div>';
+        corpo = '<div class="m4-stit m4-slide-up" style="animation-delay:.1s">Estrutura de sucesso</div>';
+        corpo += p.estrutura.map(function(e,ei){
+            return '<div class="m4-item m4-slide-up" style="animation-delay:'+(d+ei*0.06)+'s"><div class="m4-item-icon">&#10004;</div><div><div class="m4-item-titulo">'+e.titulo+'</div><div class="m4-item-desc">'+e.desc+'</div></div></div>';
         }).join('');
-        corpo += '<div class="m4-stit" style="margin-top:14px">Scripts prontos</div>';
-        corpo += p.scripts.map(function(s){return '<div class="m4-script"><div class="m4-sctx">'+s.ctx+'</div><div class="m4-sfala">'+s.fala+'</div></div>';}).join('');
+        corpo += '<div class="m4-stit m4-slide-up" style="margin-top:14px;animation-delay:'+(d+p.estrutura.length*0.06)+'s">Scripts prontos</div>';
+        corpo += p.scripts.map(function(s,si){return '<div class="m4-script m4-slide-up" style="animation-delay:'+(d+(p.estrutura.length+si)*0.06)+'s"><div class="m4-sctx">'+s.ctx+'</div><div class="m4-sfala">'+s.fala+'</div></div>';}).join('');
     } else if(i === 2) {
-        corpo = '<div class="m4-stit">5 regras de ouro no WhatsApp</div>';
-        corpo += p.regras.map(function(r){
-            return '<div class="m4-item"><div class="m4-item-icon">'+r.icon+'</div><div><div class="m4-item-titulo">'+r.titulo+'</div><div class="m4-item-desc">'+r.desc+'</div></div></div>';
+        corpo = '<div class="m4-stit m4-slide-up" style="animation-delay:.1s">5 regras de ouro no WhatsApp</div>';
+        corpo += p.regras.map(function(r,ri){
+            return '<div class="m4-item m4-slide-up" style="animation-delay:'+(d+ri*0.06)+'s"><div class="m4-item-icon">'+r.icon+'</div><div><div class="m4-item-titulo">'+r.titulo+'</div><div class="m4-item-desc">'+r.desc+'</div></div></div>';
         }).join('');
-        corpo += '<div class="m4-stit" style="margin-top:14px">Scripts prontos</div>';
-        corpo += p.scripts.map(function(s){return '<div class="m4-script"><div class="m4-sctx">'+s.ctx+'</div><div class="m4-sfala">'+s.fala+'</div></div>';}).join('');
+        corpo += '<div class="m4-stit m4-slide-up" style="margin-top:14px;animation-delay:'+(d+p.regras.length*0.06)+'s">Scripts prontos</div>';
+        corpo += p.scripts.map(function(s,si){return '<div class="m4-script m4-slide-up" style="animation-delay:'+(d+(p.regras.length+si)*0.06)+'s"><div class="m4-sctx">'+s.ctx+'</div><div class="m4-sfala">'+s.fala+'</div></div>';}).join('');
     } else {
-        corpo = '<div class="m4-stit">Pontos de aten&ccedil;&atilde;o</div>';
-        corpo += p.alertas.map(function(a){
-            return '<div class="m4-item"><div class="m4-item-icon">&#9888;</div><div><div class="m4-item-titulo">'+a.titulo+'</div><div class="m4-item-desc">'+a.desc+'</div></div></div>';
+        corpo = '<div class="m4-stit m4-slide-up" style="animation-delay:.1s">Pontos de aten&ccedil;&atilde;o</div>';
+        corpo += p.alertas.map(function(a,ai){
+            return '<div class="m4-item m4-slide-up" style="animation-delay:'+(d+ai*0.06)+'s"><div class="m4-item-icon">&#9888;</div><div><div class="m4-item-titulo">'+a.titulo+'</div><div class="m4-item-desc">'+a.desc+'</div></div></div>';
         }).join('');
-        corpo += '<div class="m4-stit" style="margin-top:14px">Respostas modelo</div>';
-        corpo += p.scripts.map(function(s){return '<div class="m4-script"><div class="m4-sctx">'+s.ctx+'</div><div class="m4-sfala">'+s.fala+'</div></div>';}).join('');
+        corpo += '<div class="m4-stit m4-slide-up" style="margin-top:14px;animation-delay:'+(d+p.alertas.length*0.06)+'s">Respostas modelo</div>';
+        corpo += p.scripts.map(function(s,si){return '<div class="m4-script m4-slide-up" style="animation-delay:'+(d+(p.alertas.length+si)*0.06)+'s"><div class="m4-sctx">'+s.ctx+'</div><div class="m4-sfala">'+s.fala+'</div></div>';}).join('');
     }
     document.getElementById('m4-passo-wrap').innerHTML =
-        '<div class="m4-card">'
+        '<div class="m4-card m4-fade-in">'
         + '<div class="m4-topo">'+m4TijoloCor(i+1)+'<div><div class="m4-num">Passo '+p.num+' de 4</div><div class="m4-ptit">'+p.titulo+'</div><div class="m4-psub">'+p.sub+'</div></div></div>'
-        + '<div class="m4-corpo"><div class="m4-texto">'+p.intro+'</div>'+corpo+'</div>'
+        + '<div class="m4-corpo"><div class="m4-texto m4-slide-up" style="animation-delay:.05s">'+p.intro+'</div>'+corpo+'</div>'
         + '</div>';
     document.querySelectorAll('.m4-snav').forEach(function(b,idx){
         b.classList.remove('ativo','feito');
@@ -8517,7 +8887,7 @@ function renderPasso4(i) {
     else{bp.innerHTML='Pr&oacute;ximo &rarr;';bp.onclick=function(){m4Nav(1);};}
 }
 
-container.innerHTML = CSS + '<div class="m4">' + '<div id="m4-conteudo">' + '<div class="m4-badge">Relacionamento &middot; M&oacute;dulo 4</div>' + '<div class="m4-titulo">Escrita encantadora: Chat, WhatsApp e Mídias Sociais</div>' + '<div class="m4-intro">A Canopus conversa com o cliente no canal que ele preferir. Cada canal tem suas regras, seu ritmo e seu tom. Conhecer essas diferenças &eacute; o que separa um atendimento mediano de um atendimento que o cliente lembra &mdash; e recomenda.</div>' + '<div class="m4-pbar"><div class="m4-pbar-fill" id="m4-pb" style="width:25%"></div></div>' + '<div class="m4-snav-wrap">' + '<button class="m4-snav ativo" onclick="m4Ir(0)">1. Escrita</button>' + '<button class="m4-snav" onclick="m4Ir(1)">2. Chat</button>' + '<button class="m4-snav" onclick="m4Ir(2)">3. WhatsApp</button>' + '<button class="m4-snav" onclick="m4Ir(3)">4. Redes Sociais</button>' + '</div>' + '<div id="m4-passo-wrap"></div>' + '<div class="m4-nav">' + '<button class="m4-btn" id="m4-ant" onclick="m4Nav(-1)" disabled>&larr; Anterior</button>' + '<span class="m4-navlbl" id="m4-lbl">Passo 1 de 4</span>' + '<button class="m4-btn p" id="m4-prox">Pr&oacute;ximo &rarr;</button>' + '</div></div>' + '<div id="m4-caso" style="display:none">' + '<div class="m4-badge">Estudo de caso</div>' + '<div class="m4-titulo">Agora &eacute; com voc&ecirc;</div>' + '<div class="m4-intro">Voc&ecirc; aprendeu os 4 canais e os 7 pilares. Agora aplique na pr&aacute;tica.</div>' + '<div class="m4-caso">' + '<div style="font-size:11px;font-weight:700;color:#003349;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Situa&ccedil;&atilde;o real</div>' + '<div style="font-size:14px;color:#5a6b7c;line-height:1.7;margin-bottom:14px;font-style:italic;padding:11px 14px;background:#f0f4f4;border-radius:10px">Ana postou no Instagram da Canopus reclamando de um atraso na entrega das chaves. O post j&aacute; tem 14 coment&aacute;rios de outras pessoas pedindo explica&ccedil;&otilde;es. O que voc&ecirc; faz primeiro?</div>' + '<div style="font-size:14px;font-weight:600;color:#1a2b3c;margin-bottom:12px">Qual &eacute; a a&ccedil;&atilde;o certa?</div>' + '<div class="m4-opts">' + '<button class="m4-opt" onclick="m4Resp(0)"><span class="m4-ol">A</span>Ignorar o post por enquanto e resolver internamente antes de se posicionar publicamente.</button>' + '<button class="m4-opt" onclick="m4Resp(1)"><span class="m4-ol">B</span>Responder rapidamente com empatia, reconhecer a frustra&ccedil;&atilde;o e pedir contato privado para resolver.</button>' + '<button class="m4-opt" onclick="m4Resp(2)"><span class="m4-ol">C</span>Explicar detalhadamente o motivo do atraso nos coment&aacute;rios do post.</button>' + '<button class="m4-opt" onclick="m4Resp(3)"><span class="m4-ol">D</span>Encaminhar para o setor jur&iacute;dico antes de qualquer resposta.</button>' + '</div>' + '<div class="m4-fb" id="m4-fb"></div>' + '</div>' + '<div class="m4-nav">' + '<button class="m4-btn" onclick="m4Tela(\'conteudo\')">&larr; Voltar</button>' + '<button class="m4-btn p" id="m4-ir-enc" onclick="m4Tela(\'enc\')" disabled>Encerramento &rarr;</button>' + '</div></div>' + '<div id="m4-enc" style="display:none">' + '<div class="m4-enc">' + '<svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none" width="130" height="130" viewBox="0 0 130 130"><circle id="m4-ring" cx="65" cy="65" r="48" fill="none" stroke="#2CD5C4" stroke-width="1" opacity=".3" style="stroke-dasharray:302;stroke-dashoffset:302;transition:stroke-dashoffset 1s .8s ease-out"/></svg>' + '<div class="m4-enc-logo" id="m4-enc-logo" style="position:relative;z-index:2">' + LOGO + '</div>' + '<div class="m4-enc-t1" id="m4-enc-t1" style="position:relative;z-index:2">Voc&ecirc; concluiu o m&oacute;dulo!</div>' + '<div class="m4-enc-t2" id="m4-enc-t2" style="position:relative;z-index:2">Agora voc&ecirc; sabe como escrever de forma encantadora em qualquer canal.</div>' + '<div class="m4-enc-pills" id="m4-enc-pills" style="position:relative;z-index:2">' + '<span class="m4-enc-pill">7 Pilares</span>' + '<span class="m4-enc-pill">Chat</span>' + '<span class="m4-enc-pill">WhatsApp</span>' + '<span class="m4-enc-pill">Redes Sociais</span>' + '</div>' + '<div class="m4-enc-btn" id="m4-enc-btn" style="position:relative;z-index:2">' + '<button class="m4-btn p" onclick="history.back()" style="border-radius:10px;padding:10px 28px;font-size:14px">Avan&ccedil;ar &rarr;</button>' + '</div>' + '<div id="m4-parts" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></div>' + '</div></div>' + '</div>';
+container.innerHTML = CSS + '<div class="m4">' + '<div id="m4-conteudo">' + '<div class="m4-badge">Relacionamento &middot; M&oacute;dulo 4</div>' + '<div class="m4-titulo">Escrita encantadora: Chat, WhatsApp e Mídias Sociais</div>' + '<div class="m4-intro">A Canopus conversa com o cliente no canal que ele preferir. Cada canal tem suas regras, seu ritmo e seu tom. Conhecer essas diferenças &eacute; o que separa um atendimento mediano de um atendimento que o cliente lembra &mdash; e recomenda.</div>' + '<div class="m4-pbar"><div class="m4-pbar-fill" id="m4-pb" style="width:25%"></div></div>' + '<div class="m4-snav-wrap">' + '<button class="m4-snav ativo" onclick="m4Ir(0)">1. Escrita</button>' + '<button class="m4-snav" onclick="m4Ir(1)">2. Chat</button>' + '<button class="m4-snav" onclick="m4Ir(2)">3. WhatsApp</button>' + '<button class="m4-snav" onclick="m4Ir(3)">4. Redes Sociais</button>' + '</div>' + '<div id="m4-passo-wrap"></div>' + '<div class="m4-nav">' + '<button class="m4-btn" id="m4-ant" onclick="m4Nav(-1)" disabled>&larr; Anterior</button>' + '<span class="m4-navlbl" id="m4-lbl">Passo 1 de 4</span>' + '<button class="m4-btn p" id="m4-prox">Pr&oacute;ximo &rarr;</button>' + '</div></div>' + '<div id="m4-caso" style="display:none">' + '<div class="m4-badge">Estudos de caso</div>' + '<div class="m4-titulo">Agora &eacute; com voc&ecirc;</div>' + '<div class="m4-intro">Voc&ecirc; aprendeu os 4 canais e os 7 pilares. Agora pratique com 5 situa&ccedil;&otilde;es reais. Voc&ecirc; tem at&eacute; 3 tentativas em cada uma.</div>' + '<div id="m4-caso-prog" class="m4-caso-prog"></div>' + '<div id="m4-caso-wrap"></div>' + '<div class="m4-nav">' + '<button class="m4-btn" onclick="m4Tela(\'conteudo\')">&larr; Voltar</button>' + '<button class="m4-btn p" id="m4-ir-enc" onclick="m4Tela(\'enc\')" disabled>Encerramento &rarr;</button>' + '</div></div>' + '<div id="m4-enc" style="display:none">' + '<div class="m4-enc">' + '<svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none" width="130" height="130" viewBox="0 0 130 130"><circle id="m4-ring" cx="65" cy="65" r="48" fill="none" stroke="#2CD5C4" stroke-width="1" opacity=".3" style="stroke-dasharray:302;stroke-dashoffset:302;transition:stroke-dashoffset 1s .8s ease-out"/></svg>' + '<div class="m4-enc-logo" id="m4-enc-logo" style="position:relative;z-index:2">' + LOGO + '</div>' + '<div class="m4-enc-t1" id="m4-enc-t1" style="position:relative;z-index:2">Voc&ecirc; concluiu o m&oacute;dulo!</div>' + '<div class="m4-enc-t2" id="m4-enc-t2" style="position:relative;z-index:2">Agora voc&ecirc; sabe como escrever de forma encantadora em qualquer canal.</div>' + '<div class="m4-enc-pills" id="m4-enc-pills" style="position:relative;z-index:2">' + '<span class="m4-enc-pill">7 Pilares</span>' + '<span class="m4-enc-pill">Chat</span>' + '<span class="m4-enc-pill">WhatsApp</span>' + '<span class="m4-enc-pill">Redes Sociais</span>' + '</div>' + '<div class="m4-enc-btn" id="m4-enc-btn" style="position:relative;z-index:2">' + '<button class="m4-btn p" onclick="history.back()" style="border-radius:10px;padding:10px 28px;font-size:14px">Voltar &agrave; trilha &rarr;</button>' + '</div>' + '<div id="m4-parts" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></div>' + '</div></div>' + '</div>';
 
 window.m4Atual = 0;
 window.m4QDone = false;
@@ -8526,28 +8896,124 @@ window.m4Nav = function(d){ var n=window.m4Atual+d; if(n>=0&&n<=3) renderPasso4(
 window.m4Tela = function(nome){
     ['conteudo','caso','enc'].forEach(function(t){ var el=document.getElementById('m4-'+t); if(el)el.style.display='none'; });
     var el=document.getElementById('m4-'+nome); if(el)el.style.display='block';
+    if(nome==='caso') window.m4RenderCaso();
     if(nome==='enc') m4Animar();
 };
 
-var M4_RESPS = [
-    {c:false,f:'Ignorar &eacute; a pior op&ccedil;&atilde;o. O post j&aacute; tem 14 coment&aacute;rios &mdash; cada minuto sem resposta aumenta o alcance negativo e a percep&ccedil;&atilde;o de descaso.'},
-    {c:true, f:'Correto! A rapidez &eacute; essencial em m&iacute;dias sociais. A resposta p&uacute;blica com empatia mostra car&aacute;ter para todos que est&atilde;o vendo. Pedir o contato privado protege os dados e permite resolver com aten&ccedil;&atilde;o individual.'},
-    {c:false,f:'Detalhes operacionais em coment&aacute;rios p&uacute;blicos podem expor informa&ccedil;&otilde;es sens&iacute;veis e gerar mais perguntas. O certo &eacute; ser breve e empático em p&uacute;blico, detalhado em privado.'},
-    {c:false,f:'Encaminhar para o jur&iacute;dico sem qualquer resposta ao cliente &eacute; tratar uma reclama&ccedil;&atilde;o emocional como um processo burocrático. O cliente e os observadores percebem.'}
+var M4_CASOS = [
+  {
+    sit:'Ana postou no Instagram da Canopus reclamando de um atraso na entrega das chaves. O post j&aacute; tem 14 coment&aacute;rios de outras pessoas pedindo explica&ccedil;&otilde;es.',
+    perg:'Qual &eacute; a a&ccedil;&atilde;o certa?',
+    opts:['Ignorar o post e resolver internamente antes de se posicionar.','Responder rapidamente com empatia, reconhecer a frustra&ccedil;&atilde;o e pedir contato privado.','Explicar detalhadamente o motivo do atraso nos coment&aacute;rios.','Encaminhar para o jur&iacute;dico antes de qualquer resposta.'],
+    correta:1,
+    fb:['Ignorar &eacute; o pior caminho. Com 14 coment&aacute;rios, cada minuto em sil&ecirc;ncio aumenta o alcance negativo.','Correto! Rapidez e empatia em p&uacute;blico mostram car&aacute;ter para todos que veem. O contato privado protege os dados e resolve com aten&ccedil;&atilde;o individual.','Detalhes operacionais em p&uacute;blico expõem informa&ccedil;&otilde;es sens&iacute;veis e geram mais perguntas. Breve em p&uacute;blico, detalhado em privado.','Encaminhar ao jur&iacute;dico sem responder &eacute; tratar uma reclama&ccedil;&atilde;o emocional como processo. O cliente percebe o descaso.']
+  },
+  {
+    sit:'No chat, Bruno escreve em letras mai&uacute;sculas: &#8220;J&Aacute; FAZ UMA SEMANA E NINGU&Eacute;M ME RESPONDE SOBRE A MINHA GARAGEM!&#8221;',
+    perg:'Como voc&ecirc; responde no chat?',
+    opts:['&#8220;Bruno, por favor n&atilde;o use letras mai&uacute;sculas, equivale a gritar.&#8221;','&#8220;Sua mensagem foi recebida. Aguarde retorno do setor respons&aacute;vel.&#8221;','&#8220;Oi, Bruno. Entendo sua indigna&ccedil;&atilde;o, uma semana sem resposta &eacute; tempo demais mesmo. Vou assumir agora e te trazer uma posi&ccedil;&atilde;o sobre a garagem ainda hoje.&#8221;','&#8220;Bruno, esse assunto n&atilde;o &eacute; comigo, vou te encaminhar.&#8221;'],
+    correta:2,
+    fb:['Corrigir a forma do cliente irritado s&oacute; aumenta o atrito. Foque na emo&ccedil;&atilde;o e na solu&ccedil;&atilde;o.','Resposta robótica e fria para quem est&aacute; revoltado soa como mais descaso.','Isso! Voc&ecirc; validou a emo&ccedil;&atilde;o, assumiu responsabilidade e deu um compromisso com prazo. &Eacute; assim que se reverte a indigna&ccedil;&atilde;o.','Encaminhar sem acolher faz o cliente repetir tudo e aumenta a revolta.']
+  },
+  {
+    sit:'No WhatsApp, &agrave;s 22h30, a cliente Let&iacute;cia &mdash; que iniciou o contato de manh&atilde; &mdash; pergunta se pode mandar os documentos da vistoria por l&aacute;.',
+    perg:'Qual a melhor conduta?',
+    opts:['Responder normalmente e receber os documentos, pois ela iniciou o contato e &eacute; algo simples.','Ignorar at&eacute; o dia seguinte por estar fora do hor&aacute;rio comercial.','Responder pedindo que ela envie por e-mail, pois WhatsApp n&atilde;o &eacute; seguro.','Avisar que atendimento s&oacute; ocorre em hor&aacute;rio comercial e encerrar.'],
+    correta:0,
+    fb:['Certo! Como ela iniciou o contato e a a&ccedil;&atilde;o &eacute; simples, atender com cordialidade refor&ccedil;a o cuidado. Apenas mantenha a privacidade dos dados.','Ignorar quem j&aacute; estava em contato no mesmo dia quebra a continuidade e frustra.','Recusar o canal que ela escolheu cria barreira desnecess&aacute;ria num caso simples.','Resposta burocrática e fria para uma solicita&ccedil;&atilde;o leg&iacute;tima afasta a cliente.']
+  },
+  {
+    sit:'No Reclame Aqui, o cliente Marcos relata de forma educada que aguarda h&aacute; 30 dias o reembolso de uma taxa cobrada indevidamente.',
+    perg:'Qual estrutura de resposta seguir?',
+    opts:['Responder s&oacute; ap&oacute;s o reembolso ser feito, para n&atilde;o se comprometer.','Responder com saudação, reconhecimento do transtorno, contextualiza&ccedil;&atilde;o, pr&oacute;ximos passos com prazo e canal de contato.','Pedir que ele remova a reclama&ccedil;&atilde;o e prometer resolver depois.','Responder apenas: &#8220;Estamos analisando seu caso.&#8221;'],
+    correta:1,
+    fb:['Esperar para responder deixa a reclama&ccedil;&atilde;o p&uacute;blica sem resposta por mais tempo, o que pesa na reputa&ccedil;&atilde;o.','Exato! Essa &eacute; a estrutura do Reclame Aqui: acolher, contextualizar, dar prazo concreto e oferecer canal. Transparente e respeitoso.','Pedir remo&ccedil;&atilde;o antes de resolver soa como tentativa de esconder o problema. P&eacute;ssima percep&ccedil;&atilde;o.','Resposta gen&eacute;rica sem prazo nem acolhimento n&atilde;o tranquiliza ningu&eacute;m.']
+  },
+  {
+    sit:'Uma cliente comenta no Instagram, sem reclama&ccedil;&atilde;o, apenas perguntando: &#8220;Esse empreendimento da foto ainda tem unidades dispon&iacute;veis?&#8221;',
+    perg:'Como a Canopus deve responder?',
+    opts:['Ignorar, pois n&atilde;o &eacute; uma reclama&ccedil;&atilde;o.','Responder publicamente com simpatia e direcionar para o canal de vendas para detalhes.','Responder apenas &#8220;sim&#8221; e nada mais.','Pedir que ela mande e-mail formal para obter qualquer informa&ccedil;&atilde;o.'],
+    correta:1,
+    fb:['Ignorar um interessado &eacute; perder oportunidade real e passar imagem de descaso.','Perfeito! Mesmo sem ser reclama&ccedil;&atilde;o, responder com simpatia e direcionar para vendas gera oportunidade e mostra presen&ccedil;a da marca.','Responder s&oacute; &#8220;sim&#8221; desperdi&ccedil;a o interesse e n&atilde;o conduz a cliente a lugar nenhum.','Exigir e-mail formal para uma pergunta simples cria atrito e esfria o interesse.']
+  }
 ];
 
+window.m4CasoAtual = 0;
+window.m4CasoTentativas = 0;
+window.m4CasosResolvidos = [];
+window.m4AcertosPrimeira = 0;
+
+window.m4RenderCaso = function() {
+    if(window.m4CasosResolvidos.length === 0){ window.m4AcertosPrimeira = 0; window.m4CasoAtual = 0; }
+    var idx = window.m4CasoAtual;
+    var caso = M4_CASOS[idx];
+    window.m4CasoTentativas = 0;
+    var prog = '';
+    for(var k=0;k<M4_CASOS.length;k++){
+        var estado = window.m4CasosResolvidos.indexOf(k) !== -1 ? 'ok' : (k===idx ? 'ativo' : '');
+        prog += '<div class="m4-caso-dot '+estado+'">'+(k+1)+'</div>';
+    }
+    document.getElementById('m4-caso-prog').innerHTML = prog;
+    var letras=['A','B','C','D'];
+    var optsHtml='';
+    for(var j=0;j<caso.opts.length;j++){
+        optsHtml += '<button class="m4-opt m4-slide-up" style="animation-delay:'+(0.05*j)+'s" onclick="m4Resp('+j+')"><span class="m4-ol">'+letras[j]+'</span>'+caso.opts[j]+'</button>';
+    }
+    document.getElementById('m4-caso-wrap').innerHTML =
+        '<div class="m4-caso">'
+        + '<div class="m4-fade-in" style="font-size:11px;font-weight:700;color:#003349;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Caso '+(idx+1)+' de '+M4_CASOS.length+'</div>'
+        + '<div class="m4-slide-up" style="font-size:14px;color:#5a6b7c;line-height:1.7;margin-bottom:14px;font-style:italic;padding:11px 14px;background:#f0f4f4;border-radius:10px">'+caso.sit+'</div>'
+        + '<div class="m4-slide-up" style="animation-delay:.08s;font-size:14px;font-weight:600;color:#1a2b3c;margin-bottom:10px">'+caso.perg+'</div>'
+        + '<div class="m4-tent" id="m4-tent">Tentativa 1 de 3</div>'
+        + '<div class="m4-opts">'+optsHtml+'</div>'
+        + '<div class="m4-fb" id="m4-fb"></div>'
+        + '</div>';
+};
+
 window.m4Resp = function(i){
-    if(window.m4QDone)return; window.m4QDone=true;
-    var r=M4_RESPS[i];
-    document.querySelectorAll('.m4-opt').forEach(function(el,idx){
-        el.disabled=true;
-        if(M4_RESPS[idx].c)el.classList.add('certa');
-        else if(idx===i&&!r.c)el.classList.add('errada');
-    });
-    var fb=document.getElementById('m4-fb');
-    fb.className='m4-fb show '+(r.c?'ok':'err');
-    fb.innerHTML=(r.c?'&#10003; ':'&#10007; ')+r.f;
-    if(r.c)document.getElementById('m4-ir-enc').disabled=false;
+    var caso = M4_CASOS[window.m4CasoAtual];
+    var opts = document.querySelectorAll('.m4-opt');
+    var fb = document.getElementById('m4-fb');
+    if(i === caso.correta) {
+        if(window.m4CasoTentativas === 0) window.m4AcertosPrimeira++;
+        opts.forEach(function(el,idx){ el.disabled=true; if(idx===caso.correta) el.classList.add('certa'); });
+        fb.className='m4-fb show ok';
+        fb.innerHTML='&#10003; '+caso.fb[i];
+        if(window.m4CasosResolvidos.indexOf(window.m4CasoAtual)===-1) window.m4CasosResolvidos.push(window.m4CasoAtual);
+        if(window.m4CasoAtual+1 < M4_CASOS.length){
+            fb.innerHTML += '<div style="margin-top:10px"><button class="m4-btn p" style="padding:7px 18px;font-size:13px" onclick="m4ProximoCaso()">Pr&oacute;ximo caso &rarr;</button></div>';
+        } else {
+            fb.innerHTML += '<div style="margin-top:10px;font-weight:600;color:#0F6E56">Voc&ecirc; concluiu todos os casos!</div>';
+            document.getElementById('m4-ir-enc').disabled=false;
+        }
+    } else {
+        window.m4CasoTentativas++;
+        var restantes = 3 - window.m4CasoTentativas;
+        opts[i].classList.add('errada');
+        opts[i].disabled=true;
+        if(restantes > 0){
+            document.getElementById('m4-tent').textContent='Tentativa '+(window.m4CasoTentativas+1)+' de 3';
+            fb.className='m4-fb show err';
+            fb.innerHTML='&#10007; '+caso.fb[i]+'<div style="margin-top:6px;font-size:12px">Voc&ecirc; ainda tem '+restantes+(restantes===1?' tentativa.':' tentativas.')+'</div>';
+        } else {
+            opts.forEach(function(el,idx){ el.disabled=true; if(idx===caso.correta) el.classList.add('certa'); });
+            fb.className='m4-fb show err';
+            fb.innerHTML='&#10007; '+caso.fb[i]+'<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">A resposta certa era a op&ccedil;&atilde;o destacada. '+caso.fb[caso.correta]+'</div>';
+            if(window.m4CasosResolvidos.indexOf(window.m4CasoAtual)===-1) window.m4CasosResolvidos.push(window.m4CasoAtual);
+            if(window.m4CasoAtual+1 < M4_CASOS.length){
+                fb.innerHTML += '<div style="margin-top:10px"><button class="m4-btn p" style="padding:7px 18px;font-size:13px" onclick="m4ProximoCaso()">Pr&oacute;ximo caso &rarr;</button></div>';
+            } else {
+                document.getElementById('m4-ir-enc').disabled=false;
+            }
+        }
+    }
+};
+
+window.m4ProximoCaso = function(){
+    if(window.m4CasoAtual < M4_CASOS.length - 1){
+        window.m4CasoAtual++;
+        window.m4RenderCaso();
+    }
 };
 
 function m4Animar(){
@@ -8556,11 +9022,39 @@ function m4Animar(){
     for(var i=0;i<22;i++){var p=document.createElement('div');var sz=Math.random()*4+2;var ang=Math.random()*Math.PI*2;var d=60+Math.random()*80;p.style.cssText='position:absolute;border-radius:50%;width:'+sz+'px;height:'+sz+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';top:calc(50% - '+sz/2+'px);left:calc(50% - '+sz/2+'px);animation:cnPart 2s ease-out forwards;animation-delay:'+Math.random()*.3+'s;--dx:'+Math.cos(ang)*d+'px;--dy:'+Math.sin(ang)*d+'px';pc.appendChild(p);}}
     var lw=document.getElementById('m4-enc-logo'); if(lw)setTimeout(function(){lw.classList.add('vis');},150);
     var rc=document.getElementById('m4-ring'); if(rc)setTimeout(function(){rc.style.strokeDashoffset='0';},800);
-    var t1=document.getElementById('m4-enc-t1'); if(t1)setTimeout(function(){t1.classList.add('vis');},1100);
-    var t2=document.getElementById('m4-enc-t2'); if(t2)setTimeout(function(){t2.classList.add('vis');},1300);
+    var pctAprov4=Math.round(((window.m4AcertosPrimeira||0)/M4_CASOS.length)*100);
+    var passou4=pctAprov4>=70;
+    var t1=document.getElementById('m4-enc-t1'); if(t1){t1.innerHTML=passou4?'Voc&ecirc; concluiu o m&oacute;dulo!':'Quase l&aacute;!'; setTimeout(function(){t1.classList.add('vis');},1100);}
+    var t2=document.getElementById('m4-enc-t2'); if(t2){
+        var total=M4_CASOS.length;
+        var acertos=window.m4AcertosPrimeira||0;
+        var pct=Math.round((acertos/total)*100);
+        var aprovado=pct>=70;
+        var cor=aprovado?'#2CD5C4':'#F0A33E';
+        t2.innerHTML='Seu aproveitamento nos estudos de caso:'
+            +'<div style="margin-top:10px;font-size:26px;font-weight:700;color:'+cor+'">'+pct+'%</div>'
+            +'<div style="font-size:12px;margin-top:2px">'+acertos+' de '+total+' casos acertados na primeira tentativa</div>'
+            +'<div style="margin-top:8px;font-size:12px;color:'+cor+';font-weight:600">'+(aprovado?'&#10003; Aprovado &mdash; voc&ecirc; domina a comunica&ccedil;&atilde;o!':'Voc&ecirc; precisa de no m&iacute;nimo 70% para concluir. Refa&ccedil;a os estudos de caso.')+'</div>';
+        setTimeout(function(){t2.classList.add('vis');},1300);
+    }
     var pl=document.getElementById('m4-enc-pills'); if(pl)setTimeout(function(){pl.classList.add('vis');},1500);
-    var bt=document.getElementById('m4-enc-btn'); if(bt)setTimeout(function(){bt.classList.add('vis');},1800);
+    var bt=document.getElementById('m4-enc-btn'); if(bt){
+        if(!passou4){
+            bt.innerHTML='<button class="m4-btn p" onclick="m4RefazerCasos()" style="border-radius:10px;padding:10px 28px;font-size:14px;background:#F0A33E;border-color:#F0A33E">&#8634; Refazer estudos de caso</button>';
+        } else {
+            bt.innerHTML='<button class="m4-btn p" onclick="history.back()" style="border-radius:10px;padding:10px 28px;font-size:14px">Voltar &agrave; trilha &rarr;</button>';
+        }
+        setTimeout(function(){bt.classList.add('vis');},1800);
+    }
 }
+window.m4RefazerCasos=function(){
+    window.m4CasoAtual=0;
+    window.m4CasosResolvidos=[];
+    window.m4AcertosPrimeira=0;
+    window.m4CasoTentativas=0;
+    document.getElementById('m4-ir-enc').disabled=true;
+    m4Tela('caso');
+};
 
 renderPasso4(0);
 }
@@ -8580,6 +9074,11 @@ navigateTo = function(page) {
 
     if (page.startsWith('mod-')) {
         setTimeout(() => renderModuleFiles(page), 500);
+    }
+
+    // Reaplicar selos de status sempre que navegar (cards podem ser re-renderizados)
+    if (typeof aplicarSelosModulos === 'function') {
+        setTimeout(aplicarSelosModulos, 200);
     }
 };
 
@@ -8732,7 +9231,12 @@ var CSS = [
 '.cn-btn.p:hover{background:#004d6b}',
 '.cn-btn:disabled{opacity:.35;cursor:not-allowed}',
 '.cn-fade-in{animation:cnFadeIn .35s ease both}',
-'.cn-slide-up{animation:cnSlideUp .35s ease both}',
+'.cn-slide-up{animation:cnSlideUp .4s ease both}',
+'.cn-caso-prog{display:flex;gap:8px;justify-content:center;margin-bottom:1rem}',
+'.cn-caso-dot{width:28px;height:28px;border-radius:50%;background:#eef2f2;color:#9aacac;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .3s;border:1px solid #e2e8f0}',
+'.cn-caso-dot.ativo{background:#003349;color:#fff;border-color:#003349;transform:scale(1.1)}',
+'.cn-caso-dot.ok{background:#e6f7f6;color:#0F6E56;border-color:#1DBCB0}',
+'.cn-tent{font-size:12px;color:#78A0A0;margin-bottom:10px;font-weight:600}',
 '@keyframes cnFadeIn{from{opacity:0}to{opacity:1}}',
 '@keyframes cnSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes cnPart{0%{opacity:0;transform:translate(0,0) scale(0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1)}}',
 '@media(max-width:600px){.cn-snav{font-size:11px;padding:5px 9px}.cn-titulo{font-size:17px}.cn-topo{padding:12px 14px}.cn-corpo{padding:14px 16px}}</style>'
@@ -8778,11 +9282,11 @@ function cnRenderPasso(i) {
         if(idx<i) b.classList.add('feito');
         if(idx===i) b.classList.add('ativo');
     });
-    var sc = p.scripts.map(function(s){
-        return '<div class="cn-script"><div class="cn-sctx">'+s.ctx+'</div><div class="cn-sfala">'+s.fala+'</div></div>';
+    var sc = p.scripts.map(function(s,si){
+        return '<div class="cn-script cn-slide-up" style="animation-delay:'+(0.18+si*0.08)+'s"><div class="cn-sctx">'+s.ctx+'</div><div class="cn-sfala">'+s.fala+'</div></div>';
     }).join('');
-    var ev = p.evitar.map(function(e){
-        return '<div class="cn-aitem"><span class="cn-aitem-x">&#10007;</span><span>'+e+'</span></div>';
+    var ev = p.evitar.map(function(e,ei){
+        return '<div class="cn-aitem cn-slide-up" style="animation-delay:'+(0.4+ei*0.05)+'s"><span class="cn-aitem-x">&#10007;</span><span>'+e+'</span></div>';
     }).join('');
     document.getElementById('cn-passo').innerHTML =
         '<div class="cn-card cn-fade-in">'
@@ -8791,13 +9295,13 @@ function cnRenderPasso(i) {
         +'<div class="cn-ptit">'+p.titulo+'</div>'
         +'<div class="cn-psub">'+p.sub+'</div></div></div>'
         +'<div class="cn-corpo">'
-        +'<div class="cn-texto cn-slide-up">'+p.texto+'</div>'
-        +'<div class="cn-stit cn-slide-up">Como fazer na pr&aacute;tica</div>'+sc
-        +'<div class="cn-atencao cn-slide-up"><div class="cn-atit">O que nunca fazer</div>'+ev+'</div>'
+        +'<div class="cn-texto cn-slide-up" style="animation-delay:.05s">'+p.texto+'</div>'
+        +'<div class="cn-stit cn-slide-up" style="animation-delay:.12s">Como fazer na pr&aacute;tica</div>'+sc
+        +'<div class="cn-atencao cn-slide-up" style="animation-delay:'+(0.4+p.evitar.length*0.05+0.05)+'s"><div class="cn-atit">O que nunca fazer</div>'+ev+'</div>'
         +'</div></div>';
 }
 
-var HTML_BASE = CSS + '<div class="cn-wrap">' + '<div id="cn-conteudo">' + '<div class="cn-badge">Relacionamento &middot; M&oacute;dulo 2</div>' + '<div class="cn-titulo">Como atendemos na Canopus</div>' + '<div class="cn-intro">Aqui na Canopus, atender bem n&atilde;o &eacute; talento, &eacute; m&eacute;todo. Todo atendimento segue 5 passos. Pensa numa obra: voc&ecirc; n&atilde;o coloca o acabamento antes da funda&ccedil;&atilde;o. No atendimento &eacute; igual.</div>' + '<div class="cn-pbar"><div class="cn-pbar-fill" id="cn-pb" style="width:20%"></div></div>' + '<div class="cn-snav-wrap">' + '<button class="cn-snav ativo" onclick="cnIr(0)">1. Conectar</button>' + '<button class="cn-snav" onclick="cnIr(1)">2. Compreender</button>' + '<button class="cn-snav" onclick="cnIr(2)">3. Engajar</button>' + '<button class="cn-snav" onclick="cnIr(3)">4. Confirmar</button>' + '<button class="cn-snav" onclick="cnIr(4)">5. Entregar</button>' + '</div>' + '<div id="cn-passo"></div>' + '<div class="cn-nav">' + '<button class="cn-btn" id="cn-ant" onclick="cnNav(-1)" disabled>&larr; Anterior</button>' + '<span class="cn-navlbl" id="cn-lbl">Passo 1 de 5</span>' + '<button class="cn-btn p" id="cn-prox">Pr&oacute;ximo &rarr;</button>' + '</div></div>' + '<div id="cn-caso" style="display:none">' + '<div class="cn-badge">Estudo de caso</div>' + '<div class="cn-titulo">Agora &eacute; com voc&ecirc;</div>' + '<div class="cn-intro">Voc&ecirc; aprendeu os 5 passos. Leia a situa&ccedil;&atilde;o abaixo e escolha como voc&ecirc; responderia.</div>' + '<div class="cn-caso"><div class="cn-clbl">Situa&ccedil;&atilde;o real</div>' + '<div class="cn-ctxt">Carlos liga irritado dizendo que o boleto do apartamento venceu ontem e o site n&atilde;o aceita o pagamento. Ele tentou tr&ecirc;s vezes e teme ter o nome negativado.</div>' + '<div class="cn-cperg">Qual &eacute; a sua primeira resposta ao Carlos?</div>' + '<div class="cn-opts">' + '<button class="cn-opt" onclick="cnResp(0)"><span class="cn-ol">A</span>&#8220;Carlos, o sistema &agrave;s vezes apresenta instabilidades. O senhor pode pagar na ag&ecirc;ncia banc&aacute;ria.&#8221;</button>' + '<button class="cn-opt" onclick="cnResp(1)"><span class="cn-ol">B</span>&#8220;Ol&aacute;, Carlos! J&aacute; vou cuidar da sua solicita&ccedil;&atilde;o. Entendo que voc&ecirc; tentou tr&ecirc;s vezes e n&atilde;o conseguiu &#8212; isso &eacute; frustrante. Me conta o que aparece na tela quando voc&ecirc; tenta pagar.&#8221;</button>' + '<button class="cn-opt" onclick="cnResp(2)"><span class="cn-ol">C</span>&#8220;Carlos, esse assunto &eacute; com o setor financeiro. Vou transferir sua liga&ccedil;&atilde;o.&#8221;</button>' + '<button class="cn-opt" onclick="cnResp(3)"><span class="cn-ol">D</span>&#8220;Bom dia! Como o boleto venceu ontem, j&aacute; h&aacute; juros. Posso gerar uma segunda via.&#8221;</button>' + '</div><div class="cn-fb" id="cn-fb"></div></div>' + '<div class="cn-nav">' + '<button class="cn-btn" onclick="cnVoltarC()">&larr; Voltar</button>' + '<button class="cn-btn p" id="cn-irchk" onclick="cnIrChk()" disabled>Encerramento &rarr;</button>' + '</div></div>' + '<div id="cn-conclusao" style="display:none">' + '<div style="text-align:center;padding:2.5rem 1.5rem;background:var(--azul-escuro);border-radius:16px;position:relative;overflow:hidden">' + '<div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(44,213,196,0.06)"></div>' + '<div id="cn-logo-wrap" style="opacity:0;transform:scale(0.3);transition:opacity .7s cubic-bezier(.34,1.56,.64,1),transform .7s cubic-bezier(.34,1.56,.64,1);margin-bottom:1rem;display:inline-block;position:relative;z-index:2">' + '<svg width="72" height="72" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lgT" x1="0" y1="0" x2="1" y2="0.4"><stop offset="0%" stop-color="#2CD5C4"/><stop offset="100%" stop-color="#00B8D4"/></linearGradient><linearGradient id="lgM" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0%" stop-color="#18C8C0"/><stop offset="100%" stop-color="#0090A8"/></linearGradient><linearGradient id="lgB" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0%" stop-color="#10BDB8"/><stop offset="100%" stop-color="#007A90"/></linearGradient></defs><polygon points="22,36 78,36 92,18 36,18" fill="url(#lgT)"/><rect x="22" y="36" width="18" height="56" fill="url(#lgM)"/><rect x="40" y="36" width="38" height="38" fill="url(#lgM)"/><rect x="52" y="36" width="26" height="26" fill="#003349"/><circle cx="67" cy="44" r="10" fill="#1ABED0"/><circle cx="67" cy="44" r="5.5" fill="#003349" opacity="0.75"/><polygon points="40,74 72,74 86,92 40,92" fill="url(#lgB)"/></svg>' + '</svg>' + '<div id="cn-c-t1" style="font-size:20px;font-weight:600;color:#fff;margin-bottom:.4rem;opacity:0;transform:translateY(10px);transition:all .5s 1.1s;position:relative;z-index:2">Voc&ecirc; concluiu o m&oacute;dulo!</div>' + '<div id="cn-c-t2" style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:1.2rem;opacity:0;transform:translateY(8px);transition:all .5s 1.3s;position:relative;z-index:2">Seu progresso foi registrado.<br>Continue avan&ccedil;ando na sua trilha Canopus.</div>' + '<div id="cn-c-pills" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:1.2rem;opacity:0;transition:all .5s 1.5s;position:relative;z-index:2">' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Conectar</span>' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Compreender</span>' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Engajar</span>' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Confirmar</span>' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Entregar</span>' + '</div>' + '<div id="cn-c-btn" style="opacity:0;transform:translateY(8px);transition:all .5s 1.8s;position:relative;z-index:2">' + '<button onclick="history.back()" class="cn-btn p" style="border-radius:10px;padding:10px 28px;font-size:14px">Avan&ccedil;ar &rarr;</button>' + '</div>' + '<div id="cn-particles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></div>' + '</div></div>' + '</div></div>';
+var HTML_BASE = CSS + '<div class="cn-wrap">' + '<div id="cn-conteudo">' + '<div class="cn-badge">Relacionamento &middot; M&oacute;dulo 2</div>' + '<div class="cn-titulo">Como atendemos na Canopus</div>' + '<div class="cn-intro">Aqui na Canopus, atender bem n&atilde;o &eacute; talento, &eacute; m&eacute;todo. Todo atendimento segue 5 passos. Pensa numa obra: voc&ecirc; n&atilde;o coloca o acabamento antes da funda&ccedil;&atilde;o. No atendimento &eacute; igual.</div>' + '<div class="cn-pbar"><div class="cn-pbar-fill" id="cn-pb" style="width:20%"></div></div>' + '<div class="cn-snav-wrap">' + '<button class="cn-snav ativo" onclick="cnIr(0)">1. Conectar</button>' + '<button class="cn-snav" onclick="cnIr(1)">2. Compreender</button>' + '<button class="cn-snav" onclick="cnIr(2)">3. Engajar</button>' + '<button class="cn-snav" onclick="cnIr(3)">4. Confirmar</button>' + '<button class="cn-snav" onclick="cnIr(4)">5. Entregar</button>' + '</div>' + '<div id="cn-passo"></div>' + '<div class="cn-nav">' + '<button class="cn-btn" id="cn-ant" onclick="cnNav(-1)" disabled>&larr; Anterior</button>' + '<span class="cn-navlbl" id="cn-lbl">Passo 1 de 5</span>' + '<button class="cn-btn p" id="cn-prox">Pr&oacute;ximo &rarr;</button>' + '</div></div>' + '<div id="cn-caso" style="display:none">' + '<div class="cn-badge">Estudos de caso</div>' + '<div class="cn-titulo">Agora &eacute; com voc&ecirc;</div>' + '<div class="cn-intro">Voc&ecirc; aprendeu os 5 passos. Agora pratique com 5 situa&ccedil;&otilde;es reais. Voc&ecirc; tem at&eacute; 3 tentativas em cada uma.</div>' + '<div id="cn-caso-prog" class="cn-caso-prog"></div>' + '<div id="cn-caso-wrap"></div>' + '<div class="cn-nav">' + '<button class="cn-btn" onclick="cnVoltarC()">&larr; Voltar</button>' + '<button class="cn-btn p" id="cn-irchk" onclick="cnIrChk()" disabled>Encerramento &rarr;</button>' + '</div></div>' + '<div id="cn-conclusao" style="display:none">' + '<div style="text-align:center;padding:2.5rem 1.5rem;background:var(--azul-escuro);border-radius:16px;position:relative;overflow:hidden">' + '<div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(44,213,196,0.06)"></div>' + '<div id="cn-logo-wrap" style="opacity:0;transform:scale(0.3);transition:opacity .7s cubic-bezier(.34,1.56,.64,1),transform .7s cubic-bezier(.34,1.56,.64,1);margin-bottom:1rem;display:inline-block;position:relative;z-index:2">' + '<svg width="72" height="72" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lgT" x1="0" y1="0" x2="1" y2="0.4"><stop offset="0%" stop-color="#2CD5C4"/><stop offset="100%" stop-color="#00B8D4"/></linearGradient><linearGradient id="lgM" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0%" stop-color="#18C8C0"/><stop offset="100%" stop-color="#0090A8"/></linearGradient><linearGradient id="lgB" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0%" stop-color="#10BDB8"/><stop offset="100%" stop-color="#007A90"/></linearGradient></defs><polygon points="22,36 78,36 92,18 36,18" fill="url(#lgT)"/><rect x="22" y="36" width="18" height="56" fill="url(#lgM)"/><rect x="40" y="36" width="38" height="38" fill="url(#lgM)"/><rect x="52" y="36" width="26" height="26" fill="#003349"/><circle cx="67" cy="44" r="10" fill="#1ABED0"/><circle cx="67" cy="44" r="5.5" fill="#003349" opacity="0.75"/><polygon points="40,74 72,74 86,92 40,92" fill="url(#lgB)"/></svg>' + '</svg>' + '<div id="cn-c-t1" style="font-size:20px;font-weight:600;color:#fff;margin-bottom:.4rem;opacity:0;transform:translateY(10px);transition:all .5s 1.1s;position:relative;z-index:2">Voc&ecirc; concluiu o m&oacute;dulo!</div>' + '<div id="cn-c-t2" style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:1.2rem;opacity:0;transform:translateY(8px);transition:all .5s 1.3s;position:relative;z-index:2">Seu progresso foi registrado.<br>Continue avan&ccedil;ando na sua trilha Canopus.</div>' + '<div id="cn-c-pills" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:1.2rem;opacity:0;transition:all .5s 1.5s;position:relative;z-index:2">' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Conectar</span>' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Compreender</span>' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Engajar</span>' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Confirmar</span>' + '<span style="background:rgba(44,213,196,0.12);border:0.5px solid rgba(44,213,196,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#2CD5C4">Entregar</span>' + '</div>' + '<div id="cn-c-btn" style="opacity:0;transform:translateY(8px);transition:all .5s 1.8s;position:relative;z-index:2">' + '<button onclick="history.back()" class="cn-btn p" style="border-radius:10px;padding:10px 28px;font-size:14px">Avan&ccedil;ar &rarr;</button>' + '</div>' + '<div id="cn-particles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></div>' + '</div></div>' + '</div></div>';
 
 container.innerHTML = HTML_BASE;
 
@@ -8810,6 +9314,10 @@ window.cnNav = function(d){ var n=window.cnAtual+d; if(n>=0&&n<=4) cnRenderPasso
 window.cnIrCaso = function(){
     document.getElementById('cn-conteudo').style.display='none';
     document.getElementById('cn-caso').style.display='block';
+    if(typeof window.cnCasoAtual === 'undefined') window.cnCasoAtual = 0;
+    // Reiniciar pontuação somente se ainda não começou nenhum caso
+    if(window.cnCasosResolvidos.length === 0){ window.cnAcertosPrimeira = 0; window.cnCasoAtual = 0; }
+    window.cnRenderCaso();
 };
 window.cnVoltarC = function(){
     document.getElementById('cn-caso').style.display='none';
@@ -8843,39 +9351,221 @@ function cnAnimarConclusao() {
     var rc = document.getElementById('cn-ring-c');
     if(rc){ setTimeout(function(){ rc.style.strokeDashoffset='0'; },800); }
     var t1 = document.getElementById('cn-c-t1');
-    if(t1){ setTimeout(function(){ t1.style.opacity='1'; t1.style.transform='translateY(0)'; },1100); }
+    var pctAprov = Math.round(((window.cnAcertosPrimeira||0)/CASOS.length)*100);
+    var passou = pctAprov >= 70;
+    if(t1){
+        t1.innerHTML = passou ? 'Voc&ecirc; concluiu o m&oacute;dulo!' : 'Quase l&aacute;!';
+        setTimeout(function(){ t1.style.opacity='1'; t1.style.transform='translateY(0)'; },1100);
+    }
     var t2 = document.getElementById('cn-c-t2');
-    if(t2){ setTimeout(function(){ t2.style.opacity='1'; t2.style.transform='translateY(0)'; },1300); }
+    if(t2){
+        var total = CASOS.length;
+        var acertos = window.cnAcertosPrimeira || 0;
+        var pct = Math.round((acertos/total)*100);
+        var aprovado = pct >= 70;
+        var cor = aprovado ? '#2CD5C4' : '#F0A33E';
+        t2.innerHTML = 'Seu aproveitamento nos estudos de caso:'
+            + '<div style="margin-top:10px;font-size:26px;font-weight:700;color:'+cor+'">'+pct+'%</div>'
+            + '<div style="font-size:12px;margin-top:2px">'+acertos+' de '+total+' casos acertados na primeira tentativa</div>'
+            + '<div style="margin-top:8px;font-size:12px;color:'+cor+';font-weight:600">'+(aprovado ? '&#10003; Aprovado &mdash; voc&ecirc; domina o conte&uacute;do!' : 'Voc&ecirc; precisa de no m&iacute;nimo 70% para concluir. Refa&ccedil;a os estudos de caso.')+'</div>';
+        setTimeout(function(){ t2.style.opacity='1'; t2.style.transform='translateY(0)'; },1300);
+    }
     var pl = document.getElementById('cn-c-pills');
     if(pl){ setTimeout(function(){ pl.style.opacity='1'; },1500); }
     var bt = document.getElementById('cn-c-btn');
-    if(bt){ setTimeout(function(){ bt.style.opacity='1'; bt.style.transform='translateY(0)'; },1800); }
+    if(bt){
+        if(passou){
+            bt.innerHTML = '<button onclick="history.back()" class="cn-btn p" style="border-radius:10px;padding:10px 28px;font-size:14px">Voltar &agrave; trilha &rarr;</button>';
+        } else {
+            bt.innerHTML = '<button onclick="cnRefazerCasos()" class="cn-btn p" style="border-radius:10px;padding:10px 28px;font-size:14px;background:#F0A33E;border-color:#F0A33E">&#8634; Refazer estudos de caso</button>';
+        }
+        setTimeout(function(){ bt.style.opacity='1'; bt.style.transform='translateY(0)'; },1800);
+    }
 }
+window.cnRefazerCasos = function(){
+    window.cnCasoAtual = 0;
+    window.cnCasosResolvidos = [];
+    window.cnAcertosPrimeira = 0;
+    window.cnCasoTentativas = 0;
+    document.getElementById('cn-conclusao').style.display='none';
+    document.getElementById('cn-caso').style.display='block';
+    document.getElementById('cn-irchk').disabled = true;
+    window.cnRenderCaso();
+};
 window.cnVoltarChk = function(){
     document.getElementById('cn-chk').style.display='none';
     document.getElementById('cn-caso').style.display='block';
 };
 
-var RESPOSTAS = [
-    {c:false, f:'Voc&ecirc; foi direto para a solu&ccedil;&atilde;o sem passar pelo Conectar. O Carlos est&aacute; com medo de ter o nome negativado &#8212; ele precisa primeiro sentir que algu&eacute;m entende a urg&ecirc;ncia que ele sente.'},
-    {c:true,  f:'Esse &eacute; o jeito Canopus! Voc&ecirc; aplicou o Conectar chamando pelo nome e o Compreender reconhecendo o esfor&ccedil;o dele. A solu&ccedil;&atilde;o vem depois &#8212; e quando vier, o Carlos j&aacute; vai estar mais tranquilo para ouvir.'},
-    {c:false, f:'Transfer&ecirc;ncia prematura. O Carlos vai ter que repetir tudo de novo para outra pessoa e vai sair dessa liga&ccedil;&atilde;o mais frustrado do que entrou.'},
-    {c:false, f:'Falar em juros antes de acolher o cliente ansioso piora a situa&ccedil;&atilde;o. A informa&ccedil;&atilde;o est&aacute; correta, mas o momento est&aacute; errado. Conectar primeiro, informar depois.'}
+var CASOS = [
+  {
+    sit:'Carlos liga irritado dizendo que o boleto do apartamento venceu ontem e o site n&atilde;o aceita o pagamento. Ele tentou tr&ecirc;s vezes e teme ter o nome negativado.',
+    perg:'Qual &eacute; a sua primeira resposta ao Carlos?',
+    opts:[
+      '&#8220;Carlos, o sistema &agrave;s vezes apresenta instabilidades. O senhor pode pagar na ag&ecirc;ncia banc&aacute;ria.&#8221;',
+      '&#8220;Ol&aacute;, Carlos! J&aacute; vou cuidar disso. Entendo que voc&ecirc; tentou tr&ecirc;s vezes e n&atilde;o conseguiu &#8212; &eacute; frustrante mesmo. Me conta o que aparece na tela para eu te ajudar.&#8221;',
+      '&#8220;Carlos, esse assunto &eacute; com o setor financeiro. Vou transferir sua liga&ccedil;&atilde;o.&#8221;',
+      '&#8220;Bom dia! Como o boleto venceu ontem, j&aacute; h&aacute; juros. Posso gerar uma segunda via.&#8221;'
+    ],
+    correta:1,
+    fb:[
+      'Pulou o Conectar. O Carlos precisa primeiro sentir que algu&eacute;m entende a ang&uacute;stia dele.',
+      'Esse &eacute; o jeito Canopus! Voc&ecirc; conectou chamando pelo nome e compreendeu o esfor&ccedil;o dele antes de resolver.',
+      'Transfer&ecirc;ncia prematura. Ele vai ter que repetir tudo e sair mais frustrado.',
+      'Falar em juros antes de acolher o cliente ansioso piora tudo. Conectar primeiro, informar depois.'
+    ]
+  },
+  {
+    sit:'Dona Marta, 68 anos, manda mensagem no WhatsApp dizendo que n&atilde;o entendeu o e-mail sobre a vistoria do apartamento e est&aacute; com receio de perder o prazo.',
+    perg:'Como voc&ecirc; conduz o atendimento?',
+    opts:[
+      '&#8220;Dona Marta, est&aacute; tudo no e-mail que enviamos. &Eacute; s&oacute; reler com calma.&#8221;',
+      '&#8220;A vistoria &eacute; dia 15, das 9h &agrave;s 17h. Qualquer d&uacute;vida estou aqui.&#8221;',
+      '&#8220;Ol&aacute;, Dona Marta! Vou explicar passo a passo, sem pressa. A vistoria &eacute; no dia 15 e eu te acompanho em cada etapa. Pode me perguntar o que precisar.&#8221;',
+      '&#8220;Sra. Marta, recomendo procurar ajuda de algu&eacute;m da fam&iacute;lia para interpretar o e-mail.&#8221;'
+    ],
+    correta:2,
+    fb:[
+      'Mandar reler ignora que ela j&aacute; disse que n&atilde;o entendeu. Isso aumenta a inseguran&ccedil;a.',
+      'A informa&ccedil;&atilde;o est&aacute; certa, mas faltou acolhimento. Ela demonstrou receio &#8212; precisa de paci&ecirc;ncia.',
+      'Perfeito! Voc&ecirc; reconheceu o receio, ofereceu apoio passo a passo e se colocou &agrave; disposi&ccedil;&atilde;o. Esse &eacute; o cuidado Canopus.',
+      'Transferir a responsabilidade para a fam&iacute;lia &eacute; abandonar a cliente. Nosso papel &eacute; orientar com paci&ecirc;ncia.'
+    ]
+  },
+  {
+    sit:'Roberto envia um e-mail formal cobrando uma resposta sobre a libera&ccedil;&atilde;o das chaves, que j&aacute; foi prometida duas vezes e n&atilde;o aconteceu. O tom dele &eacute; firme, mas educado.',
+    perg:'Qual a melhor abordagem na resposta?',
+    opts:[
+      '&#8220;Prezado Roberto, sua solicita&ccedil;&atilde;o est&aacute; em an&aacute;lise. Aguarde retorno.&#8221;',
+      '&#8220;Roberto, reconhe&ccedil;o que essa &eacute; a terceira vez que voc&ecirc; cobra e isso n&atilde;o deveria ter acontecido. Vou assumir pessoalmente: hoje at&eacute; as 17h te dou uma posi&ccedil;&atilde;o concreta com prazo real.&#8221;',
+      '&#8220;Prezado, infelizmente o setor respons&aacute;vel ainda n&atilde;o retornou. N&atilde;o depende de mim.&#8221;',
+      '&#8220;Roberto, pe&ccedil;o desculpas pela demora. Vou verificar e retorno assim que poss&iacute;vel.&#8221;'
+    ],
+    correta:1,
+    fb:[
+      'Resposta gen&eacute;rica e fria para quem j&aacute; cobrou duas vezes. Soa como mais uma evasiva.',
+      'Excelente! Voc&ecirc; reconheceu a falha, assumiu responsabilidade e deu um compromisso com prazo concreto. &Eacute; assim que se recupera a confian&ccedil;a.',
+      'Terceirizar a culpa para outro setor s&oacute; aumenta a frustra&ccedil;&atilde;o. O cliente quer solu&ccedil;&atilde;o, n&atilde;o desculpa.',
+      'Pedir desculpas &eacute; bom, mas &#8220;assim que poss&iacute;vel&#8221; n&atilde;o &eacute; compromisso. Falta um prazo concreto.'
+    ]
+  },
+  {
+    sit:'Juliana liga muito animada contando que acabou de fechar a compra do primeiro apartamento e quer saber os pr&oacute;ximos passos. Ela fala bastante e demonstra empolga&ccedil;&atilde;o.',
+    perg:'Como voc&ecirc; conduz esse atendimento?',
+    opts:[
+      '&#8220;Parab&eacute;ns, Juliana! Imagino sua alegria. Vou te explicar cada pr&oacute;ximo passo para essa jornada ser t&atilde;o boa quanto esse momento. Pode contar comigo.&#8221;',
+      '&#8220;Juliana, os pr&oacute;ximos passos s&atilde;o assinatura, vistoria e entrega. Algo mais?&#8221;',
+      '&#8220;Certo. Vou te enviar um e-mail com todas as informa&ccedil;&otilde;es.&#8221;',
+      '&#8220;Juliana, preciso que voc&ecirc; seja breve porque tenho outros atendimentos.&#8221;'
+    ],
+    correta:0,
+    fb:[
+      'Perfeito! Voc&ecirc; correspondeu &agrave; emo&ccedil;&atilde;o dela, celebrou a conquista e conduziu com acolhimento. Cliente expressivo precisa sentir entusiasmo genu&iacute;no.',
+      'A informa&ccedil;&atilde;o est&aacute; certa, mas o tom seco apaga a empolga&ccedil;&atilde;o dela. Faltou celebrar o momento.',
+      'Despachar para o e-mail num momento de alegria &eacute; perder a conex&atilde;o. Ela quer compartilhar isso com voc&ecirc;.',
+      'Cortar o entusiasmo da cliente &eacute; o oposto do jeito Canopus. Nunca apresse quem est&aacute; vivendo uma conquista.'
+    ]
+  },
+  {
+    sit:'Fernando reclama em tom ríspido que ningu&eacute;m resolve o problema da infiltra&ccedil;&atilde;o no apartamento dele. Ele est&aacute; alterado e diz que vai acionar o PROCON.',
+    perg:'Qual a resposta mais adequada?',
+    opts:[
+      '&#8220;Fernando, se quiser acionar o PROCON &eacute; um direito seu.&#8221;',
+      '&#8220;Senhor, pe&ccedil;o que se acalme para podermos conversar.&#8221;',
+      '&#8220;Fernando, entendo completamente sua indigna&ccedil;&atilde;o &#8212; infiltra&ccedil;&atilde;o no novo lar &eacute; s&eacute;rio. Vou registrar agora como priorit&aacute;rio e te passar hoje um respons&aacute;vel e um prazo. Voc&ecirc; n&atilde;o vai ficar sem resposta.&#8221;',
+      '&#8220;Esse tipo de problema demora mesmo. Vou abrir um chamado.&#8221;'
+    ],
+    correta:2,
+    fb:[
+      'Mencionar o PROCON de volta soa como desafio. Isso escala o conflito em vez de resolver.',
+      'Pedir para o cliente se acalmar costuma irrit&aacute;-lo ainda mais. Acolha a emo&ccedil;&atilde;o, n&atilde;o a reprima.',
+      'Excelente! Voc&ecirc; validou a indigna&ccedil;&atilde;o, priorizou, deu prazo e respons&aacute;vel. Transformou uma amea&ccedil;a em confian&ccedil;a.',
+      'Dizer que &#8220;demora mesmo&#8221; soa como descaso. O cliente precisa sentir urg&ecirc;ncia da nossa parte.'
+    ]
+  }
 ];
 
+window.cnCasoAtual = 0;
+window.cnCasoTentativas = 0;
+window.cnCasosResolvidos = [];
+window.cnAcertosPrimeira = 0;
+
+window.cnRenderCaso = function() {
+    var idx = window.cnCasoAtual;
+    var caso = CASOS[idx];
+    window.cnCasoTentativas = 0;
+    // Barra de progresso dos casos
+    var prog = '';
+    for(var k=0;k<CASOS.length;k++){
+        var estado = window.cnCasosResolvidos.indexOf(k) !== -1 ? 'ok' : (k===idx ? 'ativo' : '');
+        prog += '<div class="cn-caso-dot '+estado+'">'+(k+1)+'</div>';
+    }
+    document.getElementById('cn-caso-prog').innerHTML = prog;
+    var optsHtml = '';
+    var letras = ['A','B','C','D'];
+    for(var j=0;j<caso.opts.length;j++){
+        optsHtml += '<button class="cn-opt cn-slide-up" style="animation-delay:'+(0.05*j)+'s" onclick="cnResp('+j+')"><span class="cn-ol">'+letras[j]+'</span>'+caso.opts[j]+'</button>';
+    }
+    document.getElementById('cn-caso-wrap').innerHTML =
+        '<div class="cn-caso">'
+        + '<div class="cn-clbl cn-fade-in">Caso '+(idx+1)+' de '+CASOS.length+'</div>'
+        + '<div class="cn-ctxt cn-slide-up">'+caso.sit+'</div>'
+        + '<div class="cn-cperg cn-slide-up" style="animation-delay:.08s">'+caso.perg+'</div>'
+        + '<div class="cn-tent" id="cn-tent">Tentativa 1 de 3</div>'
+        + '<div class="cn-opts">'+optsHtml+'</div>'
+        + '<div class="cn-fb" id="cn-fb"></div>'
+        + '</div>';
+};
+
 window.cnResp = function(i) {
-    if(window.cnQDone) return;
-    window.cnQDone = true;
-    var r = RESPOSTAS[i];
-    document.querySelectorAll('.cn-opt').forEach(function(el,idx){
-        el.disabled = true;
-        if(RESPOSTAS[idx].c) el.classList.add('certa');
-        else if(idx===i && !r.c) el.classList.add('errada');
-    });
+    var caso = CASOS[window.cnCasoAtual];
+    var opts = document.querySelectorAll('.cn-opt');
     var fb = document.getElementById('cn-fb');
-    fb.className = 'cn-fb show '+(r.c?'ok':'err');
-    fb.innerHTML = (r.c?'&#10003; ':'&#10007; ') + r.f;
-    if(r.c) document.getElementById('cn-irchk').disabled = false;
+    var acertou = (i === caso.correta);
+    if(acertou) {
+        if(window.cnCasoTentativas === 0) window.cnAcertosPrimeira++;
+        opts.forEach(function(el,idx){ el.disabled = true; if(idx===caso.correta) el.classList.add('certa'); });
+        fb.className = 'cn-fb show ok';
+        fb.innerHTML = '&#10003; ' + caso.fb[i];
+        if(window.cnCasosResolvidos.indexOf(window.cnCasoAtual) === -1) window.cnCasosResolvidos.push(window.cnCasoAtual);
+        // avançar ou liberar encerramento
+        var proximo = window.cnCasoAtual + 1;
+        if(proximo < CASOS.length) {
+            fb.innerHTML += '<div style="margin-top:10px"><button class="cn-btn p" style="padding:7px 18px;font-size:13px" onclick="cnProximoCaso()">Pr&oacute;ximo caso &rarr;</button></div>';
+        } else {
+            fb.innerHTML += '<div style="margin-top:10px;font-weight:600;color:#0F6E56">Voc&ecirc; concluiu todos os casos!</div>';
+            document.getElementById('cn-irchk').disabled = false;
+        }
+    } else {
+        window.cnCasoTentativas++;
+        var restantes = 3 - window.cnCasoTentativas;
+        opts[i].classList.add('errada');
+        opts[i].disabled = true;
+        if(restantes > 0) {
+            document.getElementById('cn-tent').textContent = 'Tentativa ' + (window.cnCasoTentativas+1) + ' de 3';
+            fb.className = 'cn-fb show err';
+            fb.innerHTML = '&#10007; ' + caso.fb[i] + '<div style="margin-top:6px;font-size:12px">Voc&ecirc; ainda tem ' + restantes + (restantes===1?' tentativa.':' tentativas.') + '</div>';
+        } else {
+            // esgotou tentativas: mostra a correta e libera avanço (não trava)
+            opts.forEach(function(el,idx){ el.disabled = true; if(idx===caso.correta) el.classList.add('certa'); });
+            fb.className = 'cn-fb show err';
+            fb.innerHTML = '&#10007; ' + caso.fb[i] + '<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">A resposta certa era a op&ccedil;&atilde;o destacada. ' + caso.fb[caso.correta] + '</div>';
+            if(window.cnCasosResolvidos.indexOf(window.cnCasoAtual) === -1) window.cnCasosResolvidos.push(window.cnCasoAtual);
+            var prox = window.cnCasoAtual + 1;
+            if(prox < CASOS.length) {
+                fb.innerHTML += '<div style="margin-top:10px"><button class="cn-btn p" style="padding:7px 18px;font-size:13px" onclick="cnProximoCaso()">Pr&oacute;ximo caso &rarr;</button></div>';
+            } else {
+                document.getElementById('cn-irchk').disabled = false;
+            }
+        }
+    }
+};
+
+window.cnProximoCaso = function() {
+    if(window.cnCasoAtual < CASOS.length - 1) {
+        window.cnCasoAtual++;
+        window.cnRenderCaso();
+    }
 };
 
 window.cnMc = function(i) {
