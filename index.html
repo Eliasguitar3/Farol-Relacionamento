@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>Farol Canopus — Plataforma de Conhecimento | Todos numa só voz</title>
+<title>Farol Relacionamento — Conhecimento e Excelência no Atendimento</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@ input, textarea, select { font-size: 16px; }
 .login-screen.hidden { display: none; }
 .login-container { width: 100%; max-width: 440px; animation: fadeInUp 0.6s ease; }
 .login-card { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-radius: var(--radius); padding: 40px 36px; box-shadow: 0 25px 80px rgba(0,0,0,0.3); text-align: center; border: 1px solid rgba(255,255,255,0.2); }
-.login-logo { width: 72px; height: 72px; background: linear-gradient(135deg, var(--turquesa), var(--azul-medio)); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 32px; color: white; box-shadow: 0 8px 25px rgba(29,188,176,0.4); animation: pulse 2s infinite; }
+.login-logo { width: 80px; height: 80px; background: linear-gradient(135deg, var(--turquesa), var(--azul-medio)); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 32px; color: white; box-shadow: 0 8px 25px rgba(29,188,176,0.4); animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
 .login-card h1 { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700; color: var(--azul-escuro); letter-spacing: -0.5px; margin-bottom: 4px; }
 .login-card .subtitle { font-size: 13px; color: var(--cinza); margin-bottom: 6px; font-weight: 500; }
@@ -177,6 +177,11 @@ input, textarea, select { font-size: 16px; }
 .complete-btn.completed { background: #d1fae5; border-color: #17a87d; color: #059669; }
 .complete-btn.completed:hover { background: #17a87d; color: white; }
 .complete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.welcome-banner { display: flex; align-items: center; gap: 18px; background: linear-gradient(135deg, rgba(44,213,196,0.10), rgba(0,60,80,0.06)); border: 1px solid rgba(44,213,196,0.25); border-left: 4px solid var(--turquesa); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 20px; }
+.welcome-banner-icon { flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--turquesa), var(--azul-medio)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+.welcome-banner-text h3 { font-size: 16px; font-weight: 700; color: var(--azul-escuro); margin-bottom: 4px; }
+.welcome-banner-text p { font-size: 13px; line-height: 1.7; color: var(--texto-leve); margin: 0; }
+@media (max-width: 600px) { .welcome-banner { flex-direction: column; text-align: center; gap: 12px; } }
 .module-badge { position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; z-index: 5; }
 .module-badge.disponivel { background: var(--turquesa, #2CD5C4); color: #003349; }
 .module-badge.em-breve { background: #eef2f2; color: #9aacac; border: 1px solid #e2e8f0; }
@@ -1067,6 +1072,7 @@ img, iframe, video, svg { max-width: 100%; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <!-- base target removido -->
 </head>
 <body>
@@ -1077,30 +1083,22 @@ img, iframe, video, svg { max-width: 100%; }
 <div class="login-screen" id="loginScreen">
     <div class="login-container">
         <div class="login-card">
-            <div class="login-logo"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px;display:block;margin:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-  <!-- Central star - Canopus -->
-  <circle cx="32" cy="32" r="11" fill="white"/>
-  <circle cx="32" cy="32" r="6" fill="rgba(255,255,255,0.3)"/>
-  <!-- Orbiting nodes - representing connected people/areas -->
-  <circle cx="32" cy="7" r="5" fill="white" opacity="0.95"/>
-  <circle cx="55" cy="21" r="5" fill="white" opacity="0.95"/>
-  <circle cx="55" cy="43" r="5" fill="white" opacity="0.95"/>
-  <circle cx="32" cy="57" r="5" fill="white" opacity="0.95"/>
-  <circle cx="9" cy="43" r="5" fill="white" opacity="0.95"/>
-  <circle cx="9" cy="21" r="5" fill="white" opacity="0.95"/>
-  <!-- Connection lines -->
-  <line x1="32" y1="32" x2="32" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="50" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="50" y2="41" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="32" y2="52" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="14" y2="41" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="14" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- Subtle sparkle on central star -->
-  <path d="M32 20 L32 16 M32 48 L32 44 M20 32 L16 32 M48 32 L44 32" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <div class="login-logo"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:54px;height:54px;display:block;margin:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+  <!-- Chapéu de formatura (graduation cap) -->
+  <!-- Topo (mortarboard) -->
+  <path d="M32 16 L58 26 L32 36 L6 26 Z" fill="white"/>
+  <!-- Base do chapéu (cabeça) -->
+  <path d="M18 31 L18 42 C18 42 24 47 32 47 C40 47 46 42 46 42 L46 31 L32 37 Z" fill="white" opacity="0.92"/>
+  <!-- Botão central do topo -->
+  <circle cx="32" cy="26" r="2.5" fill="#0E8A82"/>
+  <!-- Borla (tassel) -->
+  <line x1="58" y1="26" x2="58" y2="40" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="58" cy="42" r="2.6" fill="white"/>
 </svg></div>
-            <h1>FAROL CANOPUS</h1>
+            <h1>FAROL RELACIONAMENTO</h1>
             <p class="subtitle">Onde o conhecimento encontra direção</p>
-            <p class="slogan"><i class="fas fa-circle" style="font-size:6px;vertical-align:middle;margin-right:5px;color:var(--teal,#2CD5C4)"></i>Uma iniciativa do programa Todos numa só voz</p>
+            <p style="font-style:italic;font-size:14px;color:var(--turquesa);margin-top:10px;font-weight:500;">Todos numa só voz</p>
+            <p style="font-size:11px;color:var(--cinza);margin-top:4px;letter-spacing:0.3px;">uma iniciativa Canopus</p>
 
             <div class="login-tabs">
                 <button class="login-tab active" onclick="switchTab('user')" id="tab-user">
@@ -1149,8 +1147,8 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
 
             <div class="login-footer">
-                <p>Este é um sistema interno da <a href="https://canopus.com.br" target="_blank">Canopus</a>.<br>Em caso de dúvidas, contate o Suporte TI.</p>
-                <p style="margin-top:8px;font-size:10px;color:#aaa;">v6.0 — LMS de Treinamento Corporativo</p>
+                <p>Este é um espaço da área de <a href="https://canopus.com.br" target="_blank">Relacionamento</a>.<br>Em caso de dúvidas, contate o Suporte TI.</p>
+                <p style="margin-top:8px;font-size:10px;color:#aaa;">Farol Relacionamento · uma iniciativa Canopus</p>
             </div>
         </div>
     </div>
@@ -1175,8 +1173,8 @@ img, iframe, video, svg { max-width: 100%; }
   <line x1="32" y1="32" x2="14" y2="41" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
   <line x1="32" y1="32" x2="14" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
 </svg></div>
-        <div class="sidebar-title">FAROL<br>CANOPUS</div>
-        <div class="sidebar-subtitle">Todos numa só voz</div>
+        <div class="sidebar-title">FAROL<br>RELACIONAMENTO</div>
+        <div class="sidebar-subtitle">uma iniciativa Canopus</div>
     </div>
 
     <!-- User info panel (hidden by default, shown after login) -->
@@ -1211,7 +1209,7 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
             <div class="nav-submenu" id="trilhas-submenu">
                 <div class="nav-item" data-page="trilha-onboarding" onclick="navigateTo('trilha-onboarding')">
-                    <i class="fas fa-rocket"></i> Onboarding Geral
+                    <i class="fas fa-compass"></i> Onboarding Relacionamento
                     <span class="check-indicator"><i class="fas fa-check"></i></span>
                 </div>
                 <div class="nav-item" data-page="trilha-relacionamento" onclick="navigateTo('trilha-relacionamento')">
@@ -1250,6 +1248,11 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
             <div class="nav-item" data-page="admin-users" onclick="navigateTo('admin-users')">
                 <i class="fas fa-users-cog"></i> Gerenciar Usuários
+            </div>
+            <!-- TEMPORÁRIO: acesso à tela do Avaliador 5 Estrelas para validação visual.
+                 Será substituído por gating de papel (role "avaliador") quando o Supabase for integrado. -->
+            <div class="nav-item" data-page="avaliador-5e" onclick="navigateTo('avaliador-5e')">
+                <i class="fas fa-shield-halved"></i> Lançar Notas 5 Estrelas
             </div>
         </div>
     </nav>
@@ -1449,7 +1452,7 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="page-header">
                 <span class="badge"><i class="fas fa-user-graduate"></i> Sua Trilha de Aprendizado</span>
                 <h1>Bem-vindo, <span id="dashboardUserName">Colaborador</span>!</h1>
-                <p>Escolha uma trilha de aprendizado e continue sua jornada de desenvolvimento na Canopus Construtora.</p>
+                <p>Escolha uma trilha e continue desenvolvendo sua excelência no atendimento ao cliente.</p>
             </div>
 
             <!-- Dashboard Stats -->
@@ -1495,8 +1498,8 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="cards-grid">
                 <div class="card animate-in delay-1" onclick="navigateTo('trilha-onboarding')">
                     <div class="card-icon-main turquesa"><i class="fas fa-rocket"></i></div>
-                    <h3>Onboarding Geral</h3>
-                    <p>Sua integração na Canopus Construtora. História, cultura, valores e estrutura organizacional.</p>
+                    <h3>Onboarding Relacionamento</h3>
+                    <p>Sua porta de entrada no Relacionamento. Cultura, processos e o jeito de cuidar de cada cliente.</p>
                     <div class="card-footer">
                         <span class="card-count"><i class="fas fa-book"></i> 4 módulos</span>
                         <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
@@ -1666,7 +1669,7 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="page-header">
                 <span class="badge"><i class="fas fa-file-alt"></i> Módulo 1</span>
                 <h1>Atendimento ao Cliente</h1>
-                <p>Fundamentos essenciais para um atendimento de excelência na Canopus Construtora.</p>
+                <p>Fundamentos essenciais para um atendimento de excelência ao cliente.</p>
             </div>
             <div style="margin-bottom: 16px;">
                 <button class="back-btn" id="mod-back-btn" onclick="navigateToTrail()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--cinza-claro); color: var(--azul-escuro); border: 1.5px solid var(--borda); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif;">
@@ -2403,6 +2406,122 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
         </div>
 
+        <!-- ==================== ATENDIMENTO 5 ESTRELAS (COLABORADOR) ==================== -->
+        <div class="page-section" id="page-cinco-estrelas">
+            <div style="margin-bottom:16px;">
+                <button onclick="navigateTo('dashboard')" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--cinza-claro);color:var(--azul-escuro);border:1.5px solid var(--borda);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;"><i class="fas fa-arrow-left"></i> Voltar</button>
+            </div>
+
+            <div style="background:linear-gradient(135deg,var(--azul-escuro),#00566f);border-radius:22px;padding:30px 28px;color:#fff;position:relative;overflow:hidden;margin-bottom:24px;">
+                <div style="position:absolute;top:-60px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(29,188,176,0.10);"></div>
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+                    <div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.08em;font-weight:600;" id="ce-comp">Compet&ecirc;ncia &middot; Julho 2026</div>
+                        <div style="font-family:'Oswald',sans-serif;font-size:23px;font-weight:600;">ATENDIMENTO <b style="color:var(--turquesa);">5 ESTRELAS</b></div>
+                    </div>
+                    <div id="ce-selo" style="display:inline-flex;align-items:center;gap:7px;border-radius:30px;padding:6px 15px;font-size:13px;font-weight:700;background:rgba(29,188,176,0.2);color:#9FF0E6;border:1px solid rgba(29,188,176,0.5);">&starf; Excel&ecirc;ncia</div>
+                </div>
+
+                <div style="position:relative;z-index:2;">
+                    <div style="display:flex;align-items:baseline;justify-content:center;gap:14px;margin-bottom:6px;flex-wrap:wrap;">
+                        <span style="font-family:'Oswald',sans-serif;font-size:60px;font-weight:700;line-height:.9;" id="ce-nf">4,58</span>
+                        <span style="font-size:12px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.12em;">Nota Final</span>
+                    </div>
+                    <div style="text-align:center;font-size:13px;font-weight:600;color:#fff;margin-bottom:22px;" id="ce-estado"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;background:#1DBCB0;"></span>Voc&ecirc; est&aacute; na faixa Excel&ecirc;ncia</div>
+
+                    <div style="position:relative;padding:0 2px;max-width:520px;margin:0 auto;">
+                        <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.55);font-weight:600;margin-bottom:7px;"><span>4,50</span><span>4,80</span><span>5,00</span></div>
+                        <div style="position:relative;height:16px;border-radius:10px;background:rgba(255,255,255,0.10);overflow:hidden;">
+                            <div id="ce-segNe" style="position:absolute;left:0;top:0;bottom:0;width:0;background:repeating-linear-gradient(45deg,#54707c,#54707c 6px,#475f6a 6px,#475f6a 12px);"></div>
+                            <div style="position:absolute;left:0;top:0;bottom:0;width:60%;background:linear-gradient(90deg,#1DBCB0,#5fd0b0);"></div>
+                            <div style="position:absolute;left:60%;top:0;bottom:0;right:0;background:linear-gradient(90deg,#7FCf7a,#E8A33E);"></div>
+                            <div id="ce-mrk" style="position:absolute;top:-6px;width:5px;height:28px;background:#fff;border-radius:3px;box-shadow:0 0 0 3px rgba(0,60,80,0.55);left:0%;transition:left 1.2s cubic-bezier(.34,1.4,.5,1);"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-top:9px;font-size:11px;font-weight:600;"><span style="color:#9FF0E6;">&starf; Excel&ecirc;ncia</span><span style="color:#FFD89B;">&#127942; 5 Estrelas</span></div>
+                    </div>
+                    <div id="ce-msg" style="text-align:center;font-size:13px;font-weight:600;margin-top:18px;color:#FFD89B;">Faltam 0,22 para 5 Estrelas &#127942;</div>
+
+                    <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;">
+                        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:14px;padding:12px 20px;text-align:center;min-width:150px;"><div style="font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Monitoria</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:600;" id="ce-mon">4,50</div><div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">peso 60%</div></div>
+                        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:14px;padding:12px 20px;text-align:center;min-width:150px;"><div style="font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Avalia&ccedil;&atilde;o do Cliente</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:600;" id="ce-cli">4,70</div><div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">peso 40%</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size:12px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;">Sua evolu&ccedil;&atilde;o</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:30px;">
+                <div style="background:linear-gradient(135deg,var(--turquesa-claro),#fff);border:1px solid rgba(29,188,176,0.4);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#128293;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-streak">3</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">meses seguidos premiado</div></div>
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#127942;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-q5">5</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">vezes 5 Estrelas</div></div>
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&starf;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-qex">2</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">vezes Excel&ecirc;ncia</div></div>
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#128200;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-melhor">4,82</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">sua melhor nota</div></div>
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;color:var(--turquesa);">&uarr;</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;color:var(--turquesa);line-height:1;">Subindo</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">tend&ecirc;ncia recente</div></div>
+            </div>
+
+            <div style="font-size:12px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;">Hist&oacute;rico mensal</div>
+            <div style="background:#fff;border:1px solid var(--borda);border-radius:18px;overflow:hidden;" id="ce-historico">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--borda);"><span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">Julho 2026</span><div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">4,58</span><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">&starf; Excel&ecirc;ncia</span></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--borda);"><span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">Junho 2026</span><div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">4,82</span><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:#FBF1DF;color:#B97516;">&#127942; 5 Estrelas</span></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--borda);"><span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">Maio 2026</span><div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">4,55</span><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">&starf; Excel&ecirc;ncia</span></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;"><span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">Abril 2026</span><div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">4,10</span><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:#f0f2f4;color:#9aacac;">N&atilde;o eleg&iacute;vel</span></div></div>
+            </div>
+
+            <div style="font-size:12px;color:var(--cinza);text-align:center;margin-top:16px;line-height:1.7;">
+                &#127942; <b>5 Estrelas</b>: 4,80 a 5,00 &middot; &starf; <b>Excel&ecirc;ncia</b>: 4,50 a 4,79 &middot; abaixo de 4,50: em constru&ccedil;&atilde;o<br>
+                Nota Final = (Monitoria &times; 60%) + (Avalia&ccedil;&atilde;o do Cliente &times; 40%)
+            </div>
+        </div>
+
+
+        <!-- ==================== 5 ESTRELAS - ÁREA DO AVALIADOR ==================== -->
+        <div class="page-section" id="page-avaliador-5e">
+            <div class="page-header">
+                <span class="badge"><i class="fas fa-shield-halved"></i> Avaliador de Qualidade</span>
+                <h1>Lan&ccedil;amento &middot; Atendimento 5 Estrelas</h1>
+                <p>Registre as notas mensais de monitoria e avalia&ccedil;&atilde;o do cliente. O sistema calcula a nota final e a classifica&ccedil;&atilde;o automaticamente.</p>
+            </div>
+
+            <div style="display:flex;gap:10px;align-items:flex-start;background:#fff8ec;border:1px solid #f3dca6;border-radius:12px;padding:12px 15px;font-size:13px;color:#8a6420;margin-bottom:22px;line-height:1.6;">
+                <span style="font-size:16px;">&#128274;</span>
+                <span>Seu acesso &eacute; exclusivo a esta &aacute;rea. Voc&ecirc; lan&ccedil;a e corrige as notas do programa 5 Estrelas &mdash; o conte&uacute;do dos cursos e trilhas da plataforma n&atilde;o fica dispon&iacute;vel para edi&ccedil;&atilde;o no seu perfil.</span>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:18px;" id="av5-grid">
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:18px;padding:22px;">
+                    <h2 style="font-size:15px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;">Novo lan&ccedil;amento</h2>
+                    <div style="font-size:12px;color:var(--cinza);margin-bottom:18px;">Os campos abaixo alimentam o c&aacute;lculo ao vivo ao lado.</div>
+                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Colaborador</label><select id="av5-colab" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option value="teste@canopus.com.br">Usu&aacute;rio de Teste (teste@canopus.com.br)</option><option>Roberta Andrade</option><option>Carlos Mendes</option><option>Juliana Prado</option><option>Andr&eacute; Lima</option></select></div>
+                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Compet&ecirc;ncia (m&ecirc;s/ano)</label><select id="av5-comp" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option>Julho / 2026</option><option>Junho / 2026</option><option>Maio / 2026</option></select></div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Nota de Monitoria</label><input type="number" id="av5-mon" min="0" max="5" step="0.01" value="4.50" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
+                        <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Nota do Cliente</label><input type="number" id="av5-cli" min="0" max="5" step="0.01" value="4.70" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
+                    </div>
+                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Atendimentos monitorados no m&ecirc;s</label><input type="number" id="av5-atend" min="0" step="1" value="24" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
+                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Observa&ccedil;&atilde;o (opcional)</label><input type="text" id="av5-obs" placeholder="Ex.: destaque em resolu&ccedil;&atilde;o no 1&ordm; contato" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
+                    <button id="av5-btn-lancar" onclick="av5Confirmar()" style="width:100%;margin-top:6px;padding:13px;background:var(--azul-escuro);color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;">Revisar e lan&ccedil;ar</button>
+                </div>
+
+                <div>
+                    <div style="background:#fff;border:1px solid var(--borda);border-radius:18px;padding:22px;margin-bottom:18px;">
+                        <h2 style="font-size:15px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;">Resultado calculado</h2>
+                        <div style="font-size:12px;color:var(--cinza);margin-bottom:18px;">Atualiza enquanto voc&ecirc; digita.</div>
+                        <div style="background:linear-gradient(135deg,var(--azul-escuro),#00566f);border-radius:14px;padding:18px 20px;color:#fff;">
+                            <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:8px;">(<b id="av5-pMon" style="color:#fff;">4,50</b> &times; 60%) + (<b id="av5-pCli" style="color:#fff;">4,70</b> &times; 40%)</div>
+                            <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+                                <span style="font-family:'Oswald',sans-serif;font-size:38px;font-weight:700;line-height:1;" id="av5-pFinal">4,58</span>
+                                <span id="av5-pSelo" style="font-size:13px;font-weight:700;padding:5px 13px;border-radius:20px;background:rgba(29,188,176,0.2);color:#9FF0E6;border:1px solid rgba(29,188,176,0.5);">&starf; Excel&ecirc;ncia</span>
+                            </div>
+                            <div id="av5-pEleg" style="font-size:12px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);">&#10003; Eleg&iacute;vel &middot; 24 atendimentos monitorados</div>
+                        </div>
+                    </div>
+                    <div style="background:#fff;border:1px solid var(--borda);border-radius:18px;padding:22px;">
+                        <h2 style="font-size:15px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;">Lan&ccedil;amentos recentes</h2>
+                        <div style="font-size:12px;color:var(--cinza);margin-bottom:14px;">Voc&ecirc; pode corrigir um lan&ccedil;amento &mdash; a altera&ccedil;&atilde;o fica registrada.</div>
+                        <div id="av5-lista"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ==================== CENTRAL DE CONHECIMENTO ==================== -->
         <div class="page-section" id="page-central-conhecimento">
             <div class="page-header ck-header">
@@ -2636,7 +2755,7 @@ img, iframe, video, svg { max-width: 100%; }
                                 <option value="mod3">Módulo 3: SAC e Ouvidoria</option>
                                 <option value="mod4">Módulo 4: Relacionamento</option>
                                 <option value="mod5">Módulo 5: Gestão e Liderança</option>
-                                <option value="onboarding">Onboarding Geral</option>
+                                <option value="onboarding">Onboarding Relacionamento</option>
                                 <option value="relacionamento">Relacionamento</option>
                                 <option value="astec">ASTEC</option>
                                 <option value="backoffice">Backoffice</option>
@@ -2731,9 +2850,17 @@ img, iframe, video, svg { max-width: 100%; }
         <!-- ==================== TRILHA: ONBOARDING GERAL ==================== -->
         <div class="page-section" id="page-trilha-onboarding">
             <div class="page-header">
-                <span class="badge"><i class="fas fa-rocket"></i> Onboarding Geral</span>
-                <h1>Onboarding Geral — Canopus Construtora</h1>
-                <p>Bem-vindo à Canopus Construtora. Sua jornada de integração começa aqui.</p>
+                <span class="badge"><i class="fas fa-compass"></i> Onboarding Relacionamento</span>
+                <h1>Bem-vindo ao Relacionamento</h1>
+                <p>Descubra como atuamos, nos comunicamos e construímos experiências memoráveis para nossos clientes.</p>
+                <p style="margin-top: 12px; font-size: 14px; line-height: 1.8; color: var(--texto-leve); max-width: 760px;">Esta trilha foi desenvolvida para apresentar a cultura, os processos, as ferramentas e as boas práticas que orientam o trabalho do Relacionamento com o Cliente. Ao longo da jornada, você conhecerá os padrões que garantem excelência no atendimento e fortalecem a confiança dos nossos clientes em cada interação.</p>
+            </div>
+            <div class="welcome-banner" id="onboardingWelcomeBanner">
+                <div class="welcome-banner-icon"><i class="fas fa-hand-sparkles"></i></div>
+                <div class="welcome-banner-text">
+                    <h3>Olá, <span id="welcomeUserName">colaborador(a)</span>! Que bom ter você aqui.</h3>
+                    <p>No Relacionamento, cada conversa é uma oportunidade de construir confiança. Esta é a sua porta de entrada — siga no seu ritmo e conte com a gente em cada passo.</p>
+                </div>
             </div>
             <div style="margin-bottom: 16px;">
                 <button class="back-btn" id="mod-back-btn" onclick="navigateToTrail()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--cinza-claro); color: var(--azul-escuro); border: 1.5px solid var(--borda); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif;">
@@ -2742,8 +2869,8 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
             <div class="hero">
                 <div class="hero-content">
-                    <h1><i class="fas fa-rocket"></i> Onboarding Geral</h1>
-                    <p>Conheça a história, cultura, valores e estrutura da Canopus Construtora. Essa trilha prepara você para integrar-se com excelência à nossa equipe.</p>
+                    <h1><i class="fas fa-compass"></i> Onboarding Relacionamento</h1>
+                    <p>Conheça a estrutura da área, a jornada do cliente, os sistemas utilizados, os fluxos internos e os princípios que norteiam a excelência no relacionamento. Esta trilha é o seu ponto de partida para atuar com segurança, autonomia e foco na melhor experiência para o cliente.</p>
                     <div class="hero-stats">
                         <div class="hero-stat">
                             <div class="number">4</div>
@@ -2795,7 +2922,7 @@ img, iframe, video, svg { max-width: 100%; }
                 <div class="card animate-in delay-1" id="card-onb-1" onclick="navigateTo('mod-onboarding-1')">
                     <div class="card-icon-main turquesa"><i class="fas fa-hand-sparkles"></i></div>
                     <h3>1. Boas-vindas</h3>
-                    <p>Apresentação da empresa, equipe e expectativas para sua jornada na Canopus Construtora.</p>
+                    <p>Boas-vindas à área de Relacionamento: quem somos, nossa missão e o que vamos construir juntos.</p>
                     <div class="card-footer">
                         <span class="card-count"><i class="fas fa-clock"></i> 30 min</span>
                         <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
@@ -2834,7 +2961,7 @@ img, iframe, video, svg { max-width: 100%; }
                 <div class="card animate-in delay-1 locked" id="card-onb-4" onclick="handleLockedModule(4); return false;">
                     <div class="card-icon-main laranja"><i class="fas fa-book-open"></i></div>
                     <h3>4. Guia do Cliente</h3>
-                    <p>Entenda o ciclo completo do cliente na Canopus Construtora e como entregamos excelência.</p>
+                    <p>Entenda a jornada completa do cliente e como cada etapa constrói uma experiência memorável.</p>
                     <div class="card-footer">
                         <span class="card-count"><i class="fas fa-clock"></i> 35 min</span>
                         <div class="card-arrow"><i class="fas fa-lock"></i></div>
@@ -2849,7 +2976,7 @@ img, iframe, video, svg { max-width: 100%; }
         <div class="page-section" id="page-trilha-relacionamento">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-heart"></i> Relacionamento</span>
-                <h1>Relacionamento — Canopus Construtora</h1>
+                <h1>Relacionamento com o Cliente</h1>
                 <p>Excelência no atendimento e na construção de relacionamentos duradouros.</p>
             </div>
             <div style="margin-bottom: 16px;">
@@ -2895,7 +3022,7 @@ img, iframe, video, svg { max-width: 100%; }
                 <div class="card animate-in delay-1" id="card-rel-1" onclick="navigateTo('mod-rel-1')">
                     <div class="card-icon-main turquesa"><i class="fas fa-route"></i></div>
                     <h3>1. Jornada do Cliente</h3>
-                    <p>Mapeamento completo da experiência do cliente com a Canopus Construtora.</p>
+                    <p>Mapeamento completo da experiência do cliente, ponta a ponta.</p>
                     <div class="card-footer">
                         <span class="card-count"><i class="fas fa-clock"></i> 45 min</span>
                         <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
@@ -3208,7 +3335,7 @@ img, iframe, video, svg { max-width: 100%; }
         <div class="page-section" id="page-trilha-juridico">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-balance-scale"></i> Jurídico</span>
-                <h1>Jurídico — Canopus Construtora</h1>
+                <h1>Jurídico</h1>
                 <p>Fundamentos jurídicos para atuação segura e conforme na construtora.</p>
             </div>
             <div style="margin-bottom: 16px;">
@@ -3219,7 +3346,7 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="hero">
                 <div class="hero-content">
                     <h1><i class="fas fa-balance-scale"></i> Jurídico</h1>
-                    <p>Conhecimentos essenciais de contratos, fluxos jurídicos e padronizações para garantir segurança nas operações da Canopus Construtora.</p>
+                    <p>Conhecimentos essenciais de contratos, fluxos jurídicos e padronizações que dão segurança ao atendimento.</p>
                     <div class="hero-stats">
                         <div class="hero-stat">
                             <div class="number">4</div>
@@ -3304,7 +3431,7 @@ img, iframe, video, svg { max-width: 100%; }
         <div class="page-section" id="page-trilha-compliance">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-shield-alt"></i> Compliance</span>
-                <h1>Compliance — Canopus Construtora</h1>
+                <h1>Compliance</h1>
                 <p>Ética, conformidade e segurança para uma atuação responsável.</p>
             </div>
             <div style="margin-bottom: 16px;">
@@ -3315,7 +3442,7 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="hero">
                 <div class="hero-content">
                     <h1><i class="fas fa-shield-alt"></i> Compliance</h1>
-                    <p>Princípios de ética corporativa, proteção de dados, segurança da informação e conduta profissional para todos os colaboradores da Canopus Construtora.</p>
+                    <p>Princípios de ética, proteção de dados, segurança da informação e conduta profissional no dia a dia.</p>
                     <div class="hero-stats">
                         <div class="hero-stat">
                             <div class="number">5</div>
@@ -4138,11 +4265,21 @@ function navigateTo(page) {
         updateAdminDashboard();
     } else if (page === 'certificados') {
         updateCertificates();
+    } else if (page === 'cinco-estrelas') {
+        if (typeof render5EstrelasColaborador === 'function') setTimeout(render5EstrelasColaborador, 100);
+    } else if (page === 'avaliador-5e') {
+        if (typeof initAvaliador5E === 'function') setTimeout(initAvaliador5E, 100);
     } else if (page === 'user-profile') {
         updateUserProfilePage();
     } else if (page === 'trilha-onboarding') {
         updateDashboard();
         setTimeout(updateOnboardingLocks, 100);
+        // Personalizar banner de boas-vindas
+        var wn = document.getElementById('welcomeUserName');
+        if (wn) {
+            var primeiroNome = (currentUser && currentUser.name) ? currentUser.name.split(' ')[0] : 'colaborador(a)';
+            wn.textContent = primeiroNome;
+        }
     } else if (page.startsWith('trilha-')) {
         updateDashboard(); // Refresh trail progress
         // Apply sequential locking to trail modules (replicated from onboarding)
@@ -4165,7 +4302,7 @@ function updateBreadcrumb(page) {
     const names = {
         'dashboard': 'Dashboard',
         'trilhas': 'Trilhas de Aprendizagem',
-        'trilha-onboarding': 'Onboarding Geral',
+        'trilha-onboarding': 'Onboarding Relacionamento',
         'trilha-relacionamento': 'Relacionamento',
         'trilha-juridico': 'Jurídico',
         'trilha-compliance': 'Compliance',
@@ -4217,7 +4354,9 @@ function updateBreadcrumb(page) {
         'admin-dashboard': 'Painel administrativo',
         'admin-content': 'Gerenciar conteúdo',
         'central-conhecimento': 'Central de Conhecimento',
-        'admin-users': 'Gerenciar usuários'
+        'admin-users': 'Gerenciar usuários',
+        'cinco-estrelas': 'Atendimento 5 Estrelas',
+        'avaliador-5e': 'Lançar Notas 5 Estrelas'
     };
     document.getElementById('breadcrumbText').textContent = names[page] || 'Dashboard';
 }
@@ -4842,7 +4981,7 @@ function generateOnboardingCertificate(moduleId) {
             moduleId: moduleId,
             moduleName: mod.name,
             hours: mod.hours,
-            trail: 'Onboarding Geral',
+            trail: 'Onboarding Relacionamento',
             date: new Date().toISOString(),
             type: 'onboarding'
         });
@@ -4859,12 +4998,12 @@ function getOnboardingCertificates() {
 function loadModuleContent(moduleId) {
     const moduleData = {
         // Onboarding
-        'mod-onboarding-1': { title: 'Boas-vindas', icon: 'fa-hand-sparkles', desc: 'Apresentação da empresa, equipe e expectativas para sua jornada na Canopus Construtora.', trail: 'Onboarding Geral' },
-        'mod-onboarding-2': { title: 'Organograma', icon: 'fa-sitemap', desc: 'Conheça a estrutura organizacional da Canopus, departamentos, hierarquia e fluxos de comunicação interna.', trail: 'Onboarding Geral' },
-        'mod-onboarding-3': { title: 'Nosso Jeito de Ser', icon: 'fa-heart', desc: 'Cultura, valores, princípios éticos e o comportamento que esperamos de cada colaborador.', trail: 'Onboarding Geral' },
-        'mod-onboarding-4': { title: 'Guia do Cliente', icon: 'fa-book-open', desc: 'Entenda o ciclo completo do cliente na Canopus Construtora e como entregamos excelência.', trail: 'Onboarding Geral' },
+        'mod-onboarding-1': { title: 'Boas-vindas', icon: 'fa-hand-sparkles', desc: 'Boas-vindas à área de Relacionamento: quem somos, nossa missão e o que esperamos construir juntos.', trail: 'Onboarding Relacionamento' },
+        'mod-onboarding-2': { title: 'Organograma', icon: 'fa-sitemap', desc: 'Conheça a estrutura da área de Relacionamento, os times, os papéis e os fluxos de comunicação que conectam tudo.', trail: 'Onboarding Relacionamento' },
+        'mod-onboarding-3': { title: 'Nosso Jeito de Ser', icon: 'fa-heart', desc: 'A cultura do Relacionamento: nossos valores, princípios e o jeito Canopus de cuidar de cada cliente.', trail: 'Onboarding Relacionamento' },
+        'mod-onboarding-4': { title: 'Guia do Cliente', icon: 'fa-book-open', desc: 'A jornada completa do cliente na Canopus e como cada etapa constrói uma experiência memorável.', trail: 'Onboarding Relacionamento' },
 // Relacionamento
-        'mod-rel-1': { title: 'Jornada do Cliente', icon: 'fa-route', desc: 'Mapeamento completo da experiência do cliente com a Canopus Construtora.', trail: 'Relacionamento' },
+        'mod-rel-1': { title: 'Jornada do Cliente', icon: 'fa-route', desc: 'Mapeamento completo da experiência do cliente, ponta a ponta.', trail: 'Relacionamento' },
         'mod-rel-2': { title: 'Atendimento Humanizado', icon: 'fa-smile-beam', desc: 'Técnicas de empatia, escuta ativa e conexão genuína com o cliente.', trail: 'Relacionamento' },
         'mod-rel-3': { title: 'Escrita Encantadora', icon: 'fa-pen-fancy', desc: 'Redação de e-mails, mensagens e documentos com tom profissional e acolhedor.', trail: 'Relacionamento' },
         'mod-rel-4': { title: 'Comunicação Profissional', icon: 'fa-comment-dots', desc: 'Protocolos de comunicação verbal e não verbal em todos os canais.', trail: 'Relacionamento' },
@@ -5449,10 +5588,10 @@ function updateCertificates() {
         { id: 'mod4', name: 'Relacionamento com Clientes', hours: '2h30', trail: 'Relacionamento (Legado)' },
         { id: 'mod5', name: 'Gestão e Liderança', hours: '2h', trail: 'Relacionamento (Legado)' },
         // Onboarding
-        { id: 'mod-onboarding-1', name: 'Boas-vindas', hours: '30min', trail: 'Onboarding Geral' },
-        { id: 'mod-onboarding-2', name: 'Organograma', hours: '45min', trail: 'Onboarding Geral' },
-        { id: 'mod-onboarding-3', name: 'Nosso Jeito de Ser', hours: '40min', trail: 'Onboarding Geral' },
-        { id: 'mod-onboarding-4', name: 'Guia do Cliente', hours: '35min', trail: 'Onboarding Geral' },
+        { id: 'mod-onboarding-1', name: 'Boas-vindas', hours: '30min', trail: 'Onboarding Relacionamento' },
+        { id: 'mod-onboarding-2', name: 'Organograma', hours: '45min', trail: 'Onboarding Relacionamento' },
+        { id: 'mod-onboarding-3', name: 'Nosso Jeito de Ser', hours: '40min', trail: 'Onboarding Relacionamento' },
+        { id: 'mod-onboarding-4', name: 'Guia do Cliente', hours: '35min', trail: 'Onboarding Relacionamento' },
         // Relacionamento
         { id: 'mod-rel-1', name: 'Jornada do Cliente', hours: '45min', trail: 'Relacionamento' },
         { id: 'mod-rel-2', name: 'Atendimento Humanizado', hours: '50min', trail: 'Relacionamento' },
@@ -5569,7 +5708,6 @@ function closeCertPreview() {
 }
 
 function obterNotaCertificado(modulo) {
-    // Tenta achar a nota do quiz pelo nome do módulo
     var mapa = {
         'Atendimento Humanizado': window.cnAcertosPrimeira,
         'Perfis de Cliente': window.m3AcertosPrimeira,
@@ -5581,145 +5719,89 @@ function obterNotaCertificado(modulo) {
     return Math.round((ac / 5) * 100);
 }
 
+// Gera o certificado em PDF capturando o DOM real do preview (pixel-perfect)
 function downloadCertificate(moduleName, hours) {
     var nome = currentUser && currentUser.name ? currentUser.name : 'Colaborador';
     var modulo = moduleName || (document.getElementById('certModuleName') ? document.getElementById('certModuleName').textContent : 'Módulo');
     var carga = hours || (document.getElementById('certHours') ? document.getElementById('certHours').textContent : '');
-    var data = new Date().toLocaleDateString('pt-BR');
-    var nota = obterNotaCertificado(modulo);
 
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-        showNotification('Gerando certificado... tente novamente em instantes.', 'info');
+    if (!window.jspdf || !window.jspdf.jsPDF || typeof html2canvas === 'undefined') {
+        showNotification('Preparando gerador de certificado... tente novamente em instantes.', 'info');
         return;
     }
 
-    var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-    var W = 297, H = 210;
+    showNotification('Gerando certificado em PDF...', 'info');
 
-    // Fundo branco
-    doc.setFillColor(255, 255, 255);
-    doc.rect(0, 0, W, H, 'F');
-
-    // Header azul escuro (espelha o modal da plataforma)
-    doc.setFillColor(0, 51, 73);
-    doc.rect(0, 0, W, 40, 'F');
-    // Faixa teal sob o header
-    doc.setFillColor(44, 213, 196);
-    doc.rect(0, 40, W, 3, 'F');
-
-    // Ícone de medalha (círculo teal + estrela) à esquerda do título
-    var titY = 20;
-    // Título centralizado
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(24);
-    doc.text('Certificado de Conclusão', W / 2 + 6, titY, { align: 'center' });
-    // Medalha à esquerda do título
-    var medX = W / 2 - doc.getTextWidth('Certificado de Conclusão') / 2 - 8;
-    doc.setFillColor(44, 213, 196);
-    doc.circle(medX, titY - 3, 5, 'F');
-    doc.setFillColor(255, 255, 255);
-    doc.setFontSize(9);
-    doc.text('\u2605', medX, titY - 1, { align: 'center' });
-    // Subtítulo
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.setTextColor(180, 230, 226);
-    doc.text('Farol Canopus — Todos numa só voz', W / 2, 31, { align: 'center' });
-
-    // Moldura interna teal (como no preview)
-    doc.setDrawColor(44, 213, 196);
-    doc.setLineWidth(0.5);
-    doc.rect(14, 52, W - 28, H - 68);
-
-    // "Certificamos que"
-    doc.setTextColor(90, 107, 124);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(13);
-    doc.text('Certificamos que', W / 2, 74, { align: 'center' });
-
-    // Nome do colaborador (teal, grande)
-    doc.setTextColor(23, 168, 158);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(30);
-    doc.text(nome, W / 2, 90, { align: 'center' });
-    // Linha teal sob o nome
-    var nomeW = doc.getTextWidth(nome);
-    doc.setDrawColor(44, 213, 196);
-    doc.setLineWidth(0.8);
-    var lx = Math.max(W / 2 - nomeW / 2 - 6, 50);
-    var rx = Math.min(W / 2 + nomeW / 2 + 6, W - 50);
-    doc.line(lx, 95, rx, 95);
-
-    // "concluiu com êxito o módulo NOME, com carga horária de Xmin de estudo."
-    doc.setTextColor(90, 107, 124);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(13);
-    doc.text('concluiu com êxito o módulo', W / 2, 108, { align: 'center' });
-    doc.setTextColor(0, 51, 73);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(15);
-    doc.text(modulo, W / 2, 117, { align: 'center', maxWidth: W - 80 });
-    if (carga) {
-        doc.setTextColor(90, 107, 124);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(12);
-        doc.text('com carga horária de ' + carga + ' de estudo.', W / 2, 126, { align: 'center' });
+    // Garantir que o preview esteja preenchido com os dados corretos (sem abrir o modal)
+    var elNome = document.getElementById('certUserNameDisplay');
+    var elMod = document.getElementById('certModuleName');
+    var elHoras = document.getElementById('certHours');
+    var elData = document.getElementById('certDate');
+    var elNota = document.getElementById('certNota');
+    if (elNome) elNome.textContent = nome;
+    if (elMod) elMod.textContent = modulo;
+    if (elHoras) elHoras.textContent = carga;
+    if (elData) elData.textContent = new Date().toLocaleDateString('pt-BR');
+    if (elNota) {
+        var notaPct = (typeof obterNotaCertificado === 'function') ? obterNotaCertificado(modulo) : null;
+        if (notaPct !== null) {
+            elNota.style.display = 'block';
+            elNota.innerHTML = 'Aproveitamento nos estudos de caso: <strong style="color:#17A89E">' + notaPct + '%</strong>';
+        } else {
+            elNota.style.display = 'none';
+        }
     }
 
-    // Aproveitamento (nota do quiz)
-    if (nota !== null) {
-        doc.setTextColor(23, 168, 158);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(13);
-        doc.text('Aproveitamento nos estudos de caso: ' + nota + '%', W / 2, 137, { align: 'center' });
-    }
+    // Construir uma cópia limpa do certificado fora da tela (sem botões),
+    // com dimensões fixas A4 paisagem para alta resolução.
+    var fonte = document.querySelector('.cert-preview-content');
+    if (!fonte) { showNotification('Não foi possível gerar o certificado.', 'error'); return; }
 
-    // Data de emissão
-    doc.setTextColor(120, 130, 140);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.text('Data de emissão: ' + data, W / 2, 150, { align: 'center' });
+    var clone = fonte.cloneNode(true);
+    // Remover botões (fechar e baixar) do clone
+    clone.querySelectorAll('button').forEach(function(b){ b.remove(); });
+    // Remover qualquer elemento de ação remanescente
+    var acts = clone.querySelector('.cert-actions'); if (acts) acts.remove();
 
-    // Assinatura (esquerda)
-    doc.setDrawColor(150, 160, 170);
-    doc.setLineWidth(0.4);
-    doc.line(50, 170, 130, 170);
-    doc.setTextColor(90, 107, 124);
-    doc.setFontSize(10);
-    doc.text('Diretoria de Relacionamento', 90, 176, { align: 'center' });
-    doc.text('Canopus Construtora', 90, 181, { align: 'center' });
+    // Container off-screen com proporção A4 paisagem (1123x794 @ 96dpi)
+    var holder = document.createElement('div');
+    holder.style.cssText = 'position:fixed;left:-9999px;top:0;width:1123px;height:794px;background:#ffffff;z-index:-1;display:flex;align-items:center;justify-content:center;padding:0;margin:0;';
+    clone.style.cssText = 'background:#ffffff;border-radius:0;padding:56px 64px;max-width:1123px;width:1123px;height:794px;text-align:center;position:relative;box-shadow:none;border:none;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;';
+    // Moldura teal interna fiel ao preview
+    clone.style.border = '3px solid #2CD5C4';
+    holder.appendChild(clone);
+    document.body.appendChild(holder);
 
-    // Selo de autenticidade (constelação) — direita, espelha o preview
-    var selX = W - 55, selY = 168;
-    doc.setFillColor(23, 168, 158);
-    doc.circle(selX, selY, 13, 'F');
-    doc.setFillColor(44, 213, 196);
-    doc.circle(selX, selY - 1, 11.5, 'F');
-    // Constelação branca: estrela central + 6 pontos + linhas
-    doc.setDrawColor(255, 255, 255);
-    doc.setLineWidth(0.5);
-    doc.setFillColor(255, 255, 255);
-    var raio = 6;
-    var centroY = selY - 1;
-    doc.circle(selX, centroY, 2.2, 'F'); // centro
-    for (var a = 0; a < 6; a++) {
-        var ang = (Math.PI / 3) * a - Math.PI / 2;
-        var px = selX + Math.cos(ang) * raio;
-        var py = centroY + Math.sin(ang) * raio;
-        doc.line(selX, centroY, px, py);
-        doc.circle(px, py, 1.3, 'F');
-    }
-    // Texto do selo
-    doc.setTextColor(120, 130, 140);
-    doc.setFontSize(8);
-    doc.text('Selo de autenticidade', selX, selY + 19, { align: 'center' });
-    doc.text('Farol Canopus', selX, selY + 23, { align: 'center' });
-
-    var nomeArq = 'Certificado_' + modulo.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
-    doc.save(nomeArq);
-    showNotification('Certificado baixado com sucesso!', 'success');
+    var escala = 3; // alta resolução
+    // Pequeno atraso para garantir render de fontes e layout antes da captura
+    setTimeout(function(){
+    html2canvas(clone, {
+        scale: escala,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        logging: false,
+        width: 1123,
+        height: 794
+    }).then(function(canvas){
+        try {
+            var jsPDF = window.jspdf.jsPDF;
+            var doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+            var imgData = canvas.toDataURL('image/png');
+            // A4 paisagem = 297x210mm
+            doc.addImage(imgData, 'PNG', 0, 0, 297, 210, undefined, 'FAST');
+            var nomeArq = 'Certificado_' + modulo.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
+            doc.save(nomeArq);
+            showNotification('Certificado baixado com sucesso!', 'success');
+        } catch(err) {
+            showNotification('Erro ao gerar o PDF. Tente novamente.', 'error');
+        } finally {
+            if (holder.parentNode) document.body.removeChild(holder);
+        }
+    }).catch(function(){
+        if (holder.parentNode) document.body.removeChild(holder);
+        showNotification('Erro ao gerar o PDF. Tente novamente.', 'error');
+    });
+    }, 250);
 }
 
 // ==================== FAQ ====================
@@ -5941,7 +6023,7 @@ async function uploadFileToSupabase(file, moduleValue) {
         'mod3': 'Módulo 3: SAC e Ouvidoria',
         'mod4': 'Módulo 4: Relacionamento',
         'mod5': 'Módulo 5: Gestão e Liderança',
-        'onboarding': 'Onboarding Geral',
+        'onboarding': 'Onboarding Relacionamento',
         'relacionamento': 'Relacionamento',
         'astec': 'ASTEC',
         'backoffice': 'Backoffice',
@@ -6086,10 +6168,10 @@ async function renderModuleFiles(moduleId) {
         'mod3': 'Módulo 3: SAC e Ouvidoria',
         'mod4': 'Módulo 4: Relacionamento',
         'mod5': 'Módulo 5: Gestão e Liderança',
-        'mod-onboarding-1': 'Onboarding Geral',
-        'mod-onboarding-2': 'Onboarding Geral',
-        'mod-onboarding-3': 'Onboarding Geral',
-        'mod-onboarding-4': 'Onboarding Geral'
+        'mod-onboarding-1': 'Onboarding Relacionamento',
+        'mod-onboarding-2': 'Onboarding Relacionamento',
+        'mod-onboarding-3': 'Onboarding Relacionamento',
+        'mod-onboarding-4': 'Onboarding Relacionamento'
     };
 
     const moduloNome = moduleMap[moduleId] || moduleId;
@@ -6155,7 +6237,7 @@ function normalizeText(s) {
 const SEARCH_PAGES = [
     { page: 'dashboard', label: 'Dashboard', icon: 'fa-home', keywords: 'inicio home principal progresso' },
     { page: 'user-profile', label: 'Meu Perfil', icon: 'fa-user-circle', keywords: 'perfil foto senha dados cargo departamento conta' },
-    { page: 'trilha-onboarding', label: 'Trilha: Onboarding Geral', icon: 'fa-rocket', keywords: 'onboarding integracao boas-vindas historia cultura valores organograma' },
+    { page: 'trilha-onboarding', label: 'Trilha: Onboarding Relacionamento', icon: 'fa-compass', keywords: 'onboarding relacionamento cliente atendimento jornada cultura boas-vindas excelencia experiencia' },
     { page: 'trilha-relacionamento', label: 'Trilha: Relacionamento', icon: 'fa-heart', keywords: 'relacionamento atendimento cliente sac astec backoffice recuperacao credito cobranca' },
     { page: 'trilha-juridico', label: 'Trilha: Jurídico', icon: 'fa-balance-scale', keywords: 'juridico contratos distrato legal clausulas' },
     { page: 'trilha-compliance', label: 'Trilha: Compliance', icon: 'fa-shield-alt', keywords: 'compliance lgpd etica seguranca informacao conduta politicas' },
@@ -6312,7 +6394,7 @@ function loadTheme() {
 // ==================== MODALS ====================
 
 function showAboutModal() {
-    showNotification('Farol Canopus — Plataforma de Conhecimento', 'info');
+    showNotification('Farol Relacionamento — Conhecimento e Excelência no Atendimento', 'info');
 }
 
 // viewUserDetail: versão completa definida abaixo
@@ -6389,7 +6471,7 @@ const certModalHtml = `
         <button class="cert-preview-close" onclick="closeCertPreview()"><i class="fas fa-times"></i></button>
         <div class="cert-header">
             <h2><i class="fas fa-award" style="color:var(--turquesa);margin-right:8px;"></i>Certificado de Conclusão</h2>
-            <p>Farol Canopus — Todos numa só voz</p>
+            <p>Farol Relacionamento — uma iniciativa Canopus</p>
         </div>
         <div class="cert-body">
             <h3>Certificamos que</h3>
@@ -6405,24 +6487,16 @@ const certModalHtml = `
             </div>
             <div style="text-align:center;">
                 <div style="width:80px;height:80px;background:linear-gradient(135deg,var(--turquesa),var(--azul-medio));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;">
-                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;display:block;margin:auto;">
-  <circle cx="32" cy="32" r="11" fill="white"/>
-  <circle cx="32" cy="32" r="6" fill="rgba(255,255,255,0.3)"/>
-  <circle cx="32" cy="7" r="5" fill="white" opacity="0.95"/>
-  <circle cx="55" cy="21" r="5" fill="white" opacity="0.95"/>
-  <circle cx="55" cy="43" r="5" fill="white" opacity="0.95"/>
-  <circle cx="32" cy="57" r="5" fill="white" opacity="0.95"/>
-  <circle cx="9" cy="43" r="5" fill="white" opacity="0.95"/>
-  <circle cx="9" cy="21" r="5" fill="white" opacity="0.95"/>
-  <line x1="32" y1="32" x2="32" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="50" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="50" y2="41" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="32" y2="52" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="14" y2="41" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="14" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:42px;height:42px;display:block;margin:auto;">
+  <!-- Chapéu de formatura -->
+  <path d="M32 16 L58 26 L32 36 L6 26 Z" fill="white"/>
+  <path d="M18 31 L18 42 C18 42 24 47 32 47 C40 47 46 42 46 42 L46 31 L32 37 Z" fill="white" opacity="0.92"/>
+  <circle cx="32" cy="26" r="2.5" fill="#0E8A82"/>
+  <line x1="58" y1="26" x2="58" y2="40" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="58" cy="42" r="2.6" fill="white"/>
 </svg>
                 </div>
-                <p style="font-size:11px;color:var(--cinza);">Selo de autenticidade<br>Farol Canopus</p>
+                <p style="font-size:11px;color:var(--cinza);">Selo de autenticidade<br>Farol Relacionamento</p>
             </div>
         </div>
         <div style="text-align:center;margin-top:20px;">
@@ -6500,7 +6574,7 @@ function renderCentralConhecimento(data) {
     }).join('');
 }
 
-console.log('Farol Canopus - Sistema inicializado');
+console.log('Farol Relacionamento - Sistema inicializado');
 
 // ==================== SELOS DE STATUS DOS MÓDULOS ====================
 // Lista dos módulos que já têm conteúdo completo.
@@ -7033,7 +7107,7 @@ function updateUserProfilePage() {
     renderRecentActivity();
 }
 
-function changePassword() {
+async function changePassword() {
     const current = document.getElementById('currentPassword');
     const newPass = document.getElementById('newPassword');
     const confirm = document.getElementById('confirmPassword');
@@ -7057,14 +7131,9 @@ function changePassword() {
             errorEl.style.display = 'block';
             return;
         }
-    } else {
-        const storedPass = localStorage.getItem('re_pass_' + currentUser.email);
-        if (storedPass && current.value !== storedPass) {
-            errorEl.textContent = 'Senha atual incorreta.';
-            errorEl.style.display = 'block';
-            return;
-        }
     }
+    // Para colaboradores, a senha atual é verificada pelo próprio Supabase
+    // no momento da atualização (não guardamos senha localmente).
 
     if (newPass.value.length < 8) {
         errorEl.textContent = 'A nova senha deve ter no mínimo 8 caracteres.';
@@ -7080,10 +7149,36 @@ function changePassword() {
 
     if (currentRole === 'admin') {
         CONFIG.ADMIN_PASS = newPass.value;
+    } else {
+        // Colaborador: trocar a senha de verdade no Supabase Auth (armazenada com segurança).
+        if (typeof supabaseClient !== 'undefined' && supabaseClient && supabaseClient.auth) {
+            try {
+                // Reautentica com a senha atual para confirmar a identidade antes de trocar.
+                if (currentUser && currentUser.email) {
+                    const { error: reauthError } = await supabaseClient.auth.signInWithPassword({
+                        email: currentUser.email,
+                        password: current.value
+                    });
+                    if (reauthError) {
+                        errorEl.textContent = 'Senha atual incorreta.';
+                        errorEl.style.display = 'block';
+                        return;
+                    }
+                }
+                const { error: updateError } = await supabaseClient.auth.updateUser({ password: newPass.value });
+                if (updateError) {
+                    errorEl.textContent = 'Não foi possível alterar a senha: ' + updateError.message;
+                    errorEl.style.display = 'block';
+                    return;
+                }
+            } catch (e) {
+                errorEl.textContent = 'Erro ao alterar a senha. Tente novamente.';
+                errorEl.style.display = 'block';
+                return;
+            }
+        }
     }
-    if (currentUser) {
-        localStorage.setItem('re_pass_' + currentUser.email, newPass.value);
-    }
+    // A senha nunca é guardada localmente — quem cuida disso é o Supabase Auth.
 
     successEl.textContent = 'Senha alterada com sucesso!';
     successEl.style.display = 'block';
@@ -7218,8 +7313,8 @@ function refreshSystemNotifications() {
 
     if (totalConcluidos === 0) {
         addNotification(
-            'Bem-vindo ao Farol Canopus!',
-            'Comece sua jornada pela trilha de Onboarding Geral.',
+            'Bem-vindo ao Farol Relacionamento!',
+            'Comece sua jornada pela trilha de Onboarding Relacionamento.',
             'info', 'trilha-onboarding', 'welcome'
         );
     }
@@ -7482,6 +7577,21 @@ function renderAchievements(earned) {
     if (!container) return;
 
     let html = '';
+
+    // ===== Card especial: Atendimento 5 Estrelas (abre página própria) =====
+    // Dados de exemplo por enquanto; depois virão do Supabase.
+    var c5 = (typeof obter5EstrelasResumo === 'function') ? obter5EstrelasResumo() : { faixa: 'excelencia', notaFinal: 4.58, competencia: 'Julho 2026' };
+    var faixaInfo5 = { '5_estrelas': {txt:'🏆 5 Estrelas', cor:'#E8A33E'}, 'excelencia': {txt:'⭐ Excelência', cor:'#1DBCB0'}, 'nao_elegivel': {txt:'Em construção', cor:'#78A0A0'} }[c5.faixa] || {txt:'—', cor:'#78A0A0'};
+    html += '<div onclick="navigateTo(\'cinco-estrelas\')" style="grid-column:1/-1;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:16px;background:linear-gradient(135deg,var(--azul-escuro),#00566f);border:2px solid ' + faixaInfo5.cor + ';position:relative;overflow:hidden;">';
+    html += '<div style="width:52px;height:52px;border-radius:50%;background:' + faixaInfo5.cor + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-trophy" style="font-size:22px;color:white;"></i></div>';
+    html += '<div style="flex:1;z-index:2;">';
+    html += '<div style="font-size:15px;font-weight:700;color:#fff;">Atendimento 5 Estrelas</div>';
+    html += '<div style="font-size:12px;color:rgba(255,255,255,0.7);">Programa de reconhecimento da \u00e1rea \u2014 acompanhe sua evolu\u00e7\u00e3o</div>';
+    html += '</div>';
+    html += '<div style="text-align:right;z-index:2;"><div style="font-family:\'Oswald\',sans-serif;font-size:26px;font-weight:700;color:#fff;line-height:1;">' + c5.notaFinal.toFixed(2).replace('.',',') + '</div><div style="font-size:11px;font-weight:700;color:' + faixaInfo5.cor + ';margin-top:2px;">' + faixaInfo5.txt + '</div></div>';
+    html += '<i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);margin-left:6px;z-index:2;"></i>';
+    html += '</div>';
+
     for (const [key, ach] of Object.entries(ACHIEVEMENTS)) {
         const isEarned = earned.includes(key);
         html += '<div style="display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 12px; background: ' + (isEarned ? ach.color + '15' : 'var(--cinza-claro)') + '; border: 2px solid ' + (isEarned ? ach.color : 'var(--borda)') + '; transition: var(--transition);">';
@@ -7497,6 +7607,335 @@ function renderAchievements(earned) {
     }
 
     container.innerHTML = html;
+}
+
+// ==================== ATENDIMENTO 5 ESTRELAS ====================
+// Dados de exemplo (depois virão do Supabase: tabela avaliacoes_mensais).
+// ==================== STORE DE DEMONSTRAÇÃO (local, persistente, sem Supabase) ====================
+// Espelha lançamentos do avaliador na tela do colaborador.
+// Agora salvo no localStorage para sobreviver a recarregar a página e troca de login.
+// (Some apenas se limpar os dados do navegador. O Supabase virá depois.)
+var DEMO5_KEY = 'demo5estrelas_store';
+function demo5Salvar(){
+    try { localStorage.setItem(DEMO5_KEY, JSON.stringify(window.demo5Estrelas)); } catch(e){}
+}
+function demo5Carregar(){
+    try {
+        var raw = localStorage.getItem(DEMO5_KEY);
+        if(raw) return JSON.parse(raw);
+    } catch(e){}
+    return null;
+}
+window.demo5Estrelas = demo5Carregar() || {
+    'teste@canopus.com.br': {
+        atual: { mon:4.50, cli:4.70, comp:'Julho 2026' },
+        historico: [
+            { comp:'Junho 2026', nf:4.82 },
+            { comp:'Maio 2026', nf:4.55 },
+            { comp:'Abril 2026', nf:4.10 }
+        ]
+    }
+};
+demo5Salvar();
+
+function obter5EstrelasResumo() {
+    var email = (currentUser && currentUser.email) ? currentUser.email : null;
+    if (email && window.demo5Estrelas[email]) {
+        var a = window.demo5Estrelas[email].atual;
+        var nf = (a.mon*0.6)+(a.cli*0.4);
+        var faixa = nf>=4.80 ? '5_estrelas' : (nf>=4.50 ? 'excelencia' : 'nao_elegivel');
+        return { faixa: faixa, notaFinal: nf, competencia: a.comp };
+    }
+    return { faixa: 'excelencia', notaFinal: 4.58, competencia: 'Julho 2026' };
+}
+
+function classifica5E(nf) {
+    if (nf >= 4.80) return { faixa:'5_estrelas', selo:'&#127942; 5 Estrelas', cor:'#E8A33E' };
+    if (nf >= 4.50) return { faixa:'excelencia', selo:'&starf; Excel&ecirc;ncia', cor:'#1DBCB0' };
+    return { faixa:'nao_elegivel', selo:'Em constru&ccedil;&atilde;o', cor:'#78A0A0' };
+}
+
+// Anima o indicador da página do colaborador ao abrir
+function render5EstrelasColaborador() {
+    // Primeiro tenta carregar dados reais do Supabase (async); a renderização
+    // imediata usa o que houver (demo/exemplo) e é atualizada quando os dados chegam.
+    carregar5EstrelasSupabase();
+    render5EstrelasTela();
+}
+
+// Busca as avaliações reais do colaborador logado e atualiza a tela.
+async function carregar5EstrelasSupabase(){
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient) return;
+        var sess = await supabaseClient.auth.getSession();
+        if (!sess || !sess.data || !sess.data.session) return;
+        var userId = sess.data.session.user.id;
+        var email = sess.data.session.user.email;
+        var res = await supabaseClient.from('avaliacoes_mensais')
+            .select('competencia, nota_monitoria, nota_cliente, nota_final')
+            .eq('colaborador_id', userId)
+            .order('competencia', { ascending: false });
+        if (res.error) { console.warn('5E: erro ao ler:', res.error.message); return; }
+        if (!res.data || res.data.length === 0) { return; } // sem dados reais: mantém o que está na tela
+        // Converte 'YYYY-MM' -> 'Mês AAAA'
+        var nomesMes = ['','Janeiro','Fevereiro','Mar\u00e7o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        function compBR(iso){ var p = iso.split('-'); return nomesMes[parseInt(p[1])] + ' ' + p[0]; }
+        var maisRecente = res.data[0];
+        var historico = [];
+        for (var i = 1; i < res.data.length; i++){
+            historico.push({ comp: compBR(res.data[i].competencia), nf: Number(res.data[i].nota_final) });
+        }
+        // Atualiza o store local com os dados reais e re-renderiza.
+        window.demo5Estrelas[email] = {
+            atual: { mon: Number(maisRecente.nota_monitoria), cli: Number(maisRecente.nota_cliente), comp: compBR(maisRecente.competencia) },
+            historico: historico
+        };
+        render5EstrelasTela();
+    } catch(e){ console.warn('5E: exce\u00e7\u00e3o ao ler:', e.message); }
+}
+
+function render5EstrelasTela() {
+    // Busca os dados do colaborador logado no store; senão, usa exemplo.
+    var email = (currentUser && currentUser.email) ? currentUser.email : null;
+    var registro = (email && window.demo5Estrelas[email]) ? window.demo5Estrelas[email] : null;
+    var dados = registro ? registro.atual : { mon:4.50, cli:4.70, comp:'Julho 2026' };
+    var nf = (dados.mon*0.6) + (dados.cli*0.4);
+    function f(n){ return n.toFixed(2).replace('.',','); }
+
+    var elComp = document.getElementById('ce-comp'); if(elComp) elComp.innerHTML = 'Compet&ecirc;ncia &middot; ' + dados.comp;
+    var elNf = document.getElementById('ce-nf'); if(elNf) elNf.textContent = f(nf);
+    var elMon = document.getElementById('ce-mon'); if(elMon) elMon.textContent = f(dados.mon);
+    var elCli = document.getElementById('ce-cli'); if(elCli) elCli.textContent = f(dados.cli);
+
+    var selo = document.getElementById('ce-selo');
+    var estado = document.getElementById('ce-estado');
+    var msg = document.getElementById('ce-msg');
+    var mrk = document.getElementById('ce-mrk');
+    var segNe = document.getElementById('ce-segNe');
+
+    var pct = Math.max(0, Math.min(100, ((nf-4.5)/0.5)*100));
+    if(mrk) setTimeout(function(){ mrk.style.left = 'calc('+pct+'% - 2px)'; }, 200);
+
+    if(nf >= 4.80) {
+        if(selo){ selo.style.background='rgba(232,163,62,0.22)'; selo.style.color='#FFD89B'; selo.style.border='1px solid rgba(232,163,62,0.5)'; selo.innerHTML='&#127942; 5 Estrelas'; }
+        if(estado) estado.innerHTML='<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;background:#E8A33E;"></span>Voc&ecirc; est&aacute; na faixa 5 Estrelas';
+        if(msg){ msg.style.color='#9FF0E6'; msg.innerHTML='Voc&ecirc; est&aacute; no topo do programa &mdash; mantenha esse padr&atilde;o! &#127942;'; }
+        if(segNe) segNe.style.width='0';
+    } else if(nf >= 4.50) {
+        if(selo){ selo.style.background='rgba(29,188,176,0.2)'; selo.style.color='#9FF0E6'; selo.style.border='1px solid rgba(29,188,176,0.5)'; selo.innerHTML='&starf; Excel&ecirc;ncia'; }
+        if(estado) estado.innerHTML='<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;background:#1DBCB0;"></span>Voc&ecirc; est&aacute; na faixa Excel&ecirc;ncia';
+        if(msg){ msg.style.color='#FFD89B'; msg.innerHTML='Faltam '+f(4.80-nf)+' para 5 Estrelas &#127942;'; }
+        if(segNe) segNe.style.width='0';
+    } else {
+        if(selo){ selo.style.background='rgba(255,255,255,0.12)'; selo.style.color='rgba(255,255,255,0.75)'; selo.style.border='1px solid rgba(255,255,255,0.2)'; selo.innerHTML='Em constru&ccedil;&atilde;o'; }
+        if(estado) estado.innerHTML='<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;background:#8aa0aa;"></span>Voc&ecirc; est&aacute; construindo seu caminho';
+        if(msg){ msg.style.color='rgba(255,255,255,0.8)'; msg.innerHTML='Voc&ecirc; est&aacute; a '+f(4.50-nf)+' de entrar no reconhecimento &mdash; continue!'; }
+        if(segNe) segNe.style.width='14%';
+    }
+
+    // Atualiza o histórico mensal a partir do store (item atual + histórico)
+    var histBox = document.getElementById('ce-historico');
+    if(histBox && registro){
+        function tagFaixa(n){
+            if(n>=4.80) return '<span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:#FBF1DF;color:#B97516;">&#127942; 5 Estrelas</span>';
+            if(n>=4.50) return '<span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">&starf; Excel&ecirc;ncia</span>';
+            return '<span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:#f0f2f4;color:#9aacac;">N&atilde;o eleg&iacute;vel</span>';
+        }
+        var linhas = [{comp:dados.comp, nf:nf}].concat(registro.historico);
+        var h = '';
+        linhas.forEach(function(l, idx){
+            var borda = idx < linhas.length-1 ? 'border-bottom:1px solid var(--borda);' : '';
+            h += '<div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;'+borda+'">';
+            h += '<span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">'+l.comp+'</span>';
+            h += '<div style="display:flex;align-items:center;gap:14px;"><span style="font-family:\'Oswald\',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">'+f(l.nf)+'</span>'+tagFaixa(l.nf)+'</div></div>';
+        });
+        histBox.innerHTML = h;
+    }
+}
+
+// ==================== 5 ESTRELAS - TELA DO AVALIADOR ====================
+function av5Fmt(n){ return n.toFixed(2).replace('.',','); }
+function av5Classifica(nf){
+    if(nf>=4.80) return {selo:'&#127942; 5 Estrelas', full:'&#127942; Atendimento 5 Estrelas', bg:'rgba(232,163,62,0.22)', cor:'#FFD89B', bd:'rgba(232,163,62,0.5)'};
+    if(nf>=4.50) return {selo:'&starf; Excel&ecirc;ncia', full:'&starf; Atendimento de Excel&ecirc;ncia', bg:'rgba(29,188,176,0.2)', cor:'#9FF0E6', bd:'rgba(29,188,176,0.5)'};
+    return {selo:'Em constru&ccedil;&atilde;o', full:'Em constru&ccedil;&atilde;o (abaixo de 4,50)', bg:'rgba(255,255,255,0.12)', cor:'rgba(255,255,255,0.75)', bd:'rgba(255,255,255,0.2)'};
+}
+function av5Recalc(){
+    var mon = parseFloat(document.getElementById('av5-mon').value)||0;
+    var cli = parseFloat(document.getElementById('av5-cli').value)||0;
+    var atend = parseInt(document.getElementById('av5-atend').value)||0;
+    var nf = (mon*0.6)+(cli*0.4);
+    document.getElementById('av5-pMon').textContent = av5Fmt(mon);
+    document.getElementById('av5-pCli').textContent = av5Fmt(cli);
+    document.getElementById('av5-pFinal').textContent = av5Fmt(nf);
+    var c = av5Classifica(nf);
+    var selo = document.getElementById('av5-pSelo');
+    selo.innerHTML = c.selo; selo.style.background = c.bg; selo.style.color = c.cor; selo.style.border = '1px solid '+c.bd;
+    var eleg = document.getElementById('av5-pEleg');
+    if(atend>=20){ eleg.style.color='rgba(255,255,255,0.75)'; eleg.innerHTML='&#10003; Eleg&iacute;vel &middot; '+atend+' atendimentos monitorados'; }
+    else { eleg.style.color='#FFD89B'; eleg.innerHTML='&#9888; Faltam '+(20-atend)+' atendimentos para entrar na apura&ccedil;&atilde;o ('+atend+'/20) &mdash; nota registrada mesmo assim'; }
+}
+function av5Confirmar(){
+    var mon = parseFloat(document.getElementById('av5-mon').value)||0;
+    var cli = parseFloat(document.getElementById('av5-cli').value)||0;
+    var atend = parseInt(document.getElementById('av5-atend').value)||0;
+    var nf = (mon*0.6)+(cli*0.4);
+    var colab = document.getElementById('av5-colab').value;
+    var comp = document.getElementById('av5-comp').value;
+    var obs = document.getElementById('av5-obs').value;
+    var editando = window.av5EditId || null;
+    var verbo = editando ? 'Salvar corre\u00e7\u00e3o' : 'Confirmar lan\u00e7amento';
+    if(confirm(verbo+'?\n\n'+colab+' \u00b7 '+comp+'\nMonitoria '+av5Fmt(mon)+' + Cliente '+av5Fmt(cli)+' = '+av5Fmt(nf)+'\n\nEste registro ser\u00e1 gravado em seu nome, com data e hora.')){
+        var agora = new Date();
+        var quem = (currentUser && currentUser.name) ? currentUser.name.split(' ')[0] : 'voc\u00ea';
+        var carimbo = ('0'+agora.getDate()).slice(-2)+'/'+('0'+(agora.getMonth()+1)).slice(-2)+' '+('0'+agora.getHours()).slice(-2)+':'+('0'+agora.getMinutes()).slice(-2);
+        if(editando){
+            // localizar e atualizar o registro existente, marcando como editado
+            for(var i=0;i<window.av5Lancamentos.length;i++){
+                if(window.av5Lancamentos[i].id === editando){
+                    var r = window.av5Lancamentos[i];
+                    r.mon=mon; r.cli=cli; r.atend=atend; r.nf=nf; r.obs=obs;
+                    r.editado=true; r.editadoEm=carimbo; r.editadoPor=quem;
+                    break;
+                }
+            }
+            showNotification('Corre\u00e7\u00e3o salva e registrada.', 'success');
+            window.av5EditId = null;
+            var btn = document.getElementById('av5-btn-lancar'); if(btn) btn.textContent = 'Revisar e lan\u00e7ar';
+        } else {
+            window.av5Lancamentos.unshift({
+                id: 'l'+Date.now(), colab:colab, comp:comp, mon:mon, cli:cli, atend:atend, nf:nf, obs:obs,
+                por:quem, em:carimbo, editado:false
+            });
+            showNotification('Lan\u00e7amento registrado com sucesso!', 'success');
+        }
+
+        // DEMONSTRAÇÃO: espelhar na tela do colaborador (mesma sessão).
+        // Se o colaborador selecionado for um e-mail conhecido, grava no store.
+        var emailColab = colab.indexOf('@') !== -1 ? colab : null;
+        if(emailColab){
+            if(!window.demo5Estrelas[emailColab]) window.demo5Estrelas[emailColab] = { atual:null, historico:[] };
+            var store = window.demo5Estrelas[emailColab];
+            // a competência atual anterior vira histórico
+            if(store.atual){
+                var nfAnt = (store.atual.mon*0.6)+(store.atual.cli*0.4);
+                store.historico.unshift({ comp: store.atual.comp, nf: nfAnt });
+            }
+            // converte "Julho / 2026" -> "Julho 2026"
+            store.atual = { mon:mon, cli:cli, comp: comp.replace(' / ', ' ') };
+            demo5Salvar();
+            // GRAVAÇÃO REAL no Supabase (quando o colaborador é um e-mail).
+            av5SalvarSupabase(emailColab, colab, comp, mon, cli, atend, nf, obs);
+        }
+        av5RenderLista();
+    }
+}
+
+// Converte competência "Julho / 2026" -> "2026-07"
+function av5CompetenciaISO(comp){
+    var meses = {'Janeiro':'01','Fevereiro':'02','Mar\u00e7o':'03','Marco':'03','Abril':'04','Maio':'05','Junho':'06','Julho':'07','Agosto':'08','Setembro':'09','Outubro':'10','Novembro':'11','Dezembro':'12'};
+    var partes = comp.split('/');
+    if(partes.length !== 2) return null;
+    var mesNome = partes[0].trim();
+    var ano = partes[1].trim();
+    var mm = meses[mesNome];
+    if(!mm) return null;
+    return ano + '-' + mm;
+}
+
+// Grava o lançamento na tabela avaliacoes_mensais do Supabase.
+async function av5SalvarSupabase(email, nome, comp, mon, cli, atend, nf, obs){
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient) { console.warn('5E: Supabase indispon\u00edvel'); return; }
+        // Resolve o id do colaborador pelo e-mail (via profiles).
+        var prof = await supabaseClient.from('profiles').select('id, nome, email').eq('email', email).single();
+        if (!prof || !prof.data) { console.warn('5E: colaborador n\u00e3o encontrado em profiles:', email); return; }
+        var colaboradorId = prof.data.id;
+        var competenciaISO = av5CompetenciaISO(comp);
+        if (!competenciaISO) { console.warn('5E: compet\u00eancia inv\u00e1lida:', comp); return; }
+        var classificacao = nf >= 4.80 ? '5_estrelas' : (nf >= 4.50 ? 'excelencia' : 'nao_elegivel');
+        var quemEmail = (currentUser && currentUser.email) ? currentUser.email : null;
+        var registro = {
+            colaborador_id: colaboradorId,
+            colaborador_nome: nome,
+            competencia: competenciaISO,
+            nota_monitoria: mon,
+            nota_cliente: cli,
+            nota_final: Number(nf.toFixed(3)),
+            atendimentos_monitorados: atend,
+            elegivel: atend >= 20,
+            classificacao: classificacao,
+            observacao: obs || null,
+            lancado_por: quemEmail,
+            atualizado_em: new Date().toISOString()
+        };
+        var res = await supabaseClient.from('avaliacoes_mensais')
+            .upsert(registro, { onConflict: 'colaborador_id,competencia' });
+        if (res.error) {
+            console.warn('5E: erro ao salvar:', res.error.message);
+            showNotification('Aviso: salvo localmente, mas o Supabase recusou (' + res.error.message + ')', 'info');
+        } else {
+            console.log('5E: lan\u00e7amento salvo no Supabase para', email);
+        }
+    } catch(e){
+        console.warn('5E: exce\u00e7\u00e3o ao salvar:', e.message);
+    }
+}
+function av5RenderLista(){
+    var box = document.getElementById('av5-lista');
+    if(!box) return;
+    if(!window.av5Lancamentos || window.av5Lancamentos.length === 0){
+        box.innerHTML = '<div style="font-size:13px;color:var(--cinza);padding:16px 0;text-align:center;">Nenhum lan&ccedil;amento ainda. Use o formul&aacute;rio ao lado.</div>';
+        return;
+    }
+    var html = '';
+    window.av5Lancamentos.forEach(function(r, idx){
+        var borda = idx < window.av5Lancamentos.length-1 ? 'border-bottom:1px solid var(--borda);' : '';
+        var tag = r.editado ? ' <span style="font-size:10px;color:#B97516;background:#FBF1DF;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:6px;">editado</span>' : '';
+        var metaEdit = r.editado ? ' &middot; editado '+r.editadoEm : '';
+        html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;'+borda+'font-size:13px;">';
+        html += '<div><div style="color:var(--azul-escuro);font-weight:600;">'+r.colab+tag+'</div>';
+        html += '<div style="font-size:11px;color:var(--cinza);margin-top:2px;">'+r.comp+' &middot; por '+r.por+' &middot; '+r.em+metaEdit+'</div></div>';
+        html += '<div style="display:flex;align-items:center;gap:12px;"><span style="font-family:\'Oswald\',sans-serif;font-size:17px;font-weight:600;color:var(--azul-medio);">'+av5Fmt(r.nf)+'</span>';
+        html += '<button onclick="av5Corrigir(\''+r.id+'\')" style="font-size:12px;color:var(--turquesa);font-weight:600;cursor:pointer;background:none;border:none;font-family:\'Inter\',sans-serif;">corrigir</button></div></div>';
+    });
+    box.innerHTML = html;
+}
+function av5Corrigir(id){
+    var r = null;
+    for(var i=0;i<window.av5Lancamentos.length;i++){ if(window.av5Lancamentos[i].id===id){ r=window.av5Lancamentos[i]; break; } }
+    if(!r){ showNotification('Lan\u00e7amento n\u00e3o encontrado.', 'error'); return; }
+    // carrega o registro de volta no formul\u00e1rio
+    document.getElementById('av5-colab').value = r.colab;
+    document.getElementById('av5-comp').value = r.comp;
+    document.getElementById('av5-mon').value = r.mon;
+    document.getElementById('av5-cli').value = r.cli;
+    document.getElementById('av5-atend').value = r.atend;
+    document.getElementById('av5-obs').value = r.obs || '';
+    window.av5EditId = id;
+    var btn = document.getElementById('av5-btn-lancar'); if(btn) btn.textContent = 'Salvar corre\u00e7\u00e3o';
+    av5Recalc();
+    showNotification('Modo de corre\u00e7\u00e3o: ajuste e salve. A altera\u00e7\u00e3o ficar\u00e1 registrada.', 'info');
+    var topo = document.getElementById('av5-grid'); if(topo) topo.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function initAvaliador5E(){
+    // estado local de exemplo (some ao recarregar; Supabase virá depois)
+    if(typeof window.av5Lancamentos === 'undefined'){
+        window.av5Lancamentos = [
+            {id:'l1', colab:'Roberta Andrade', comp:'Junho / 2026', mon:4.85, cli:4.78, atend:26, nf:4.82, obs:'', por:'voc\u00ea', em:'02/07 09:14', editado:true, editadoEm:'03/07 10:01'},
+            {id:'l2', colab:'Carlos Mendes', comp:'Junho / 2026', mon:4.30, cli:4.55, atend:22, nf:4.40, obs:'', por:'voc\u00ea', em:'02/07 09:20', editado:false},
+            {id:'l3', colab:'Juliana Prado', comp:'Junho / 2026', mon:4.95, cli:4.85, atend:30, nf:4.91, obs:'', por:'voc\u00ea', em:'02/07 09:28', editado:false}
+        ];
+    }
+    window.av5EditId = null;
+    ['av5-mon','av5-cli','av5-atend'].forEach(function(id){
+        var el = document.getElementById(id);
+        if(el && !el.dataset.bound){ el.addEventListener('input', av5Recalc); el.dataset.bound='1'; }
+    });
+    av5Recalc();
+    av5RenderLista();
 }
 
 function recordLogin() {
@@ -8141,10 +8580,10 @@ async function renderModuleFiles(moduleId) {
         'mod3': 'Módulo 3: SAC e Ouvidoria',
         'mod4': 'Módulo 4: Relacionamento',
         'mod5': 'Módulo 5: Gestão e Liderança',
-        'mod-onboarding-1': 'Onboarding Geral',
-        'mod-onboarding-2': 'Onboarding Geral',
-        'mod-onboarding-3': 'Onboarding Geral',
-        'mod-onboarding-4': 'Onboarding Geral',
+        'mod-onboarding-1': 'Onboarding Relacionamento',
+        'mod-onboarding-2': 'Onboarding Relacionamento',
+        'mod-onboarding-3': 'Onboarding Relacionamento',
+        'mod-onboarding-4': 'Onboarding Relacionamento',
         'mod-rel-1': 'Relacionamento',
         'mod-rel-2': 'Relacionamento',
         'mod-rel-3': 'Relacionamento',
