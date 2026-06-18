@@ -7848,13 +7848,28 @@ function av5CompetenciaISO(comp){
 async function av5SalvarSupabase(email, nome, comp, mon, cli, atend, nf, obs){
     try {
         if (!supabaseClient) initSupabase();
-        if (!supabaseClient) { console.warn('5E: Supabase indispon\u00edvel'); return; }
+        if (!supabaseClient) { showNotification('5E: Supabase indispon\u00edvel nesta sess\u00e3o.', 'error'); return; }
+
+        // Diagnóstico: precisa de uma sessão autenticada de verdade para o RLS aceitar.
+        var sess = await supabaseClient.auth.getSession();
+        if (!sess || !sess.data || !sess.data.session) {
+            showNotification('5E: voc\u00ea n\u00e3o tem sess\u00e3o Supabase ativa. O lan\u00e7amento real exige login de avaliador/admin com usu\u00e1rio real do Supabase.', 'error');
+            return;
+        }
+
         // Resolve o id do colaborador pelo e-mail (via profiles).
         var prof = await supabaseClient.from('profiles').select('id, nome, email').eq('email', email).single();
-        if (!prof || !prof.data) { console.warn('5E: colaborador n\u00e3o encontrado em profiles:', email); return; }
+        if (prof && prof.error) {
+            showNotification('5E: erro ao buscar colaborador em profiles: ' + prof.error.message, 'error');
+            return;
+        }
+        if (!prof || !prof.data) {
+            showNotification('5E: o colaborador ' + email + ' n\u00e3o existe na tabela profiles. Crie/confirme esse usu\u00e1rio antes de lan\u00e7ar.', 'error');
+            return;
+        }
         var colaboradorId = prof.data.id;
         var competenciaISO = av5CompetenciaISO(comp);
-        if (!competenciaISO) { console.warn('5E: compet\u00eancia inv\u00e1lida:', comp); return; }
+        if (!competenciaISO) { showNotification('5E: compet\u00eancia inv\u00e1lida: ' + comp, 'error'); return; }
         var classificacao = nf >= 4.80 ? '5_estrelas' : (nf >= 4.50 ? 'excelencia' : 'nao_elegivel');
         var quemEmail = (currentUser && currentUser.email) ? currentUser.email : null;
         var registro = {
@@ -7874,13 +7889,12 @@ async function av5SalvarSupabase(email, nome, comp, mon, cli, atend, nf, obs){
         var res = await supabaseClient.from('avaliacoes_mensais')
             .upsert(registro, { onConflict: 'colaborador_id,competencia' });
         if (res.error) {
-            console.warn('5E: erro ao salvar:', res.error.message);
-            showNotification('Aviso: salvo localmente, mas o Supabase recusou (' + res.error.message + ')', 'info');
+            showNotification('5E: o Supabase recusou a grava\u00e7\u00e3o (' + res.error.message + '). Provavelmente RLS: quem lan\u00e7a precisa ter role avaliador/admin em profiles.', 'error');
         } else {
-            console.log('5E: lan\u00e7amento salvo no Supabase para', email);
+            showNotification('5E: lan\u00e7amento salvo no Supabase com sucesso!', 'success');
         }
     } catch(e){
-        console.warn('5E: exce\u00e7\u00e3o ao salvar:', e.message);
+        showNotification('5E: exce\u00e7\u00e3o ao salvar: ' + e.message, 'error');
     }
 }
 function av5RenderLista(){
