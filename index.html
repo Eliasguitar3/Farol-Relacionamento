@@ -3940,6 +3940,7 @@ async function checkAuthState() {
                         email: session.user.email,
                         role: profile.role || 'user',
                         id: session.user.id,
+                        mustChangePassword: profile.must_change_password === true,
                         loginTime: new Date().toISOString()
                     };
                     currentRole = currentUser.role;
@@ -3963,6 +3964,11 @@ async function checkAuthState() {
                 hideLoginScreen();
                 showApp();
                 validateUrlAccess();
+                // PRIMEIRO ACESSO: se precisa trocar a senha, bloqueia o app até trocar.
+                if (currentUser.mustChangePassword) {
+                    forcarTrocaSenhaPrimeiroAcesso();
+                    return;
+                }
                 if (currentRole === 'admin') {
                     updateAdminDashboard();
                 } else {
@@ -7105,6 +7111,75 @@ function updateUserProfilePage() {
     loadPreferences();
     checkAchievements();
     renderRecentActivity();
+}
+
+// PRIMEIRO ACESSO (Opção A): bloqueia o app com um overlay até a pessoa
+// definir uma nova senha. Depois marca must_change_password = false em profiles.
+function forcarTrocaSenhaPrimeiroAcesso() {
+    var existente = document.getElementById('primeiroAcessoOverlay');
+    if (existente) existente.remove();
+
+    var ov = document.createElement('div');
+    ov.id = 'primeiroAcessoOverlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,30,40,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    var html = '';
+    html += '<div style="background:#fff;border-radius:20px;max-width:440px;width:100%;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">';
+    html += '<div style="text-align:center;margin-bottom:20px;"><div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#1DBCB0,#147878);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-key" style="font-size:26px;color:#fff;"></i></div>';
+    html += '<h2 style="font-size:20px;color:#003C50;margin-bottom:6px;font-family:\'Oswald\',sans-serif;">Bem-vindo(a)! Defina sua senha</h2>';
+    html += '<p style="font-size:13px;color:#5a6b7c;line-height:1.6;">Este \u00e9 o seu primeiro acesso. Por seguran\u00e7a, crie uma senha pessoal antes de continuar.</p></div>';
+    html += '<div id="paErro" style="display:none;background:#fdecea;color:#c0392b;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;"></div>';
+    html += '<label style="display:block;font-size:12px;font-weight:600;color:#5a6b7c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Nova senha</label>';
+    html += '<input type="password" id="paNova" placeholder="M\u00ednimo 8 caracteres" style="width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;margin-bottom:14px;font-family:\'Inter\',sans-serif;">';
+    html += '<label style="display:block;font-size:12px;font-weight:600;color:#5a6b7c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Confirme a nova senha</label>';
+    html += '<input type="password" id="paConfirma" placeholder="Repita a senha" style="width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;margin-bottom:20px;font-family:\'Inter\',sans-serif;">';
+    html += '<button id="paBtn" onclick="confirmarPrimeiroAcesso()" style="width:100%;padding:13px;background:#003C50;color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:\'Inter\',sans-serif;">Definir senha e entrar</button>';
+    html += '<p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px;">Voc\u00ea n\u00e3o pode usar a plataforma at\u00e9 definir sua senha.</p>';
+    html += '</div>';
+    ov.innerHTML = html;
+    document.body.appendChild(ov);
+}
+
+async function confirmarPrimeiroAcesso() {
+    var nova = document.getElementById('paNova');
+    var conf = document.getElementById('paConfirma');
+    var erro = document.getElementById('paErro');
+    var btn = document.getElementById('paBtn');
+    function mostrarErro(msg){ erro.textContent = msg; erro.style.display = 'block'; }
+
+    if (!nova || !conf) return;
+    if (nova.value.length < 8) { mostrarErro('A senha deve ter no m\u00ednimo 8 caracteres.'); return; }
+    if (nova.value !== conf.value) { mostrarErro('As senhas n\u00e3o conferem.'); return; }
+
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...'; }
+
+    try {
+        if (!supabaseClient) initSupabase();
+        // 1) troca a senha no Supabase Auth
+        var upd = await supabaseClient.auth.updateUser({ password: nova.value });
+        if (upd.error) {
+            mostrarErro('N\u00e3o foi poss\u00edvel definir a senha: ' + upd.error.message);
+            if (btn) { btn.disabled = false; btn.innerHTML = 'Definir senha e entrar'; }
+            return;
+        }
+        // 2) marca must_change_password = false no profiles
+        if (currentUser && currentUser.id) {
+            await supabaseClient.from('profiles').update({ must_change_password: false }).eq('id', currentUser.id);
+        }
+        // 3) libera o app
+        currentUser.mustChangePassword = false;
+        var ov = document.getElementById('primeiroAcessoOverlay');
+        if (ov) ov.remove();
+        showNotification('Senha definida com sucesso! Bem-vindo(a).', 'success');
+        if (currentRole === 'admin') {
+            updateAdminDashboard();
+        } else {
+            updateDashboard();
+            if (typeof loadProgressFromSupabase === 'function') loadProgressFromSupabase();
+        }
+    } catch(e) {
+        mostrarErro('Erro ao definir a senha. Tente novamente.');
+        if (btn) { btn.disabled = false; btn.innerHTML = 'Definir senha e entrar'; }
+    }
 }
 
 async function changePassword() {
