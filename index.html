@@ -26,7 +26,12 @@ html { scroll-behavior: smooth; }
 body { font-family: 'Inter', sans-serif; background: var(--cinza-claro); color: var(--texto); line-height: 1.6; overflow-x: hidden; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
 input, textarea, select { font-size: 16px; }
 
-/* LOGIN */
+/* Seletor visual de colaboradores (avaliador) */
+.av5-colab-item:hover { background: var(--cinza-claro) !important; }
+.av5-colab-item:active { background: var(--turquesa-light) !important; }
+#av5-colab-display:focus { border-color: var(--turquesa); box-shadow: 0 0 0 3px rgba(29,188,176,0.15); outline: none; }
+
+
 .login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; height: 100dvh; background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-medio) 50%, var(--turquesa) 100%); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
 .login-screen.hidden { display: none; }
 .login-container { width: 100%; max-width: 440px; animation: fadeInUp 0.6s ease; }
@@ -520,6 +525,7 @@ input, textarea, select { font-size: 16px; }
 /* ANIMATIONS */
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn5e { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
 .animate-in { animation: fadeInUp 0.5s ease forwards; }
 .delay-1 { animation-delay: 0.1s; }
 .delay-2 { animation-delay: 0.2s; }
@@ -1120,7 +1126,7 @@ img, iframe, video, svg { max-width: 100%; }
                 </div>
                 <div class="form-group">
                     <label>Sua senha</label>
-                    <input type="password" id="userPasswordInput" placeholder="Mínimo 6 caracteres" onkeypress="if(event.key==='Enter')loginUser()">
+                    <input type="password" id="userPasswordInput" placeholder="Mínimo 8 caracteres" onkeypress="if(event.key==='Enter')loginUser()">
                     <p class="domain-hint"><i class="fas fa-info-circle"></i> Primeiro acesso? Sua conta será criada automaticamente</p>
                 </div>
                 <button type="button" class="login-btn" id="btnLoginUser" onclick="loginUser()">
@@ -1195,7 +1201,7 @@ img, iframe, video, svg { max-width: 100%; }
 
     <nav class="sidebar-nav">
         <!-- MENU PRINCIPAL -->
-        <div class="nav-section">
+        <div class="nav-section" id="mainMenuSection">
             <div class="nav-section-title">Menu Principal</div>
             <div class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
                 <i class="fas fa-home"></i> Dashboard
@@ -1249,10 +1255,16 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="nav-item" data-page="admin-users" onclick="navigateTo('admin-users')">
                 <i class="fas fa-users-cog"></i> Gerenciar Usuários
             </div>
-            <!-- TEMPORÁRIO: acesso à tela do Avaliador 5 Estrelas para validação visual.
-                 Será substituído por gating de papel (role "avaliador") quando o Supabase for integrado. -->
+        </div>
+
+        <!-- MENU EXCLUSIVO DO AVALIADOR (Célula CS) — só lançamento/avaliação -->
+        <div class="nav-section" id="avaliadorMenuSection" style="display:none">
+            <div class="nav-section-title">Avaliação</div>
             <div class="nav-item" data-page="avaliador-5e" onclick="navigateTo('avaliador-5e')">
                 <i class="fas fa-shield-halved"></i> Lançar Notas 5 Estrelas
+            </div>
+            <div class="nav-item" data-page="user-profile" onclick="navigateTo('user-profile')">
+                <i class="fas fa-user-circle"></i> Meu Perfil
             </div>
         </div>
     </nav>
@@ -1540,7 +1552,8 @@ img, iframe, video, svg { max-width: 100%; }
                         </div>
                     </div>
                 </div>
-                <div class="card animate-in delay-3" onclick="navigateTo('trilha-juridico')">
+                <div class="card animate-in delay-3" onclick="navigateTo('trilha-juridico')" style="position:relative;">
+                    <span style="position:absolute;top:14px;right:14px;background:#f0f2f4;color:#8a9a9a;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;">Em breve</span>
                     <div class="card-icon-main verde"><i class="fas fa-balance-scale"></i></div>
                     <h3>Jurídico</h3>
                     <p>Contratos, fluxos jurídicos, comunicação e padronizações.</p>
@@ -1548,21 +1561,12 @@ img, iframe, video, svg { max-width: 100%; }
                         <span class="card-count"><i class="fas fa-book"></i> 4 módulos</span>
                         <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
                     </div>
-                    <div class="progress-track" style="margin-top:12px;padding:12px;">
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                            <span style="font-size:11px;font-weight:600;color:var(--azul-escuro);">Progresso</span>
-                            <span style="font-size:11px;font-weight:700;color:var(--turquesa);" id="trail-juridico-pct">0%</span>
-                        </div>
-                        <div class="progress-bar" style="height:6px;">
-                            <div class="progress-fill" id="trail-juridico-bar" style="width:0%"></div>
-                        </div>
-                        <div class="trail-progress-mini" style="margin-top:8px;">
-                            <span id="trail-juridico-count">0/4</span>
-                            <div class="bar"><div class="fill" id="trail-juridico-mini-bar" style="width:0%"></div></div>
-                        </div>
+                    <div style="margin-top:12px;padding:12px;background:var(--cinza-claro);border-radius:10px;text-align:center;">
+                        <span style="font-size:12px;color:var(--cinza);">Conteúdo em desenvolvimento</span>
                     </div>
                 </div>
-                <div class="card animate-in delay-4" onclick="navigateTo('trilha-compliance')">
+                <div class="card animate-in delay-4" onclick="navigateTo('trilha-compliance')" style="position:relative;">
+                    <span style="position:absolute;top:14px;right:14px;background:#f0f2f4;color:#8a9a9a;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;">Em breve</span>
                     <div class="card-icon-main laranja"><i class="fas fa-shield-alt"></i></div>
                     <h3>Compliance</h3>
                     <p>Ética, LGPD, segurança da informação, conduta e políticas internas.</p>
@@ -1570,18 +1574,8 @@ img, iframe, video, svg { max-width: 100%; }
                         <span class="card-count"><i class="fas fa-book"></i> 5 módulos</span>
                         <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
                     </div>
-                    <div class="progress-track" style="margin-top:12px;padding:12px;">
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                            <span style="font-size:11px;font-weight:600;color:var(--azul-escuro);">Progresso</span>
-                            <span style="font-size:11px;font-weight:700;color:var(--turquesa);" id="trail-compliance-pct">0%</span>
-                        </div>
-                        <div class="progress-bar" style="height:6px;">
-                            <div class="progress-fill" id="trail-compliance-bar" style="width:0%"></div>
-                        </div>
-                        <div class="trail-progress-mini" style="margin-top:8px;">
-                            <span id="trail-compliance-count">0/5</span>
-                            <div class="bar"><div class="fill" id="trail-compliance-mini-bar" style="width:0%"></div></div>
-                        </div>
+                    <div style="margin-top:12px;padding:12px;background:var(--cinza-claro);border-radius:10px;text-align:center;">
+                        <span style="font-size:12px;color:var(--cinza);">Conteúdo em desenvolvimento</span>
                     </div>
                 </div>
             </div>
@@ -2489,8 +2483,34 @@ img, iframe, video, svg { max-width: 100%; }
                 <div style="background:#fff;border:1px solid var(--borda);border-radius:18px;padding:22px;">
                     <h2 style="font-size:15px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;">Novo lan&ccedil;amento</h2>
                     <div style="font-size:12px;color:var(--cinza);margin-bottom:18px;">Os campos abaixo alimentam o c&aacute;lculo ao vivo ao lado.</div>
-                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Colaborador</label><select id="av5-colab" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option value="teste@canopus.com.br">Usu&aacute;rio de Teste (teste@canopus.com.br)</option><option>Roberta Andrade</option><option>Carlos Mendes</option><option>Juliana Prado</option><option>Andr&eacute; Lima</option></select></div>
-                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Compet&ecirc;ncia (m&ecirc;s/ano)</label><select id="av5-comp" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option>Julho / 2026</option><option>Junho / 2026</option><option>Maio / 2026</option></select></div>
+                    <div style="margin-bottom:15px;" id="av5-colab-wrap">
+                        <label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Colaborador</label>
+                        <!-- Seletor visual de colaborador -->
+                        <div id="av5-colab-picker" style="position:relative;">
+                            <!-- Campo de busca / valor selecionado -->
+                            <div id="av5-colab-display" onclick="av5ColabToggle()" style="display:flex;align-items:center;gap:10px;padding:10px 13px;border:1.5px solid var(--borda);border-radius:10px;background:#fff;cursor:pointer;transition:border-color .2s;user-select:none;" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')av5ColabToggle()">
+                                <div id="av5-colab-avatar" style="width:34px;height:34px;border-radius:50%;background:var(--cinza-claro);border:1.5px solid var(--borda);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:var(--cinza);overflow:hidden;">
+                                    <i class="fas fa-user" style="font-size:13px;color:var(--cinza);"></i>
+                                </div>
+                                <span id="av5-colab-label" style="flex:1;font-size:14px;color:var(--cinza);font-family:'Inter',sans-serif;">Selecione um colaborador</span>
+                                <i class="fas fa-chevron-down" id="av5-colab-chevron" style="font-size:11px;color:var(--cinza);transition:transform .2s;"></i>
+                            </div>
+                            <!-- Dropdown -->
+                            <div id="av5-colab-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--turquesa);border-radius:12px;box-shadow:0 8px 24px rgba(0,60,80,0.13);z-index:500;overflow:hidden;max-height:320px;flex-direction:column;">
+                                <div style="padding:10px 10px 6px;border-bottom:1px solid var(--borda);">
+                                    <div style="display:flex;align-items:center;gap:8px;background:var(--cinza-claro);border-radius:8px;padding:7px 10px;">
+                                        <i class="fas fa-search" style="font-size:12px;color:var(--cinza);"></i>
+                                        <input id="av5-colab-search" type="text" placeholder="Buscar pelo nome…" oninput="av5ColabFiltrar()" style="border:none;background:transparent;outline:none;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);width:100%;">
+                                    </div>
+                                </div>
+                                <div id="av5-colab-list" style="overflow-y:auto;max-height:250px;padding:6px;"></div>
+                            </div>
+                        </div>
+                        <!-- Campo hidden que mantém o email para o restante do código -->
+                        <input type="hidden" id="av5-colab" value="">
+                    </div>
+                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Compet&ecirc;ncia (m&ecirc;s/ano)</label><select id="av5-comp" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option>Janeiro / 2026</option><option>Fevereiro / 2026</option><option>Mar&ccedil;o / 2026</option><option>Abril / 2026</option><option>Maio / 2026</option><option>Junho / 2026</option><option selected>Julho / 2026</option><option>Agosto / 2026</option><option>Setembro / 2026</option><option>Outubro / 2026</option><option>Novembro / 2026</option><option>Dezembro / 2026</option></select></div>
+                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Data da avalia&ccedil;&atilde;o</label><input type="date" id="av5-data" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                         <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Nota de Monitoria</label><input type="number" id="av5-mon" min="0" max="5" step="0.01" value="4.50" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
                         <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Nota do Cliente</label><input type="number" id="av5-cli" min="0" max="5" step="0.01" value="4.70" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
@@ -2840,6 +2860,20 @@ img, iframe, video, svg { max-width: 100%; }
                         <!-- Populated by JS -->
                     </tbody>
                 </table>
+            </div>
+            <div class="admin-panel active" style="margin-top:18px;">
+                <h2><i class="fas fa-key" style="color:var(--turquesa);margin-right:8px;"></i>Redefinir a senha de um colaborador</h2>
+                <p style="font-size:14px;color:var(--texto-leve);line-height:1.7;margin-bottom:14px;">Quando um colaborador esquece a senha, a redefini&ccedil;&atilde;o &eacute; feita com seguran&ccedil;a pelo painel do Supabase (a plataforma nunca manipula senhas de terceiros diretamente, por seguran&ccedil;a). Passo a passo:</p>
+                <ol style="font-size:14px;color:var(--azul-escuro);line-height:1.9;padding-left:20px;">
+                    <li>Acesse o painel do Supabase do projeto.</li>
+                    <li>V&aacute; em <strong>Authentication &rarr; Users</strong>.</li>
+                    <li>Localize o colaborador pelo e-mail e clique nele.</li>
+                    <li>Use a op&ccedil;&atilde;o <strong>Reset password</strong> (ou definir nova senha) e informe uma senha tempor&aacute;ria.</li>
+                    <li>Informe a senha tempor&aacute;ria ao colaborador. No pr&oacute;ximo acesso, ele ser&aacute; levado a criar a pr&oacute;pria senha.</li>
+                </ol>
+                <div style="margin-top:14px;padding:12px 14px;background:var(--turquesa-claro);border-radius:10px;font-size:13px;color:var(--azul-medio);">
+                    <i class="fas fa-info-circle" style="margin-right:6px;"></i>Para que o colaborador troque a senha no pr&oacute;ximo login, marque o campo de primeiro acesso no perfil dele (must_change_password).
+                </div>
             </div>
         </div>
 
@@ -3819,6 +3853,29 @@ async function loginAdmin() {
                 }, 800);
                 return;
             }
+
+            // Papel AVALIADOR: perfil exclusivo de avaliação.
+            if (profile && profile.role === 'avaliador') {
+                currentUser = {
+                    name: profile.name || profile.nome || 'Avaliador',
+                    email: signInData.user.email,
+                    role: 'avaliador',
+                    id: signInData.user.id,
+                    mustChangePassword: profile.must_change_password === true,
+                    loginTime: new Date().toISOString()
+                };
+                currentRole = 'avaliador';
+                setTimeout(() => {
+                    hideLoginScreen();
+                    showApp();
+                    if (currentUser.mustChangePassword) {
+                        forcarTrocaSenhaPrimeiroAcesso();
+                        return;
+                    }
+                    navigateTo('avaliador-5e');
+                }, 600);
+                return;
+            }
         }
 
         // Fallback to hardcoded credentials (backward compatibility)
@@ -3941,6 +3998,7 @@ async function checkAuthState() {
                         role: profile.role || 'user',
                         id: session.user.id,
                         mustChangePassword: profile.must_change_password === true,
+                        avaliado: profile.avaliado === true,
                         loginTime: new Date().toISOString()
                     };
                     currentRole = currentUser.role;
@@ -3971,6 +4029,8 @@ async function checkAuthState() {
                 }
                 if (currentRole === 'admin') {
                     updateAdminDashboard();
+                } else if (currentRole === 'avaliador') {
+                    navigateTo('avaliador-5e');
                 } else {
                     updateDashboard();
                     loadProgressFromSupabase();
@@ -4040,14 +4100,28 @@ function showApp() {
         document.getElementById('dashboardUserName').textContent = currentUser.name;
 
         const roleEl = document.getElementById('sidebarUserRole');
+        var mainMenu = document.getElementById('mainMenuSection');
+        var adminMenu = document.getElementById('adminMenuSection');
+        var avalMenu = document.getElementById('avaliadorMenuSection');
         if (currentRole === 'admin') {
             roleEl.textContent = 'Administrador';
             roleEl.className = 'user-role admin';
-            document.getElementById('adminMenuSection').style.display = 'block';
+            if (mainMenu) mainMenu.style.display = 'block';
+            if (adminMenu) adminMenu.style.display = 'block';
+            if (avalMenu) avalMenu.style.display = 'none';
+        } else if (currentRole === 'avaliador') {
+            // Perfil exclusivo de avaliação: vê SOMENTE a área de avaliação.
+            roleEl.textContent = 'Avaliador';
+            roleEl.className = 'user-role admin';
+            if (mainMenu) mainMenu.style.display = 'none';
+            if (adminMenu) adminMenu.style.display = 'none';
+            if (avalMenu) avalMenu.style.display = 'block';
         } else {
             roleEl.textContent = 'Colaborador';
             roleEl.className = 'user-role user';
-            document.getElementById('adminMenuSection').style.display = 'none';
+            if (mainMenu) mainMenu.style.display = 'block';
+            if (adminMenu) adminMenu.style.display = 'none';
+            if (avalMenu) avalMenu.style.display = 'none';
         }
         // Exibe a foto de perfil salva (Supabase Storage) no menu lateral
         loadProfilePhoto();
@@ -4214,6 +4288,24 @@ function navigateTo(page) {
     if (adminPages.includes(page) && currentRole !== 'admin') {
         showNotification('Acesso restrito a administradores', 'error');
         return;
+    }
+
+    // Avaliador: perfil exclusivo de avaliação. Só pode acessar a tela de
+    // lançamento e o próprio perfil; qualquer outra página é bloqueada.
+    if (currentRole === 'avaliador') {
+        const avaliadorPermitido = ['avaliador-5e', 'user-profile'];
+        if (!avaliadorPermitido.includes(page)) {
+            showNotification('Seu perfil tem acesso apenas à área de avaliação.', 'warning');
+            return;
+        }
+    }
+
+    // 5 Estrelas: só quem é avaliado (atende) vê a própria nota. Admin pode ver.
+    if (page === 'cinco-estrelas' && currentRole !== 'admin') {
+        if (!(currentUser && currentUser.avaliado)) {
+            showNotification('O Atendimento 5 Estrelas é exclusivo para quem realiza atendimentos.', 'info');
+            return;
+        }
     }
 
     // Handle generic module pages
@@ -7129,14 +7221,23 @@ function forcarTrocaSenhaPrimeiroAcesso() {
     html += '<p style="font-size:13px;color:#5a6b7c;line-height:1.6;">Este \u00e9 o seu primeiro acesso. Por seguran\u00e7a, crie uma senha pessoal antes de continuar.</p></div>';
     html += '<div id="paErro" style="display:none;background:#fdecea;color:#c0392b;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;"></div>';
     html += '<label style="display:block;font-size:12px;font-weight:600;color:#5a6b7c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Nova senha</label>';
-    html += '<input type="password" id="paNova" placeholder="M\u00ednimo 8 caracteres" style="width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;margin-bottom:14px;font-family:\'Inter\',sans-serif;">';
+    html += '<div style="position:relative;margin-bottom:6px;"><input type="password" id="paNova" placeholder="M\u00ednimo 8 caracteres" style="width:100%;padding:12px 44px 12px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:\'Inter\',sans-serif;"><i class="fas fa-eye" id="paOlho1" onclick="paToggleSenha(\'paNova\',\'paOlho1\')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:#8a9a9a;"></i></div>';
+    html += '<p style="font-size:11px;color:#8a9a9a;margin-bottom:14px;">Use 8 ou mais caracteres. Evite senhas \u00f3bvias.</p>';
     html += '<label style="display:block;font-size:12px;font-weight:600;color:#5a6b7c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Confirme a nova senha</label>';
-    html += '<input type="password" id="paConfirma" placeholder="Repita a senha" style="width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;margin-bottom:20px;font-family:\'Inter\',sans-serif;">';
+    html += '<div style="position:relative;margin-bottom:20px;"><input type="password" id="paConfirma" placeholder="Repita a senha" style="width:100%;padding:12px 44px 12px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:\'Inter\',sans-serif;"><i class="fas fa-eye" id="paOlho2" onclick="paToggleSenha(\'paConfirma\',\'paOlho2\')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:#8a9a9a;"></i></div>';
     html += '<button id="paBtn" onclick="confirmarPrimeiroAcesso()" style="width:100%;padding:13px;background:#003C50;color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:\'Inter\',sans-serif;">Definir senha e entrar</button>';
     html += '<p style="text-align:center;font-size:11px;color:#aaa;margin-top:14px;">Voc\u00ea n\u00e3o pode usar a plataforma at\u00e9 definir sua senha.</p>';
     html += '</div>';
     ov.innerHTML = html;
     document.body.appendChild(ov);
+}
+
+function paToggleSenha(campoId, olhoId){
+    var c = document.getElementById(campoId);
+    var o = document.getElementById(olhoId);
+    if(!c) return;
+    if(c.type === 'password'){ c.type = 'text'; if(o){ o.className = 'fas fa-eye-slash'; } }
+    else { c.type = 'password'; if(o){ o.className = 'fas fa-eye'; } }
 }
 
 async function confirmarPrimeiroAcesso() {
@@ -7172,6 +7273,8 @@ async function confirmarPrimeiroAcesso() {
         showNotification('Senha definida com sucesso! Bem-vindo(a).', 'success');
         if (currentRole === 'admin') {
             updateAdminDashboard();
+        } else if (currentRole === 'avaliador') {
+            navigateTo('avaliador-5e');
         } else {
             updateDashboard();
             if (typeof loadProgressFromSupabase === 'function') loadProgressFromSupabase();
@@ -7654,18 +7757,26 @@ function renderAchievements(earned) {
     let html = '';
 
     // ===== Card especial: Atendimento 5 Estrelas (abre página própria) =====
-    // Dados de exemplo por enquanto; depois virão do Supabase.
-    var c5 = (typeof obter5EstrelasResumo === 'function') ? obter5EstrelasResumo() : { faixa: 'excelencia', notaFinal: 4.58, competencia: 'Julho 2026' };
+    // Só aparece para quem é avaliado (atende) ou para admin.
+    var podeVer5E = (currentUser && currentUser.avaliado) || currentRole === 'admin';
+    if (podeVer5E) {
+    var c5 = (typeof obter5EstrelasResumo === 'function') ? obter5EstrelasResumo() : { semDados: true, faixa: 'nao_elegivel', notaFinal: null };
     var faixaInfo5 = { '5_estrelas': {txt:'🏆 5 Estrelas', cor:'#E8A33E'}, 'excelencia': {txt:'⭐ Excelência', cor:'#1DBCB0'}, 'nao_elegivel': {txt:'Em construção', cor:'#78A0A0'} }[c5.faixa] || {txt:'—', cor:'#78A0A0'};
-    html += '<div onclick="navigateTo(\'cinco-estrelas\')" style="grid-column:1/-1;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:16px;background:linear-gradient(135deg,var(--azul-escuro),#00566f);border:2px solid ' + faixaInfo5.cor + ';position:relative;overflow:hidden;">';
-    html += '<div style="width:52px;height:52px;border-radius:50%;background:' + faixaInfo5.cor + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-trophy" style="font-size:22px;color:white;"></i></div>';
+    var bordaCard5 = c5.semDados ? '#78A0A0' : faixaInfo5.cor;
+    html += '<div onclick="navigateTo(\'cinco-estrelas\')" style="grid-column:1/-1;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:16px;background:linear-gradient(135deg,var(--azul-escuro),#00566f);border:2px solid ' + bordaCard5 + ';position:relative;overflow:hidden;">';
+    html += '<div style="width:52px;height:52px;border-radius:50%;background:' + bordaCard5 + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-trophy" style="font-size:22px;color:white;"></i></div>';
     html += '<div style="flex:1;z-index:2;">';
     html += '<div style="font-size:15px;font-weight:700;color:#fff;">Atendimento 5 Estrelas</div>';
     html += '<div style="font-size:12px;color:rgba(255,255,255,0.7);">Programa de reconhecimento da \u00e1rea \u2014 acompanhe sua evolu\u00e7\u00e3o</div>';
     html += '</div>';
-    html += '<div style="text-align:right;z-index:2;"><div style="font-family:\'Oswald\',sans-serif;font-size:26px;font-weight:700;color:#fff;line-height:1;">' + c5.notaFinal.toFixed(2).replace('.',',') + '</div><div style="font-size:11px;font-weight:700;color:' + faixaInfo5.cor + ';margin-top:2px;">' + faixaInfo5.txt + '</div></div>';
+    if (c5.semDados) {
+        html += '<div style="text-align:right;z-index:2;"><div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);max-width:130px;">Aguardando sua primeira avalia\u00e7\u00e3o</div></div>';
+    } else {
+        html += '<div style="text-align:right;z-index:2;"><div style="font-family:\'Oswald\',sans-serif;font-size:26px;font-weight:700;color:#fff;line-height:1;">' + c5.notaFinal.toFixed(2).replace('.',',') + '</div><div style="font-size:11px;font-weight:700;color:' + faixaInfo5.cor + ';margin-top:2px;">' + faixaInfo5.txt + '</div></div>';
+    }
     html += '<i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);margin-left:6px;z-index:2;"></i>';
     html += '</div>';
+    } // fim podeVer5E
 
     for (const [key, ach] of Object.entries(ACHIEVEMENTS)) {
         const isEarned = earned.includes(key);
@@ -7701,27 +7812,19 @@ function demo5Carregar(){
     } catch(e){}
     return null;
 }
-window.demo5Estrelas = demo5Carregar() || {
-    'teste@canopus.com.br': {
-        atual: { mon:4.50, cli:4.70, comp:'Julho 2026' },
-        historico: [
-            { comp:'Junho 2026', nf:4.82 },
-            { comp:'Maio 2026', nf:4.55 },
-            { comp:'Abril 2026', nf:4.10 }
-        ]
-    }
-};
-demo5Salvar();
+// Inicia vazio: os dados reais vêm do Supabase. Sem nomes/notas fictícios.
+window.demo5Estrelas = demo5Carregar() || {};
 
 function obter5EstrelasResumo() {
     var email = (currentUser && currentUser.email) ? currentUser.email : null;
-    if (email && window.demo5Estrelas[email]) {
+    if (email && window.demo5Estrelas[email] && window.demo5Estrelas[email].atual) {
         var a = window.demo5Estrelas[email].atual;
         var nf = (a.mon*0.6)+(a.cli*0.4);
         var faixa = nf>=4.80 ? '5_estrelas' : (nf>=4.50 ? 'excelencia' : 'nao_elegivel');
-        return { faixa: faixa, notaFinal: nf, competencia: a.comp };
+        return { faixa: faixa, notaFinal: nf, competencia: a.comp, semDados: false };
     }
-    return { faixa: 'excelencia', notaFinal: 4.58, competencia: 'Julho 2026' };
+    // Sem dados reais ainda.
+    return { faixa: 'nao_elegivel', notaFinal: null, competencia: null, semDados: true };
 }
 
 function classifica5E(nf) {
@@ -7767,14 +7870,156 @@ async function carregar5EstrelasSupabase(){
             historico: historico
         };
         render5EstrelasTela();
+
+        // CONQUISTA: se a nota mais recente é 5 Estrelas (>= 4,80) e ainda não foi
+        // comemorada nesta competência, mostra o card de comemoração.
+        var nfRecente = Number(maisRecente.nota_final);
+        if (nfRecente >= 4.80) {
+            var chaveComemorada = '5e_comemorado_' + email + '_' + maisRecente.competencia;
+            var jaComemorou = false;
+            try { jaComemorou = localStorage.getItem(chaveComemorada) === '1'; } catch(e){}
+            if (!jaComemorou) {
+                mostrarComemoracao5Estrelas(compBR(maisRecente.competencia), nfRecente);
+                try { localStorage.setItem(chaveComemorada, '1'); } catch(e){}
+            }
+        }
+
+        // TEMPO REAL: assina mudanças na tabela para este colaborador.
+        // Se uma nova nota chegar enquanto a pessoa está logada, comemora na hora.
+        if (!window._5eRealtimeSub) {
+            try {
+                window._5eRealtimeSub = supabaseClient
+                    .channel('cinco-estrelas-' + userId)
+                    .on('postgres_changes',
+                        { event: '*', schema: 'public', table: 'avaliacoes_mensais', filter: 'colaborador_id=eq.' + userId },
+                        function(payload){
+                            var novo = payload.new;
+                            if (!novo) return;
+                            // recarrega a tela e comemora se for 5 Estrelas
+                            carregar5EstrelasSupabase();
+                            if (Number(novo.nota_final) >= 4.80) {
+                                var ch = '5e_comemorado_' + email + '_' + novo.competencia;
+                                var jc = false; try { jc = localStorage.getItem(ch) === '1'; } catch(e){}
+                                if (!jc) {
+                                    var nm = ['','Janeiro','Fevereiro','Mar\u00e7o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+                                    var pp = String(novo.competencia).split('-');
+                                    mostrarComemoracao5Estrelas(nm[parseInt(pp[1])] + ' ' + pp[0], Number(novo.nota_final));
+                                    try { localStorage.setItem(ch, '1'); } catch(e){}
+                                }
+                            }
+                        }
+                    )
+                    .subscribe();
+            } catch(e){ console.warn('5E realtime indispon\u00edvel:', e.message); }
+        }
     } catch(e){ console.warn('5E: exce\u00e7\u00e3o ao ler:', e.message); }
 }
 
+// Card de comemoração 5 Estrelas — overlay festivo, explica o que a pessoa conquistou.
+function mostrarComemoracao5Estrelas(competencia, notaFinal) {
+    var existente = document.getElementById('comemoracao5E');
+    if (existente) existente.remove();
+
+    var nome = (currentUser && currentUser.name) ? currentUser.name.split(' ')[0] : '';
+    var nf = notaFinal.toFixed(2).replace('.', ',');
+
+    var ov = document.createElement('div');
+    ov.id = 'comemoracao5E';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,30,40,0.85);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn5e .3s ease;';
+
+    var card = '';
+    card += '<div style="background:linear-gradient(160deg,#003C50,#0a5a6e);border:2px solid #E8A33E;border-radius:24px;max-width:440px;width:100%;padding:40px 30px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,0.5);">';
+    // brilho decorativo
+    card += '<div style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:160px;height:160px;background:radial-gradient(circle,rgba(232,163,62,0.5),transparent 70%);"></div>';
+    // troféu
+    card += '<div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#E8A33E,#f5c069);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative;z-index:2;box-shadow:0 8px 24px rgba(232,163,62,0.5);"><i class="fas fa-trophy" style="font-size:40px;color:#fff;"></i></div>';
+    card += '<div style="font-family:\'Oswald\',sans-serif;font-size:13px;letter-spacing:2px;color:#E8A33E;text-transform:uppercase;margin-bottom:8px;position:relative;z-index:2;">Parab&eacute;ns' + (nome ? ', ' + nome : '') + '!</div>';
+    card += '<h2 style="font-family:\'Oswald\',sans-serif;font-size:30px;color:#fff;margin-bottom:6px;position:relative;z-index:2;">Voc&ecirc; &eacute; 5 Estrelas!</h2>';
+    card += '<div style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.7;margin:14px 0 20px;position:relative;z-index:2;">Voc&ecirc; alcan&ccedil;ou a nota <strong style="color:#E8A33E;font-size:18px;">' + nf + '</strong> na compet&ecirc;ncia de <strong>' + competencia + '</strong> e conquistou a mais alta distin&ccedil;&atilde;o do Atendimento 5 Estrelas.</div>';
+    // o que ganhou
+    card += '<div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;text-align:left;margin-bottom:22px;position:relative;z-index:2;">';
+    card += '<div style="font-size:12px;font-weight:700;color:#E8A33E;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">O que isso significa</div>';
+    card += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;"><i class="fas fa-star" style="color:#E8A33E;margin-top:3px;"></i><span style="font-size:13px;color:rgba(255,255,255,0.9);line-height:1.5;">Reconhecimento como refer&ecirc;ncia de excel&ecirc;ncia no atendimento ao cliente.</span></div>';
+    card += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;"><i class="fas fa-medal" style="color:#E8A33E;margin-top:3px;"></i><span style="font-size:13px;color:rgba(255,255,255,0.9);line-height:1.5;">Selo 5 Estrelas no seu perfil e na Galeria de Conquistas.</span></div>';
+    card += '<div style="display:flex;align-items:flex-start;gap:10px;"><i class="fas fa-chart-line" style="color:#E8A33E;margin-top:3px;"></i><span style="font-size:13px;color:rgba(255,255,255,0.9);line-height:1.5;">Destaque na sua evolu&ccedil;&atilde;o ao longo dos meses.</span></div>';
+    card += '</div>';
+    card += '<button onclick="fecharComemoracao5E()" style="width:100%;padding:14px;background:#E8A33E;color:#003C50;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:\'Inter\',sans-serif;position:relative;z-index:2;">Comemorar! &#127881;</button>';
+    card += '</div>';
+
+    ov.innerHTML = card;
+    document.body.appendChild(ov);
+
+    // confetes simples
+    lancarConfetes5E();
+}
+
+function fecharComemoracao5E() {
+    var ov = document.getElementById('comemoracao5E');
+    if (ov) ov.remove();
+}
+
+// Confetes leves em canvas, sem biblioteca externa.
+function lancarConfetes5E() {
+    try {
+        var cv = document.createElement('canvas');
+        cv.style.cssText = 'position:fixed;inset:0;z-index:100001;pointer-events:none;';
+        cv.width = window.innerWidth; cv.height = window.innerHeight;
+        document.body.appendChild(cv);
+        var ctx = cv.getContext('2d');
+        var cores = ['#E8A33E','#1DBCB0','#2CD5C4','#f5c069','#ffffff'];
+        var pcs = [];
+        for (var i=0;i<90;i++){
+            pcs.push({ x:Math.random()*cv.width, y:-20-Math.random()*cv.height*0.4,
+                r:4+Math.random()*5, c:cores[Math.floor(Math.random()*cores.length)],
+                vy:2+Math.random()*3, vx:-1.5+Math.random()*3, rot:Math.random()*6 });
+        }
+        var t0 = Date.now();
+        (function anim(){
+            ctx.clearRect(0,0,cv.width,cv.height);
+            pcs.forEach(function(p){
+                p.y+=p.vy; p.x+=p.vx; p.rot+=0.1;
+                ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+                ctx.fillStyle=p.c; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6); ctx.restore();
+            });
+            if (Date.now()-t0 < 3500) requestAnimationFrame(anim);
+            else cv.remove();
+        })();
+    } catch(e){}
+}
+
 function render5EstrelasTela() {
-    // Busca os dados do colaborador logado no store; senão, usa exemplo.
+    // Busca os dados reais do colaborador logado. Sem dados -> estado vazio limpo.
     var email = (currentUser && currentUser.email) ? currentUser.email : null;
     var registro = (email && window.demo5Estrelas[email]) ? window.demo5Estrelas[email] : null;
-    var dados = registro ? registro.atual : { mon:4.50, cli:4.70, comp:'Julho 2026' };
+
+    var pag = document.getElementById('page-cinco-estrelas');
+    var vazioId = 'ce-vazio';
+    var jaVazio = document.getElementById(vazioId);
+
+    if (!registro || !registro.atual) {
+        // Estado vazio: nada de números inventados.
+        var corpo = pag ? pag.querySelectorAll(':scope > div') : [];
+        // Esconde os blocos de conteúdo e mostra a mensagem.
+        if (pag && !jaVazio) {
+            for (var k = 1; k < corpo.length; k++){ corpo[k].style.display = 'none'; }
+            var vz = document.createElement('div');
+            vz.id = vazioId;
+            vz.style.cssText = 'background:#fff;border:1px solid var(--borda);border-radius:18px;padding:48px 28px;text-align:center;margin-top:8px;';
+            vz.innerHTML = '<div style="width:64px;height:64px;border-radius:50%;background:var(--turquesa-claro);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><i class="fas fa-star" style="font-size:26px;color:var(--turquesa);"></i></div>'
+                + '<h3 style="font-size:18px;color:var(--azul-escuro);margin-bottom:8px;font-family:\'Oswald\',sans-serif;">Seu Atendimento 5 Estrelas come&ccedil;a aqui</h3>'
+                + '<p style="font-size:14px;color:var(--texto-leve);line-height:1.7;max-width:420px;margin:0 auto;">Assim que a c&eacute;lula de Relacionamento lan&ccedil;ar sua primeira avalia&ccedil;&atilde;o, voc&ecirc; ver&aacute; aqui sua nota, sua faixa e a evolu&ccedil;&atilde;o ao longo dos meses.</p>';
+            pag.appendChild(vz);
+        }
+        return;
+    }
+    // Tem dados: garante que a mensagem de vazio suma e os blocos voltem.
+    if (jaVazio) {
+        jaVazio.remove();
+        var corpo2 = pag ? pag.querySelectorAll(':scope > div') : [];
+        for (var j = 1; j < corpo2.length; j++){ corpo2[j].style.display = ''; }
+    }
+
+    var dados = registro.atual;
     var nf = (dados.mon*0.6) + (dados.cli*0.4);
     function f(n){ return n.toFixed(2).replace('.',','); }
 
@@ -7856,12 +8101,19 @@ function av5Confirmar(){
     var cli = parseFloat(document.getElementById('av5-cli').value)||0;
     var atend = parseInt(document.getElementById('av5-atend').value)||0;
     var nf = (mon*0.6)+(cli*0.4);
-    var colab = document.getElementById('av5-colab').value;
+    var colabSel = document.getElementById('av5-colab');
+    var colab = colabSel ? colabSel.value : '';
+    var colabNomeEl = document.getElementById('av5-colab-label');
+    var colabNome = (colabNomeEl && colabNomeEl.textContent && colabNomeEl.textContent !== 'Selecione um colaborador') ? colabNomeEl.textContent : colab;
+    if(!colab || colab.indexOf('@') === -1){
+        showNotification('Selecione um colaborador antes de lan\u00e7ar.', 'error');
+        return;
+    }
     var comp = document.getElementById('av5-comp').value;
     var obs = document.getElementById('av5-obs').value;
     var editando = window.av5EditId || null;
     var verbo = editando ? 'Salvar corre\u00e7\u00e3o' : 'Confirmar lan\u00e7amento';
-    if(confirm(verbo+'?\n\n'+colab+' \u00b7 '+comp+'\nMonitoria '+av5Fmt(mon)+' + Cliente '+av5Fmt(cli)+' = '+av5Fmt(nf)+'\n\nEste registro ser\u00e1 gravado em seu nome, com data e hora.')){
+    if(confirm(verbo+'?\n\n'+colabNome+' \u00b7 '+comp+'\nMonitoria '+av5Fmt(mon)+' + Cliente '+av5Fmt(cli)+' = '+av5Fmt(nf)+'\n\nEste registro ser\u00e1 gravado em seu nome, com data e hora.')){
         var agora = new Date();
         var quem = (currentUser && currentUser.name) ? currentUser.name.split(' ')[0] : 'voc\u00ea';
         var carimbo = ('0'+agora.getDate()).slice(-2)+'/'+('0'+(agora.getMonth()+1)).slice(-2)+' '+('0'+agora.getHours()).slice(-2)+':'+('0'+agora.getMinutes()).slice(-2);
@@ -7880,7 +8132,7 @@ function av5Confirmar(){
             var btn = document.getElementById('av5-btn-lancar'); if(btn) btn.textContent = 'Revisar e lan\u00e7ar';
         } else {
             window.av5Lancamentos.unshift({
-                id: 'l'+Date.now(), colab:colab, comp:comp, mon:mon, cli:cli, atend:atend, nf:nf, obs:obs,
+                id: 'l'+Date.now(), colab:colabNome, comp:comp, mon:mon, cli:cli, atend:atend, nf:nf, obs:obs,
                 por:quem, em:carimbo, editado:false
             });
             showNotification('Lan\u00e7amento registrado com sucesso!', 'success');
@@ -7901,7 +8153,7 @@ function av5Confirmar(){
             store.atual = { mon:mon, cli:cli, comp: comp.replace(' / ', ' ') };
             demo5Salvar();
             // GRAVAÇÃO REAL no Supabase (quando o colaborador é um e-mail).
-            av5SalvarSupabase(emailColab, colab, comp, mon, cli, atend, nf, obs);
+            av5SalvarSupabase(emailColab, colabNome, comp, mon, cli, atend, nf, obs);
         }
         av5RenderLista();
     }
@@ -7947,10 +8199,13 @@ async function av5SalvarSupabase(email, nome, comp, mon, cli, atend, nf, obs){
         if (!competenciaISO) { showNotification('5E: compet\u00eancia inv\u00e1lida: ' + comp, 'error'); return; }
         var classificacao = nf >= 4.80 ? '5_estrelas' : (nf >= 4.50 ? 'excelencia' : 'nao_elegivel');
         var quemEmail = (currentUser && currentUser.email) ? currentUser.email : null;
+        var dataAvalEl = document.getElementById('av5-data');
+        var dataAval = (dataAvalEl && dataAvalEl.value) ? dataAvalEl.value : null;
         var registro = {
             colaborador_id: colaboradorId,
             colaborador_nome: nome,
             competencia: competenciaISO,
+            data_avaliacao: dataAval,
             nota_monitoria: mon,
             nota_cliente: cli,
             nota_final: Number(nf.toFixed(3)),
@@ -7967,6 +8222,7 @@ async function av5SalvarSupabase(email, nome, comp, mon, cli, atend, nf, obs){
             showNotification('5E: o Supabase recusou a grava\u00e7\u00e3o (' + res.error.message + '). Provavelmente RLS: quem lan\u00e7a precisa ter role avaliador/admin em profiles.', 'error');
         } else {
             showNotification('5E: lan\u00e7amento salvo no Supabase com sucesso!', 'success');
+            if (typeof av5CarregarHistoricoSupabase === 'function') av5CarregarHistoricoSupabase();
         }
     } catch(e){
         showNotification('5E: exce\u00e7\u00e3o ao salvar: ' + e.message, 'error');
@@ -7997,7 +8253,29 @@ function av5Corrigir(id){
     for(var i=0;i<window.av5Lancamentos.length;i++){ if(window.av5Lancamentos[i].id===id){ r=window.av5Lancamentos[i]; break; } }
     if(!r){ showNotification('Lan\u00e7amento n\u00e3o encontrado.', 'error'); return; }
     // carrega o registro de volta no formul\u00e1rio
-    document.getElementById('av5-colab').value = r.colab;
+    // Para o novo seletor visual: busca o colaborador pelo nome nos dados carregados
+    var emailEncontrado = '';
+    if(window.av5ColabData){
+        var found = window.av5ColabData.filter(function(p){ return p.nome === r.colab; })[0];
+        if(found){ emailEncontrado = found.email; }
+    }
+    // Atualiza o input hidden
+    document.getElementById('av5-colab').value = emailEncontrado || r.colab;
+    // Atualiza o display visual
+    var labelEl = document.getElementById('av5-colab-label');
+    var avatarEl = document.getElementById('av5-colab-avatar');
+    if(labelEl){ labelEl.textContent = r.colab; labelEl.style.color = 'var(--azul-escuro)'; }
+    if(avatarEl && window.av5ColabData){
+        var foundP = window.av5ColabData.filter(function(p){ return p.nome === r.colab; })[0];
+        if(foundP){
+            var iniciais = foundP.nome.split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase();
+            var cores = ['#1DBCB0','#147878','#003C50','#0891b2','#0d9488','#0f766e','#065f46','#1d4ed8'];
+            var corIdx = foundP.nome.split('').reduce(function(a,c){return a+c.charCodeAt(0);},0) % cores.length;
+            avatarEl.innerHTML = foundP.avatar
+                ? '<img src="'+foundP.avatar+'" alt="'+iniciais+'" style="width:34px;height:34px;border-radius:50%;object-fit:cover;">'
+                : '<div style="width:34px;height:34px;border-radius:50%;background:'+cores[corIdx]+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">'+iniciais+'</div>';
+        }
+    }
     document.getElementById('av5-comp').value = r.comp;
     document.getElementById('av5-mon').value = r.mon;
     document.getElementById('av5-cli').value = r.cli;
@@ -8010,21 +8288,212 @@ function av5Corrigir(id){
     var topo = document.getElementById('av5-grid'); if(topo) topo.scrollIntoView({behavior:'smooth', block:'start'});
 }
 function initAvaliador5E(){
-    // estado local de exemplo (some ao recarregar; Supabase virá depois)
     if(typeof window.av5Lancamentos === 'undefined'){
-        window.av5Lancamentos = [
-            {id:'l1', colab:'Roberta Andrade', comp:'Junho / 2026', mon:4.85, cli:4.78, atend:26, nf:4.82, obs:'', por:'voc\u00ea', em:'02/07 09:14', editado:true, editadoEm:'03/07 10:01'},
-            {id:'l2', colab:'Carlos Mendes', comp:'Junho / 2026', mon:4.30, cli:4.55, atend:22, nf:4.40, obs:'', por:'voc\u00ea', em:'02/07 09:20', editado:false},
-            {id:'l3', colab:'Juliana Prado', comp:'Junho / 2026', mon:4.95, cli:4.85, atend:30, nf:4.91, obs:'', por:'voc\u00ea', em:'02/07 09:28', editado:false}
-        ];
+        window.av5Lancamentos = [];
     }
     window.av5EditId = null;
     ['av5-mon','av5-cli','av5-atend'].forEach(function(id){
         var el = document.getElementById(id);
         if(el && !el.dataset.bound){ el.addEventListener('input', av5Recalc); el.dataset.bound='1'; }
     });
+    // Preenche a data com hoje por padrão (o avaliador pode mudar).
+    var dataEl = document.getElementById('av5-data');
+    if(dataEl && !dataEl.value){ dataEl.value = new Date().toISOString().split('T')[0]; }
     av5Recalc();
     av5RenderLista();
+    av5CarregarHistoricoSupabase();
+    av5CarregarColaboradores();
+}
+
+// Dados dos colaboradores carregados (para o seletor visual).
+window.av5ColabData = [];
+window.av5ColabAberto = false;
+
+// Carrega a lista real de colaboradores (profiles) para o seletor visual do avaliador.
+async function av5CarregarColaboradores(){
+    var lista = document.getElementById('av5-colab-list');
+    if(!lista) return;
+    lista.innerHTML = '<div style="padding:12px;font-size:13px;color:var(--cinza);text-align:center;">Carregando...</div>';
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient) { lista.innerHTML = '<div style="padding:12px;font-size:13px;color:#dc2626;text-align:center;">Supabase indispon\u00edvel</div>'; return; }
+
+        // Garante que a sessão está ativa antes de qualquer query
+        var sessCheck = await supabaseClient.auth.getSession();
+        var temSessao = !!(sessCheck && sessCheck.data && sessCheck.data.session);
+        console.log('[5E] Sessão ativa:', temSessao, sessCheck?.data?.session?.user?.email);
+
+        if (!temSessao) {
+            lista.innerHTML = '<div style="padding:12px;font-size:12px;color:#dc2626;text-align:center;">Sem sess\u00e3o ativa. Fa\u00e7a login novamente.</div>';
+            return;
+        }
+
+        // Busca todos os profiles
+        var res = await supabaseClient.from('profiles')
+            .select('id, email, nome, name, role')
+            .order('nome', { ascending: true });
+
+        console.log('[5E] profiles query result:', {
+            error: res.error,
+            count: res.data ? res.data.length : 0,
+            data: res.data ? res.data.slice(0,3) : null
+        });
+
+        if (res.error) {
+            lista.innerHTML = '<div style="padding:12px;font-size:12px;color:#dc2626;text-align:center;line-height:1.5;"><b>Erro RLS:</b> ' + res.error.message + '<br><span style="color:var(--cinza)">C\u00f3digo: ' + (res.error.code||'?') + '</span></div>';
+            console.error('[5E] profiles RLS error:', res.error);
+            return;
+        }
+        if (!res.data || res.data.length === 0) {
+            lista.innerHTML = '<div style="padding:12px;font-size:13px;color:#dc2626;text-align:center;">Supabase retornou 0 registros.<br><span style="font-size:11px;color:var(--cinza)">Policy RLS bloqueia a leitura. Veja o console (F12).</span></div>';
+            return;
+        }
+        // Filtra: exclui avaliador e admin da lista de avaliados.
+        window.av5ColabData = res.data.filter(function(p){
+            return p.email && p.role !== 'admin' && p.role !== 'avaliador';
+        }).map(function(p){
+            return {
+                email: p.email,
+                nome: (p.nome && p.nome.trim() && p.nome !== 'Novo usu\u00e1rio') ? p.nome.trim() : (p.name ? p.name.trim() : p.email),
+                avatar: null
+            };
+        });
+        console.log('[5E] Colaboradores após filtro:', window.av5ColabData.length);
+        av5ColabRenderLista(window.av5ColabData);
+    } catch(e){
+        var lista2 = document.getElementById('av5-colab-list');
+        if(lista2) lista2.innerHTML = '<div style="padding:12px;font-size:12px;color:#dc2626;text-align:center;">Exce\u00e7\u00e3o: ' + e.message + '</div>';
+        console.error('[5E] av5CarregarColaboradores exception:', e);
+    }
+}
+
+// Renderiza os itens do seletor visual.
+function av5ColabRenderLista(dados){
+    var lista = document.getElementById('av5-colab-list');
+    if(!lista) return;
+    if(!dados || dados.length === 0){
+        lista.innerHTML = '<div style="padding:12px;font-size:13px;color:var(--cinza);text-align:center;">Nenhum colaborador encontrado</div>';
+        return;
+    }
+    var html = '';
+    dados.forEach(function(p){
+        var iniciais = p.nome.split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase();
+        // Gera cor determinística pelo nome (para o avatar sem foto ser sempre a mesma cor)
+        var cores = ['#1DBCB0','#147878','#003C50','#0891b2','#0d9488','#0f766e','#065f46','#1d4ed8'];
+        var corIdx = p.nome.split('').reduce(function(a,c){return a+c.charCodeAt(0);},0) % cores.length;
+        var corBg = cores[corIdx];
+        var iniciaisDiv = '<div style="width:36px;height:36px;border-radius:50%;background:'+corBg+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">'+iniciais+'</div>';
+        var avatarHtml = p.avatar
+            ? '<img src="'+p.avatar+'" alt="'+iniciais+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\';">' + iniciaisDiv
+            : iniciaisDiv;
+        html += '<div class="av5-colab-item" data-email="'+p.email+'" data-nome="'+p.nome.replace(/"/g,'&quot;')+'" data-avatar="'+(p.avatar||'')+'" data-cor="'+corBg+'" data-iniciais="'+iniciais+'" onclick="av5ColabSelecionar(this)" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s;">'
+            + '<div style="flex-shrink:0;">'+avatarHtml+'</div>'
+            + '<div><div style="font-size:13px;font-weight:600;color:var(--azul-escuro);">'+p.nome+'</div></div>'
+            + '</div>';
+    });
+    lista.innerHTML = html;
+}
+
+// Filtra a lista ao digitar na busca.
+function av5ColabFiltrar(){
+    var busca = (document.getElementById('av5-colab-search').value || '').toLowerCase().trim();
+    var filtrados = window.av5ColabData.filter(function(p){
+        return p.nome.toLowerCase().indexOf(busca) !== -1 || p.email.toLowerCase().indexOf(busca) !== -1;
+    });
+    av5ColabRenderLista(filtrados);
+}
+
+// Abre/fecha o dropdown.
+function av5ColabToggle(){
+    var dd = document.getElementById('av5-colab-dropdown');
+    var display = document.getElementById('av5-colab-display');
+    var chev = document.getElementById('av5-colab-chevron');
+    var busca = document.getElementById('av5-colab-search');
+    window.av5ColabAberto = !window.av5ColabAberto;
+    if(window.av5ColabAberto){
+        dd.style.display = 'flex';
+        display.style.borderColor = 'var(--turquesa)';
+        display.style.boxShadow = '0 0 0 3px rgba(29,188,176,0.15)';
+        chev.style.transform = 'rotate(180deg)';
+        if(busca){ busca.value=''; av5ColabRenderLista(window.av5ColabData); setTimeout(function(){ busca.focus(); },50); }
+    } else {
+        dd.style.display = 'none';
+        display.style.borderColor = 'var(--borda)';
+        display.style.boxShadow = 'none';
+        chev.style.transform = 'rotate(0deg)';
+    }
+}
+
+// Seleciona um colaborador da lista.
+function av5ColabSelecionar(el){
+    var email = el.dataset.email;
+    var nome = el.dataset.nome;
+    var avatar = el.dataset.avatar;
+    var cor = el.dataset.cor;
+    var iniciais = el.dataset.iniciais;
+    // Atualiza o hidden input (mantém compatibilidade com o restante do código)
+    document.getElementById('av5-colab').value = email;
+    // Atualiza o display visual
+    var avatarEl = document.getElementById('av5-colab-avatar');
+    if(avatar){
+        avatarEl.innerHTML = '<img src="'+avatar+'" alt="'+iniciais+'" style="width:34px;height:34px;border-radius:50%;object-fit:cover;">';
+    } else {
+        avatarEl.innerHTML = '<div style="width:34px;height:34px;border-radius:50%;background:'+cor+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">'+iniciais+'</div>';
+    }
+    document.getElementById('av5-colab-label').textContent = nome;
+    document.getElementById('av5-colab-label').style.color = 'var(--azul-escuro)';
+    // Fecha o dropdown
+    window.av5ColabAberto = true; // toggle vai fechar
+    av5ColabToggle();
+    // Destaca item selecionado
+    document.querySelectorAll('.av5-colab-item').forEach(function(i){ i.style.background=''; });
+    el.style.background = 'var(--turquesa-light)';
+}
+
+// Fecha o dropdown ao clicar fora.
+document.addEventListener('click', function(e){
+    var picker = document.getElementById('av5-colab-picker');
+    if(picker && !picker.contains(e.target) && window.av5ColabAberto){
+        window.av5ColabAberto = true; // toggle vai fechar
+        av5ColabToggle();
+    }
+});
+
+// Carrega do Supabase o histórico real de lançamentos para a lista do avaliador.
+async function av5CarregarHistoricoSupabase(){
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient) return;
+        var sess = await supabaseClient.auth.getSession();
+        if (!sess || !sess.data || !sess.data.session) return;
+        var res = await supabaseClient.from('avaliacoes_mensais')
+            .select('id, colaborador_nome, colaborador_id, competencia, data_avaliacao, nota_monitoria, nota_cliente, nota_final, atendimentos_monitorados, observacao, lancado_por, lancado_em, atualizado_em')
+            .order('lancado_em', { ascending: false })
+            .limit(50);
+        if (res.error) { console.warn('5E hist:', res.error.message); return; }
+        if (!res.data) return;
+        var nomesMes = ['','Janeiro','Fevereiro','Mar\u00e7o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        function compBR(iso){ if(!iso) return ''; var p = iso.split('-'); return nomesMes[parseInt(p[1])] + ' / ' + p[0]; }
+        function dataBR(ts){ if(!ts) return ''; var d = new Date(ts); return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2); }
+        window.av5Lancamentos = res.data.map(function(r){
+            var editado = (r.atualizado_em && r.lancado_em && r.atualizado_em !== r.lancado_em);
+            return {
+                id: r.id,
+                colab: r.colaborador_nome || '',
+                comp: compBR(r.competencia),
+                mon: Number(r.nota_monitoria),
+                cli: Number(r.nota_cliente),
+                atend: r.atendimentos_monitorados,
+                nf: Number(r.nota_final),
+                obs: r.observacao || '',
+                por: r.lancado_por || '',
+                em: dataBR(r.lancado_em),
+                editado: editado,
+                editadoEm: editado ? dataBR(r.atualizado_em) : null
+            };
+        });
+        av5RenderLista();
+    } catch(e){ console.warn('5E hist exce\u00e7\u00e3o:', e.message); }
 }
 
 function recordLogin() {
