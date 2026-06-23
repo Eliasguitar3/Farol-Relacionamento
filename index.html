@@ -217,6 +217,14 @@ input, textarea, select { font-size: 16px; }
 .media-card .media-actions button.primary { background: linear-gradient(135deg, var(--turquesa), var(--azul-medio)); color: white; border: none; }
 .media-card .media-actions button.primary:hover { box-shadow: 0 4px 15px rgba(29,188,176,0.4); }
 
+/* Gerenciador de Materiais */
+.mat-upload-label-base { display:flex;align-items:center;gap:14px;padding:18px 20px;border:2px dashed var(--borda);border-radius:12px;background:var(--cinza-claro);cursor:pointer;transition:border-color .2s,background .2s; }
+.mat-upload-label-base:hover { border-color:var(--turquesa);background:var(--turquesa-light); }
+.mat-btn-dl { width:34px;height:34px;border-radius:8px;border:1.5px solid var(--borda);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--azul-escuro);text-decoration:none;flex-shrink:0;transition:var(--transition); }
+.mat-btn-dl:hover { border-color:var(--turquesa);color:var(--turquesa); }
+.mat-btn-del { width:34px;height:34px;border-radius:8px;border:1.5px solid #fecaca;background:#fff;display:flex;align-items:center;justify-content:center;color:#dc2626;cursor:pointer;flex-shrink:0;transition:var(--transition);font-family:'Inter',sans-serif; }
+.mat-btn-del:hover { background:#fee2e2; }
+
 /* PDF SECTION */
 .pdf-section { background: white; border-radius: var(--radius); padding: 32px; box-shadow: var(--sombra); margin-bottom: 24px; }
 .pdf-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
@@ -1090,14 +1098,9 @@ img, iframe, video, svg { max-width: 100%; }
     <div class="login-container">
         <div class="login-card">
             <div class="login-logo"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:54px;height:54px;display:block;margin:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
-  <!-- Chapéu de formatura (graduation cap) -->
-  <!-- Topo (mortarboard) -->
   <path d="M32 16 L58 26 L32 36 L6 26 Z" fill="white"/>
-  <!-- Base do chapéu (cabeça) -->
   <path d="M18 31 L18 42 C18 42 24 47 32 47 C40 47 46 42 46 42 L46 31 L32 37 Z" fill="white" opacity="0.92"/>
-  <!-- Botão central do topo -->
   <circle cx="32" cy="26" r="2.5" fill="#0E8A82"/>
-  <!-- Borla (tassel) -->
   <line x1="58" y1="26" x2="58" y2="40" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
   <circle cx="58" cy="42" r="2.6" fill="white"/>
 </svg></div>
@@ -1163,21 +1166,12 @@ img, iframe, video, svg { max-width: 100%; }
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-        <div class="sidebar-logo"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px;height:30px;display:block;margin:auto;">
-  <circle cx="32" cy="32" r="11" fill="white"/>
-  <circle cx="32" cy="32" r="6" fill="rgba(255,255,255,0.3)"/>
-  <circle cx="32" cy="7" r="5" fill="white" opacity="0.95"/>
-  <circle cx="55" cy="21" r="5" fill="white" opacity="0.95"/>
-  <circle cx="55" cy="43" r="5" fill="white" opacity="0.95"/>
-  <circle cx="32" cy="57" r="5" fill="white" opacity="0.95"/>
-  <circle cx="9" cy="43" r="5" fill="white" opacity="0.95"/>
-  <circle cx="9" cy="21" r="5" fill="white" opacity="0.95"/>
-  <line x1="32" y1="32" x2="32" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="50" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="50" y2="41" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="32" y2="52" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="14" y2="41" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="32" y1="32" x2="14" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <div class="sidebar-logo"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block;margin:auto;">
+  <path d="M32 16 L58 26 L32 36 L6 26 Z" fill="white"/>
+  <path d="M18 31 L18 42 C18 42 24 47 32 47 C40 47 46 42 46 42 L46 31 L32 37 Z" fill="white" opacity="0.92"/>
+  <circle cx="32" cy="26" r="2.5" fill="#0E8A82"/>
+  <line x1="58" y1="26" x2="58" y2="40" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="58" cy="42" r="2.6" fill="white"/>
 </svg></div>
         <div class="sidebar-title">FAROL<br>RELACIONAMENTO</div>
         <div class="sidebar-subtitle">uma iniciativa Canopus</div>
@@ -1249,11 +1243,11 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="nav-item" data-page="admin-content" onclick="navigateTo('admin-content')">
                 <i class="fas fa-cog"></i> Configurações da Plataforma
             </div>
-            <div class="nav-item" data-page="admin-content" onclick="navigateTo('admin-content')">
-                <i class="fas fa-upload"></i> Gerenciar Conteúdo
-            </div>
             <div class="nav-item" data-page="admin-users" onclick="navigateTo('admin-users')">
                 <i class="fas fa-users-cog"></i> Gerenciar Usuários
+            </div>
+            <div class="nav-item" data-page="admin-materiais" onclick="navigateTo('admin-materiais')">
+                <i class="fas fa-folder-open"></i> Gerenciar Materiais
             </div>
         </div>
 
@@ -1659,191 +1653,6 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
         </div>
 <!-- ==================== MODULO 1 ==================== -->
-        <div class="page-section" id="page-modulo-1">
-            <div class="page-header">
-                <span class="badge"><i class="fas fa-file-alt"></i> Módulo 1</span>
-                <h1>Atendimento ao Cliente</h1>
-                <p>Fundamentos essenciais para um atendimento de excelência ao cliente.</p>
-            </div>
-            <div style="margin-bottom: 16px;">
-                <button class="back-btn" id="mod-back-btn" onclick="navigateToTrail()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--cinza-claro); color: var(--azul-escuro); border: 1.5px solid var(--borda); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif;">
-                    <i class="fas fa-arrow-left"></i> Voltar para a Trilha
-                </button>
-            </div>
-            <div class="hero">
-                <div class="hero-content">
-                    <h1><i class="fas fa-file-alt"></i> Atendimento ao Cliente</h1>
-                    <p>Aprenda as técnicas fundamentais para atender clientes com excelência, desde o primeiro contato até a resolução completa.</p>
-                    <button class="hero-btn" onclick="markComplete('mod1');showNotification('Módulo 1 concluído!','success')">
-                        <i class="fas fa-check-circle"></i> Concluir módulo
-                    </button>
-                </div>
-            </div>
-            <div class="pdf-section">
-                <div class="pdf-section-header">
-                    <h2><i class="fas fa-file-pdf" style="color:var(--danger);margin-right:8px;"></i>Materiais em PDF</h2>
-                    <span class="count">3 arquivos</span>
-                </div>
-                <div class="pdf-grid">
-                    <a href="#" class="pdf-btn" onclick="showNotification('Download iniciado: Manual de Atendimento','info');return false">
-                        <i class="fas fa-file-pdf pdf-icon"></i>
-                        <div class="pdf-info">
-                            <div class="pdf-title">Manual de Atendimento Canopus v2026</div>
-                            <div class="pdf-meta">PDF — 2,4 MB - Atualizado em 2026</div>
-                        </div>
-                        <i class="fas fa-download pdf-arrow"></i>
-                    </a>
-                    <a href="#" class="pdf-btn" onclick="showNotification('Download iniciado: Protocolos de Atendimento','info');return false">
-                        <i class="fas fa-file-pdf pdf-icon"></i>
-                        <div class="pdf-info">
-                            <div class="pdf-title">Protocolos de Atendimento</div>
-                            <div class="pdf-meta">PDF — 1,8 MB — Versão 3.0</div>
-                        </div>
-                        <i class="fas fa-download pdf-arrow"></i>
-                    </a>
-                    <a href="#" class="pdf-btn" onclick="showNotification('Download iniciado: Script de Boas-vindas','info');return false">
-                        <i class="fas fa-file-pdf pdf-icon"></i>
-                        <div class="pdf-info">
-                            <div class="pdf-title">Script de Boas-vindas 2026</div>
-                            <div class="pdf-meta">PDF — 956 KB — Modelo padrão</div>
-                        </div>
-                        <i class="fas fa-download pdf-arrow"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="faq-section">
-                <div class="faq-header">
-                    <h2><i class="fas fa-question-circle" style="color:var(--turquesa);margin-right:8px;"></i>Perguntas Frequentes — Módulo 1</h2>
-                    <p>Respostas padrão para situações comuns de atendimento. Acesse a página FAQ para ver todas as perguntas cadastradas.</p>
-                </div>
-                <div class="empty-state" style="padding:32px;">
-                    <i class="fas fa-question-circle" style="font-size:32px;color:var(--cinza);margin-bottom:12px;"></i>
-                    <p style="color:var(--cinza);font-size:13px;">As perguntas frequentes são gerenciadas dinamicamente pelo administrador na seção FAQ.</p>
-                    <button class="btn btn-primary" style="margin-top:12px;padding:8px 16px;font-size:12px;" onclick="navigateTo('faq')">
-                        <i class="fas fa-arrow-right"></i> Ir para FAQ
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================== MODULO 2 ==================== -->
-        <div class="page-section" id="page-modulo-2">
-            <div class="page-header">
-                <span class="badge"><i class="fas fa-comments"></i> Módulo 2</span>
-                <h1>Comunicacao Efetiva</h1>
-                <p>Técnicas de comunicação verbal, não verbal e escrita para o relacionamento com clientes.</p>
-            </div>
-            <div style="margin-bottom: 16px;">
-                <button class="back-btn" id="mod-back-btn" onclick="navigateToTrail()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--cinza-claro); color: var(--azul-escuro); border: 1.5px solid var(--borda); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif;">
-                    <i class="fas fa-arrow-left"></i> Voltar para a Trilha
-                </button>
-            </div>
-            <div class="hero">
-                <div class="hero-content">
-                    <h1><i class="fas fa-comments"></i> Comunicacao Efetiva</h1>
-                    <p>Domine as técnicas de comunicação que transformam interações em experiências memoráveis para nossos clientes.</p>
-                    <button class="hero-btn" onclick="markComplete('mod2');showNotification('Módulo 2 concluído!','success')">
-                        <i class="fas fa-check-circle"></i> Concluir módulo
-                    </button>
-                </div>
-            </div>
-            <div class="pdf-section">
-                <div class="pdf-section-header">
-                    <h2><i class="fas fa-file-pdf" style="color:var(--danger);margin-right:8px;"></i>Materiais em PDF</h2>
-                    <span class="count">2 arquivos</span>
-                </div>
-                <div class="pdf-grid">
-                    <a href="#" class="pdf-btn" onclick="showNotification('Download iniciado: Guia de Comunicacao','info');return false">
-                        <i class="fas fa-file-pdf pdf-icon"></i>
-                        <div class="pdf-info">
-                            <div class="pdf-title">Guia de Comunicação Canopus</div>
-                            <div class="pdf-meta">PDF — 3,1 MB — Atualizado 2026</div>
-                        </div>
-                        <i class="fas fa-download pdf-arrow"></i>
-                    </a>
-                    <a href="#" class="pdf-btn" onclick="showNotification('Download iniciado: Escuta Ativa','info');return false">
-                        <i class="fas fa-file-pdf pdf-icon"></i>
-                        <div class="pdf-info">
-                            <div class="pdf-title">Técnicas de Escuta Ativa</div>
-                            <div class="pdf-meta">PDF — 1,5 MB — Manual prático</div>
-                        </div>
-                        <i class="fas fa-download pdf-arrow"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================== MODULO 3 ==================== -->
-        <div class="page-section" id="page-modulo-3">
-            <div class="page-header">
-                <span class="badge"><i class="fas fa-headset"></i> Módulo 3</span>
-                <h1>SAC e Ouvidoria</h1>
-                <p>Gestão de reclamações, canais de atendimento e resolução de conflitos.</p>
-            </div>
-            <div style="margin-bottom: 16px;">
-                <button class="back-btn" id="mod-back-btn" onclick="navigateToTrail()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--cinza-claro); color: var(--azul-escuro); border: 1.5px solid var(--borda); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif;">
-                    <i class="fas fa-arrow-left"></i> Voltar para a Trilha
-                </button>
-            </div>
-            <div class="hero">
-                <div class="hero-content">
-                    <h1><i class="fas fa-headset"></i> SAC e Ouvidoria</h1>
-                    <p>Aprenda a transformar reclamações em oportunidades de fidelização e melhoria contínua.</p>
-                    <button class="hero-btn" onclick="markComplete('mod3');showNotification('Módulo 3 concluído!','success')">
-                        <i class="fas fa-check-circle"></i> Concluir módulo
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================== MODULO 4 ==================== -->
-        <div class="page-section" id="page-modulo-4">
-            <div class="page-header">
-                <span class="badge"><i class="fas fa-handshake"></i> Módulo 4</span>
-                <h1>Relacionamento com Clientes</h1>
-                <p>Fidelização, CRM, jornada do cliente e construção de relacionamentos duradouros.</p>
-            </div>
-            <div style="margin-bottom: 16px;">
-                <button class="back-btn" id="mod-back-btn" onclick="navigateToTrail()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--cinza-claro); color: var(--azul-escuro); border: 1.5px solid var(--borda); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif;">
-                    <i class="fas fa-arrow-left"></i> Voltar para a Trilha
-                </button>
-            </div>
-            <div class="hero">
-                <div class="hero-content">
-                    <h1><i class="fas fa-handshake"></i> Relacionamento com Clientes</h1>
-                    <p>Construa relacionamentos duradouros baseados em confiança, transparência e excelência no atendimento.</p>
-                    <button class="hero-btn" onclick="markComplete('mod4');showNotification('Módulo 4 concluído!','success')">
-                        <i class="fas fa-check-circle"></i> Concluir módulo
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================== MODULO 5 ==================== -->
-        <div class="page-section" id="page-modulo-5">
-            <div class="page-header">
-                <span class="badge"><i class="fas fa-chart-line"></i> Módulo 5</span>
-                <h1>Gestao e Lideranca</h1>
-                <p>Liderança no atendimento, métricas de satisfação e gestão de equipes.</p>
-            </div>
-            <div style="margin-bottom: 16px;">
-                <button class="back-btn" id="mod-back-btn" onclick="navigateToTrail()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--cinza-claro); color: var(--azul-escuro); border: 1.5px solid var(--borda); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif;">
-                    <i class="fas fa-arrow-left"></i> Voltar para a Trilha
-                </button>
-            </div>
-            <div class="hero">
-                <div class="hero-content">
-                    <h1><i class="fas fa-chart-line"></i> Gestao e Lideranca</h1>
-                    <p>Desenvolva habilidades de liderança para inspirar sua equipe e elevar os padrões de atendimento.</p>
-                    <button class="hero-btn" onclick="markComplete('mod5');showNotification('Módulo 5 concluído!','success')">
-                        <i class="fas fa-check-circle"></i> Concluir módulo
-                    </button>
-                </div>
-            </div>
-        </div>
-
-                <!-- ==================== FAQ ==================== -->
-        <!-- ==================== FAQ ==================== -->
         <div class="page-section" id="page-faq">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-question-circle"></i> Central de ajuda</span>
@@ -1862,350 +1671,9 @@ img, iframe, video, svg { max-width: 100%; }
                 <h3>Nenhuma pergunta cadastrada</h3>
                 <p>As perguntas frequentes serão adicionadas pelo administrador.</p>
             </div>
-            <!-- FAQS ESTÁTICOS - CONTEÚDO OPERACIONAL -->
-            <div class="faq-section" id="faq-static-wrapper">
-                <div class="faq-header">
-                    <h2><i class="fas fa-question-circle" style="color:var(--turquesa);margin-right:8px;"></i>Perguntas Frequentes — Operação</h2>
-                    <p>Respostas padrão para as situações mais comuns do dia a dia.</p>
-                </div>
-                <div class="faq-item" id="faq-item-01">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Cessão de Direitos — Documentos Necessários</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-01">
-                            <p>Será necessário apresentar os seguintes documentos e informações:</p>
-<p><strong>Documentos:</strong></p>
-<ul>
-<li>Informar se a finalidade do imóvel é para investimento ou moradia;</li>
-<li>Informar a profissão, telefone de contato e endereço de e-mail do(a) interessado(a);</li>
-<li>RG e CPF ou CNH;</li>
-<li>Comprovante de estado civil;</li>
-<li>Comprovante de endereço;</li>
-<li>Comprovante de renda sendo: os 3 últimos holerites ou 3 últimos extratos de conta corrente ou declaração do Imposto de Renda;</li>
-<li>Extrato do FGTS (se houver);</li>
-<li>Para quitação através de recursos próprios, apresentar Lastro financeiro comprovando a capacidade (exemplos: extrato de aplicação e/ou poupança);</li>
-<li>Se casado(a), enviar os mesmos documentos do Cônjuge.</li>
-</ul>
-<p>Outros documentos e informações podem ser solicitados durante o processo.</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-01', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-02">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Correções INCC/IGPM — Entenda os Índices</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-02">
-                            <p>Olá cliente,</p>
-<p>Esperamos que esteja bem.</p>
-<p>Esclarecemos que a correção monetária é utilizada para que o valor da sua parcela se mantenha atualizado com as variações dos custos de construção ao longo do tempo.</p>
-<p>De acordo com o item "parcelas do preço" presente em seu contrato, a correção das parcelas é realizada de formas diferentes, dependendo da fase do empreendimento. Enquanto o INCC (Índice Nacional de Custo da Construção) é aplicado para unidades sem habite-se, para aquelas que já o possuem, utilizamos o IGPM (Índice Geral de Preços — Mercado) com um acréscimo de juros simples de 1% ao mês.</p>
-<p>Ambos os índices são publicados mensalmente pela Fundação Getúlio Vargas (INCC e IGPM) e você consegue consultá-los através do site.</p>
-<p>A correção será realizada utilizando o índice de 2 meses anteriores ao mês vigente, ou seja, se a sua parcela é do mês de abril/25 o índice a ser aplicado nela é o publicado pela FGV em fevereiro/25 e assim por diante.</p>
-<p>Caso você deseje consultar, estamos disponibilizando dois links para acesso aos índices publicados que foram extraídos da FGV:</p>
-<ul>
-<li><a href="https://sindusconpr.com.br/incc-di-fgv-310-p" target="_blank">INCC</a></li>
-<li><a href="https://sindusconpr.com.br/igp-m-fgv-309-p" target="_blank">IGPM</a></li>
-</ul>
-<p>Se precisar de mais informações ou tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-<p>Estamos aqui para ajudar!</p>
-<p>Cordialmente,</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-02', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-03">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Correções INCC/IGPM — Mudança após o Habite-se</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-03">
-                            <p>Olá cliente,</p>
-<p>Esperamos que esteja bem.</p>
-<p>Agradecemos por entrar em contato, é sempre um prazer esclarecer quaisquer dúvidas que você possa ter.</p>
-<p>As parcelas são atualizadas monetariamente, de acordo com os índices estabelecidos na promessa de compra e venda. Até a data da concessão do Habite-se, a correção é realizada com base na variação acumulada do Índice Nacional da Construção Civil (INCC — DI). Após a concessão do Habite-se, a atualização é realizada com base no Índice Geral de Preços (IGP-M), acrescido de juros de 1% ao mês, ambos os índices são divulgados mensalmente pela Fundação Getúlio Vargas.</p>
-<p>O IGP-M+1%, é um indicador que reflete a variação dos preços de bens e serviços, incluindo custos de habitação e aluguel, o que o torna um parâmetro mais adequado para ajustar as parcelas após a emissão do habite-se. Essa mudança visa garantir que o valor das parcelas acompanhe a realidade econômica, refletindo as condições do mercado no momento em que o imóvel está disponível para habitação.</p>
-<p>Agradecemos a sua confiança e estamos à disposição para quaisquer esclarecimentos adicionais!</p>
-<p>Se precisar de mais informações ou tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-<p>Estamos aqui para ajudar!</p>
-<p>Cordialmente,</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-03', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-04">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Atraso na Entrega do Apartamento</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-04">
-                            <p>Olá cliente,</p>
-<p>Esperamos que esteja bem.</p>
-<p>Entendemos perfeitamente a sua preocupação com a data de entrega do seu apartamento.</p>
-<p>Informamos que a data final para conclusão da obra e obtenção do habite-se é <strong>XX/XX/XXXX</strong>. Além disso, há um prazo de tolerância de 180 dias corridos após essa data, ou seja, até aproximadamente <strong>XX de XXXX</strong>, para que a entrega seja considerada dentro do prazo contratual.</p>
-<p>Gostaríamos de tranquilizá-lo e informar que a Canopus está empenhada e acompanhando de perto o andamento da obra, realizando os ajustes necessários no cronograma e cumprindo os trâmites junto aos órgãos competentes para garantir a conclusão o mais breve possível. Nosso compromisso é entregar um produto com a qualidade Canopus, à altura das suas expectativas.</p>
-<p>Caso o atraso persista além do prazo de tolerância, entraremos em contato para orientar sobre os próximos passos e garantir seus direitos.</p>
-<p>Se precisar de mais informações ou tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-<p>Estamos aqui para ajudar!</p>
-<p>Cordialmente,</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-04', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-05">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Antecipação da Entrega do Apartamento</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-05">
-                            <p>Olá cliente,</p>
-<p>Esperamos que esteja bem.</p>
-<p>Entendemos sua surpresa em relação à antecipação da entrega do seu imóvel. Embora o contrato preveja uma data estimada para conclusão da obra, o cronograma pode ser ajustado conforme o andamento da construção e, felizmente, neste caso, a execução evoluiu de forma mais rápida do que o previsto. Para garantir que tudo esteja em ordem para a entrega antecipada das chaves, é necessário que a quitação com recursos próprios ou financiamento seja concluída no novo prazo.</p>
-<p>Se precisar de suporte no processo de financiamento do seu imóvel, nossa equipe especializada está à disposição para ajudá-lo em cada etapa.</p>
-<p>Com a entrega antecipada do empreendimento, você poderá aproveitar seu novo lar mais cedo, planejar sua mudança com mais tranquilidade e começar a usufruir de todas as vantagens do seu apartamento antes do prazo inicialmente previsto.</p>
-<p>Se precisar de mais informações ou tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-<p>Estamos aqui para ajudar!</p>
-<p>Cordialmente,</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-05', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-06">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Registro do Imóvel e Entrega das Chaves</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-06">
-                            <p>Olá cliente,</p>
-<p>Esperamos que esteja bem.</p>
-<p>Primeiramente, parabéns por ter concluído a assinatura do contrato de financiamento!</p>
-<p>Sabemos que essa é uma etapa muito importante e queremos expressar nossa alegria por você ter chegado até aqui!</p>
-<p>A próxima fase agora é o registro do contrato de financiamento junto ao Cartório de Registro de Imóveis de São Paulo. Esse procedimento será conduzido pela assessoria, que irá encaminhar a guia de ITBI, emitida pela Prefeitura de São Paulo, apresentar o orçamento para o registro do imóvel. Com a finalização dessa etapa, a sua titularidade será formalizada, e a informação sobre o financiamento será registrada no cartório.</p>
-<p>Assim que o cartório iniciar o registro, você receberá o número do protocolo. Com esse documento em mãos, basta nos enviar para que possamos dar continuidade ao processo de entrega das chaves. Também é essencial que a vistoria do imóvel seja realizada e aprovada por você, garantindo que tudo esteja conforme o esperado.</p>
-<p>Com todas essas etapas cumpridas, nossa equipe entrará em contato para agendar a entrega das chaves, para que você possa finalmente celebrar essa conquista!</p>
-<p>Se precisar de mais informações ou tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-<p>Estamos aqui para ajudar!</p>
-<p>Cordialmente,</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-06', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-07">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>IPTU e Condomínio — Quando Começo a Pagar?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-07">
-                            <p>Olá cliente,</p>
-<p>Esperamos que esteja bem.</p>
-<p>Entendemos sua preocupação em relação ao pagamento do condomínio e do IPTU antes de receber as chaves do seu imóvel, e estamos aqui para esclarecer.</p>
-<p>Conforme nosso contrato, a responsabilidade pelo pagamento do condomínio e do IPTU começa após a Assembleia Geral de Instalação do Condomínio. A partir desse momento, as áreas comuns, como elevadores, jardins e portaria, estarão em funcionamento e precisarão de manutenção para garantir segurança e conforto a todos os moradores. O acesso a essas áreas será liberado somente após a entrega das chaves.</p>
-<p><strong>Lembrando que:</strong> Para retirar as chaves, todas as obrigações contratuais devem estar em dia: vistoria aprovada, unidade quitada ou financiada e escritura registrada.</p>
-<p>Estamos aqui para ajudar! Se precisar discutir algum aspecto específico do contrato ou tiver alguma dúvida, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-<p>Cordialmente,</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-07', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-08">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Laudêmio no Rio de Janeiro</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-08">
-                            <p>Olá cliente,</p>
-<p>Esperamos que esteja bem.</p>
-<p>Compreendemos que o pagamento do laudêmio possa ser um tema que gera curiosidade, e estamos aqui para fornecer todas as informações que você precisar.</p>
-<p>No Rio de Janeiro, o laudêmio é uma taxa devida à União quando você adquire um imóvel localizado em terrenos de marinha.</p>
-<p>Esse pagamento é necessário porque, embora você adquira a propriedade, a União mantém o domínio direto do terreno. A taxa ajuda a formalizar e garantir sua titularidade sobre o imóvel.</p>
-<p>Se precisar de mais informações ou tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-<p>Estamos aqui para ajudar!</p>
-<p>Cordialmente,</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-08', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-09">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Termo de Quitação e Recebimento das Chaves</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-09">
-                            <p>Olá cliente,</p>
-<p>Esperamos que esteja bem.</p>
-<p>Parabéns! Recebemos o seu pagamento e estamos providenciando a emissão do termo de quitação do seu apartamento. Em breve, ele será enviado para o seu e-mail. Mais uma etapa importante concluída!</p>
-<p>O próximo passo para receber as chaves do seu apartamento é a transferência de propriedade do imóvel, que acontece por meio de uma escritura pública, lavrada em cartório de notas. Temos um cartório parceiro que entrará em contato com você em breve para dar início a essa etapa.</p>
-<p>Após o pagamento dos emolumentos da escritura no cartório de notas, dos emolumentos no Cartório de Registro de Imóveis e a assinatura da escritura, daremos andamento à solicitação para a liberação das suas chaves.</p>
-<p>Além disso, é primordial que a vistoria do seu apartamento já tenha sido realizada e aprovada por você, garantindo que esteja tudo conforme o esperado.</p>
-<p>Se precisar de mais informações ou tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-<p>Estamos aqui para ajudar!</p>
-<p>Cordialmente,</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-09', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-10">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>2ª Via de Boleto com Atualização de Encargos</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-10">
-                            <p>Olá Cliente, boa tarde!</p>
-<p>Espero que esteja tudo bem com você.</p>
-<p>Em retorno à sua solicitação, verificamos que o boleto foi enviado corretamente para o e-mail cadastrado, mas sabemos que, eventualmente, e-mails podem ser direcionados para a caixa de spam ou serem bloqueados. Orientamos que verifique com frequência a caixa de spam ou lixo eletrônico. As configurações da sua caixa de e-mail podem bloqueá-los ou direcioná-los para umas das caixas citadas.</p>
-<p>Sobre a questão dos encargos, gostaríamos de esclarecer que, conforme previsto em contrato, valores pagos após a data de vencimento sofrem atualização com juros e multa por atraso.</p>
-<p>Desta forma, estamos encaminhando em anexo a 2ª via do boleto com os valores atualizados para sua comodidade.</p>
-<p>Caso tenha qualquer dúvida ou precise de apoio, estamos à disposição em nossos canais:</p>
-<p><a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a></p>
-<p><strong>0800 381 7070</strong></p>
-<p>Seguimos à disposição!</p>
-<p>Atenciosamente,</p>
-<p>Relacionamento com o Cliente</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-10', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-11">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Atraso por Dificuldades Financeiras</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-11">
-                            <p>Olá Cliente, boa tarde!</p>
-<p>Espero que esteja tudo bem com você.</p>
-<p>Agradecemos por compartilhar sua situação conosco. Sabemos que podem surgir momentos mais delicados, e queremos ajudar da melhor forma possível.</p>
-<p>Quando um contrato entra em atraso, após 5 dias iniciamos um processo de comunicação para alertar sobre a pendência. Enviamos um aviso de atraso pelos nossos canais de atendimento: e-mail, WhatsApp e contato telefônico. Caso o débito não seja regularizado em até 45 dias, o contrato está sujeito a cobrança por meio judicial, conforme as condições previstas no contrato assinado, podendo ocasionar a rescisão contratual.</p>
-<p>Nosso time de Recuperação de Crédito está à disposição para avaliar sua situação.</p>
-<p>Estamos disponíveis nos canais:</p>
-<p><a href="mailto:recuperacaodecredito@canopus.com.br">recuperacaodecredito@canopus.com.br</a></p>
-<p><strong>0800 381 7070 — opção 2</strong></p>
-<p>Atenciosamente,</p>
-<p>Relacionamento com o Cliente</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-11', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-12">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Carta de Cobrança Recebida — Esclarecimentos</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-12">
-                            <p>Olá Cliente, boa tarde!</p>
-<p>Espero que esteja tudo bem com você.</p>
-<p>Recebemos sua mensagem e agradecemos por nos procurar.</p>
-<p>As cartas de inadimplência são emitidas automaticamente quando é identificado algum valor em aberto há mais de 30 dias. No entanto, entendemos sua preocupação e já realizamos uma análise detalhada em seu contrato.</p>
-<p>Após análise, constatamos que há valores pendentes. Para facilitar sua verificação, encaminhamos em anexo um demonstrativo com todos os detalhes atualizados.</p>
-<p>Nosso time de Recuperação de Crédito está à disposição para orientações, nos canais abaixo:</p>
-<p><a href="mailto:recuperacaodecredito@canopus.com.br">recuperacaodecredito@canopus.com.br</a></p>
-<p><strong>0800 381 7070 — opção 2</strong></p>
-<p>Estamos à disposição para outros esclarecimentos.</p>
-<p>Atenciosamente,</p>
-<p>Relacionamento com o Cliente</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-12', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-13">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Vistoria — Unidade em Fase de Acabamento</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-13">
-                            <p>Olá, Cliente!</p>
-<p>Esperamos que esteja bem.</p>
-<p>Compreendemos sua expectativa para realização da vistoria e estamos trabalhando para lhe entregar uma ótima experiência.</p>
-<p>Esclarecemos que as vistorias estão ocorrendo de acordo com a finalização das obras pela nossa equipe e consultamos que a sua está em fase de conclusão dos acabamentos.</p>
-<p>Mas fique tranquilo, semanalmente recepcionamos novas liberações e temos um time de relacionamento de prontidão para lhe notificar quando chegar a hora de vistoriar a sua unidade.</p>
-<p>Para isso, lembramos da importância de manter os seus dados atualizados conosco, pois serão por eles que faremos contato para te passar essa atualização.</p>
-<p>Agradecemos o seu contato e ficamos à disposição no <strong>0800 381 7070, opção 5</strong>.</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-13', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-14">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Etapas Finais para Entrega de Chaves</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-14">
-                            <p>Olá, Cliente!</p>
-<p>Esperamos que esteja bem.</p>
-<p>Identificamos que você concluiu um passo importante e está cada vez mais próximo da liberação para entrega de chaves.</p>
-<p>Notamos que, atualmente, é necessária a conclusão de duas etapas para liberação: o registro da escritura e aprovação da unidade na vistoria.</p>
-<p>Especialmente sobre a vistoria, esclarecemos que sua unidade está em fase de conclusão dos acabamentos, ou seja, ainda não está apta para te receber em uma vistoria.</p>
-<p>Ressaltamos que essa parte é essencial para liberação das chaves, pois você terá oportunidade de testar todos os ambientes da unidade confirmando que ela está apta para moradia.</p>
-<p>Mas fique tranquilo, semanalmente recepcionamos novas liberações e temos um time de relacionamento de prontidão para lhe notificar quando chegar a hora de vistoriar a sua unidade.</p>
-<p>Com relação à escritura, você já consegue dar continuidade junto ao nosso time, basta entrar em contato no <strong>0800 381 7070, opção 4</strong>.</p>
-<p>Para isso, lembramos da importância de manter os seus dados atualizados conosco, pois serão por eles que faremos contato para te passar essa atualização.</p>
-<p>Agradecemos o seu contato e ficamos à disposição no <strong>0800 381 7070, opção 5</strong>.</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-14', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-15">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Financiamento Direto com a Construtora</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-15">
-                            <p>Olá, Cliente! Boa tarde!</p>
-<p>Espero que esteja bem.</p>
-<p>Lamentamos que seu crédito não tenha sido aprovado junto aos bancos. Sabemos que esse tipo de situação pode gerar insegurança, mas queremos que você saiba que estamos aqui para ajudar e oferecer alternativas viáveis para que você possa seguir com a conquista do seu imóvel.</p>
-<p>O Financiamento direto com a Canopus é uma Alienação Fiduciária, onde é feita uma escritura pública com o seu imóvel em garantia.</p>
-<p><strong>Condições:</strong></p>
-<ul>
-<li>Ter pago no mínimo 30% do valor total do imóvel;</li>
-<li>Prazo para pagamento de sua escolha em até 120 meses;</li>
-<li>As parcelas serão corrigidas mensalmente pelo IGPM — Índice Geral de Preços do Mercado.</li>
-</ul>
-<p>Solicitaremos os documentos para análise de crédito, em seguida, faremos uma simulação com as condições apresentadas, de acordo com o seu saldo devedor e prazo escolhido.</p>
-<p>Com a aprovação, será feita a lavratura de escritura com a alienação fiduciária e será enviada para registro em cartório de imóveis. Após o registro, iniciará a cobrança na data de vencimento estipulada.</p>
-<p>Durante o período de financiamento direto, algumas cobranças adicionais são incorporadas às parcelas. Dentre elas, o seguro prestamista, que garante a quitação do saldo devedor em caso de falecimento ou invalidez permanente do comprador, e a tarifa administrativa mensal, no valor fixo de R$ 25,00, referente à gestão e administração do contrato.</p>
-<p>Caso precise de mais informações ou se tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070 opção 4</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-15', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-                <div class="faq-item" id="faq-item-16">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Seguros e Taxas no Financiamento</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content" id="faq-content-16">
-                            <p>Olá, Cliente! Boa tarde!</p>
-<p>Espero que esteja tudo bem.</p>
-<p>Agradecemos pelo seu contato e pela oportunidade de esclarecer suas dúvidas. Entendemos que compreender todos os encargos envolvidos no financiamento é essencial para que você se sinta seguro e tranquilo durante esse processo tão importante.</p>
-<p>O seguro prestamista é um seguro vinculado ao contrato de financiamento, com a finalidade de garantir a quitação parcial ou total do saldo devedor em situações específicas que envolvam o titular do contrato, como morte ou invalidez permanente total por acidente. Ele tem como objetivo proteger tanto o comprador quanto a construtora, oferecendo maior segurança ao longo de toda a vigência do financiamento.</p>
-<p>No caso do financiamento direto com a construtora, esse seguro geralmente já está automaticamente embutido nas parcelas mensais. A cobrança leva em consideração fatores como o valor do financiamento, a idade do contratante, o prazo do contrato e os riscos cobertos. Ainda assim, é sempre recomendável verificar no seu contrato ou extrato financeiro para confirmar os valores e condições específicos.</p>
-<p>Além do seguro, há também a cobrança de uma taxa administrativa fixa de R$ 25,00 (vinte e cinco reais), aplicada mensalmente. Essa quantia é destinada ao reembolso das despesas operacionais relacionadas à gestão e cobrança das parcelas do financiamento.</p>
-<p>O seguro prestamista pode ser acionado pelo próprio contratante, beneficiários ou familiares em caso de ocorrência de um dos eventos cobertos. Após o envio da documentação necessária e aprovação por parte da seguradora, o saldo devedor, ou parte dele, dependendo da cobertura, será quitado, proporcionando mais tranquilidade à família em um momento delicado.</p>
-<p>Esperamos ter esclarecido suas dúvidas com clareza.</p>
-<p>Caso precise de mais informações ou se tiver qualquer outra pergunta, sinta-se à vontade para nos contatar por meio dos nossos canais de atendimento: telefone e WhatsApp <strong>0800 381 7070 opção 4</strong> ou pelo e-mail <a href="mailto:relacionamento@canopus.com.br">relacionamento@canopus.com.br</a>.</p>
-                        </div>
-                        <button class="copy-btn" onclick="copyFaqContent('faq-content-16', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- ==================== ÁREA DO USUÁRIO ==================== -->
+</div>
+        </div>
+
         <div class="page-section" id="page-user-profile">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-user-circle"></i> Meu Perfil</span>
@@ -2383,7 +1851,6 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
         </div>
 
-            <!-- ==================== CERTIFICADOS ==================== -->
         <div class="page-section" id="page-certificados">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-certificate"></i> Certificados</span>
@@ -2400,7 +1867,6 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
         </div>
 
-        <!-- ==================== ATENDIMENTO 5 ESTRELAS (COLABORADOR) ==================== -->
         <div class="page-section" id="page-cinco-estrelas">
             <div style="margin-bottom:16px;">
                 <button onclick="navigateTo('dashboard')" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--cinza-claro);color:var(--azul-escuro);border:1.5px solid var(--borda);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;"><i class="fas fa-arrow-left"></i> Voltar</button>
@@ -2418,7 +1884,7 @@ img, iframe, video, svg { max-width: 100%; }
 
                 <div style="position:relative;z-index:2;">
                     <div style="display:flex;align-items:baseline;justify-content:center;gap:14px;margin-bottom:6px;flex-wrap:wrap;">
-                        <span style="font-family:'Oswald',sans-serif;font-size:60px;font-weight:700;line-height:.9;" id="ce-nf">—</span>
+                        <span style="font-family:'Oswald',sans-serif;font-size:60px;font-weight:700;line-height:.9;" id="ce-nf">4,58</span>
                         <span style="font-size:12px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.12em;">Nota Final</span>
                     </div>
                     <div style="text-align:center;font-size:13px;font-weight:600;color:#fff;margin-bottom:22px;" id="ce-estado"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;background:#1DBCB0;"></span>Voc&ecirc; est&aacute; na faixa Excel&ecirc;ncia</div>
@@ -2436,23 +1902,26 @@ img, iframe, video, svg { max-width: 100%; }
                     <div id="ce-msg" style="text-align:center;font-size:13px;font-weight:600;margin-top:18px;color:#FFD89B;">Faltam 0,22 para 5 Estrelas &#127942;</div>
 
                     <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;">
-                        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:14px;padding:12px 20px;text-align:center;min-width:150px;"><div style="font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Monitoria</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:600;" id="ce-mon">—</div><div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">peso 60%</div></div>
-                        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:14px;padding:12px 20px;text-align:center;min-width:150px;"><div style="font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Avalia&ccedil;&atilde;o do Cliente</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:600;" id="ce-cli">—</div><div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">peso 40%</div></div>
+                        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:14px;padding:12px 20px;text-align:center;min-width:150px;"><div style="font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Monitoria</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:600;" id="ce-mon">4,50</div><div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">peso 60%</div></div>
+                        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:14px;padding:12px 20px;text-align:center;min-width:150px;"><div style="font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Avalia&ccedil;&atilde;o do Cliente</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:600;" id="ce-cli">4,70</div><div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">peso 40%</div></div>
                     </div>
                 </div>
             </div>
 
             <div style="font-size:12px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;">Sua evolu&ccedil;&atilde;o</div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:30px;">
-                <div style="background:linear-gradient(135deg,var(--turquesa-claro),#fff);border:1px solid rgba(29,188,176,0.4);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#128293;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-streak">—</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">meses seguidos premiado</div></div>
-                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#127942;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-q5">—</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">vezes 5 Estrelas</div></div>
-                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&starf;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-qex">—</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">vezes Excel&ecirc;ncia</div></div>
-                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#128200;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-melhor">—</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">sua melhor nota</div></div>
-                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;" id="ce-tend-icon" style="color:var(--cinza);">—</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;line-height:1;" id="ce-tend-txt" style="color:var(--cinza);">—</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">tend&ecirc;ncia recente</div></div>
+                <div style="background:linear-gradient(135deg,var(--turquesa-claro),#fff);border:1px solid rgba(29,188,176,0.4);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#128293;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-streak">3</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">meses seguidos premiado</div></div>
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#127942;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-q5">5</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">vezes 5 Estrelas</div></div>
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&starf;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-qex">2</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">vezes Excel&ecirc;ncia</div></div>
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">&#128200;</div><div style="font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;color:var(--azul-escuro);line-height:1;" id="ce-melhor">4,82</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">sua melhor nota</div></div>
+                <div style="background:#fff;border:1px solid var(--borda);border-radius:16px;padding:18px 16px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;color:var(--turquesa);">&uarr;</div><div style="font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;color:var(--turquesa);line-height:1;">Subindo</div><div style="font-size:12px;color:var(--texto-leve);margin-top:5px;">tend&ecirc;ncia recente</div></div>
             </div>
 
             <div style="font-size:12px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;">Hist&oacute;rico mensal</div>
             <div style="background:#fff;border:1px solid var(--borda);border-radius:18px;overflow:hidden;" id="ce-historico">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--borda);"><span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">Julho 2026</span><div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">4,58</span><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">&starf; Excel&ecirc;ncia</span></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--borda);"><span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">Junho 2026</span><div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">4,82</span><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:#FBF1DF;color:#B97516;">&#127942; 5 Estrelas</span></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--borda);"><span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">Maio 2026</span><div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">4,55</span><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">&starf; Excel&ecirc;ncia</span></div></div>
                 <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;"><span style="font-size:14px;font-weight:600;color:var(--azul-escuro);">Abril 2026</span><div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--azul-medio);">4,10</span><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:#f0f2f4;color:#9aacac;">N&atilde;o eleg&iacute;vel</span></div></div>
             </div>
 
@@ -2462,8 +1931,6 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
         </div>
 
-
-        <!-- ==================== 5 ESTRELAS - ÁREA DO AVALIADOR ==================== -->
         <div class="page-section" id="page-avaliador-5e">
             <div class="page-header">
                 <span class="badge"><i class="fas fa-shield-halved"></i> Avaliador de Qualidade</span>
@@ -2480,32 +1947,7 @@ img, iframe, video, svg { max-width: 100%; }
                 <div style="background:#fff;border:1px solid var(--borda);border-radius:18px;padding:22px;">
                     <h2 style="font-size:15px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;">Novo lan&ccedil;amento</h2>
                     <div style="font-size:12px;color:var(--cinza);margin-bottom:18px;">Os campos abaixo alimentam o c&aacute;lculo ao vivo ao lado.</div>
-                    <div style="margin-bottom:15px;" id="av5-colab-wrap">
-                        <label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Colaborador</label>
-                        <!-- Seletor visual de colaborador -->
-                        <div id="av5-colab-picker" style="position:relative;">
-                            <!-- Campo de busca / valor selecionado -->
-                            <div id="av5-colab-display" onclick="av5ColabToggle()" style="display:flex;align-items:center;gap:10px;padding:10px 13px;border:1.5px solid var(--borda);border-radius:10px;background:#fff;cursor:pointer;transition:border-color .2s;user-select:none;" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')av5ColabToggle()">
-                                <div id="av5-colab-avatar" style="width:34px;height:34px;border-radius:50%;background:var(--cinza-claro);border:1.5px solid var(--borda);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:var(--cinza);overflow:hidden;">
-                                    <i class="fas fa-user" style="font-size:13px;color:var(--cinza);"></i>
-                                </div>
-                                <span id="av5-colab-label" style="flex:1;font-size:14px;color:var(--cinza);font-family:'Inter',sans-serif;">Selecione um colaborador</span>
-                                <i class="fas fa-chevron-down" id="av5-colab-chevron" style="font-size:11px;color:var(--cinza);transition:transform .2s;"></i>
-                            </div>
-                            <!-- Dropdown -->
-                            <div id="av5-colab-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--turquesa);border-radius:12px;box-shadow:0 8px 24px rgba(0,60,80,0.13);z-index:500;overflow:hidden;max-height:320px;flex-direction:column;">
-                                <div style="padding:10px 10px 6px;border-bottom:1px solid var(--borda);">
-                                    <div style="display:flex;align-items:center;gap:8px;background:var(--cinza-claro);border-radius:8px;padding:7px 10px;">
-                                        <i class="fas fa-search" style="font-size:12px;color:var(--cinza);"></i>
-                                        <input id="av5-colab-search" type="text" placeholder="Buscar pelo nome…" oninput="av5ColabFiltrar()" style="border:none;background:transparent;outline:none;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);width:100%;">
-                                    </div>
-                                </div>
-                                <div id="av5-colab-list" style="overflow-y:auto;max-height:250px;padding:6px;"></div>
-                            </div>
-                        </div>
-                        <!-- Campo hidden que mantém o email para o restante do código -->
-                        <input type="hidden" id="av5-colab" value="">
-                    </div>
+                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Colaborador</label><select id="av5-colab" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option value="">Carregando colaboradores...</option></select></div>
                     <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Compet&ecirc;ncia (m&ecirc;s/ano)</label><select id="av5-comp" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option>Janeiro / 2026</option><option>Fevereiro / 2026</option><option>Mar&ccedil;o / 2026</option><option>Abril / 2026</option><option>Maio / 2026</option><option>Junho / 2026</option><option selected>Julho / 2026</option><option>Agosto / 2026</option><option>Setembro / 2026</option><option>Outubro / 2026</option><option>Novembro / 2026</option><option>Dezembro / 2026</option></select></div>
                     <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Data da avalia&ccedil;&atilde;o</label><input type="date" id="av5-data" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -2539,7 +1981,6 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
         </div>
 
-        <!-- ==================== CENTRAL DE CONHECIMENTO ==================== -->
         <div class="page-section" id="page-central-conhecimento">
             <div class="page-header ck-header">
                 <span class="badge"><i class="fas fa-book"></i> Central de Conhecimento</span>
@@ -2579,52 +2020,54 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="page-header">
                 <span class="badge" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;"><i class="fas fa-shield-alt"></i> Administrador</span>
                 <h1>Painel administrativo</h1>
-                <p>Acompanhe o progresso dos colaboradores e gerencie a plataforma.</p>
+                <p>Dados em tempo real do Supabase. <button onclick="updateAdminDashboard()" style="background:none;border:none;color:var(--turquesa);font-size:12px;cursor:pointer;font-family:inherit;"><i class="fas fa-sync-alt"></i> Atualizar</button></p>
             </div>
             <div class="dashboard-grid">
                 <div class="dashboard-card">
-                    <div class="card-header">
-                        <div class="card-icon-d turquesa"><i class="fas fa-users"></i></div>
-                    </div>
-                    <div class="card-value" id="adminTotalUsers">0</div>
+                    <div class="card-header"><div class="card-icon-d turquesa"><i class="fas fa-users"></i></div></div>
+                    <div class="card-value" id="adminTotalUsers"><i class="fas fa-spinner fa-spin" style="font-size:18px;"></i></div>
                     <div class="card-label">Colaboradores cadastrados</div>
                 </div>
                 <div class="dashboard-card">
-                    <div class="card-header">
-                        <div class="card-icon-d verde"><i class="fas fa-check-circle"></i></div>
-                    </div>
-                    <div class="card-value" id="adminCompleted">0</div>
-                    <div class="card-label">Conclusões de módulos</div>
+                    <div class="card-header"><div class="card-icon-d verde"><i class="fas fa-user-check"></i></div></div>
+                    <div class="card-value" id="adminActiveUsers"><i class="fas fa-spinner fa-spin" style="font-size:18px;"></i></div>
+                    <div class="card-label">Ativos na plataforma</div>
                 </div>
                 <div class="dashboard-card">
-                    <div class="card-header">
-                        <div class="card-icon-d laranja"><i class="fas fa-clock"></i></div>
-                    </div>
-                    <div class="card-value" id="adminAvgProgress">0%</div>
-                    <div class="card-label">Progresso médio</div>
+                    <div class="card-header"><div class="card-icon-d laranja"><i class="fas fa-star"></i></div></div>
+                    <div class="card-value" id="adminMedia5E"><i class="fas fa-spinner fa-spin" style="font-size:18px;"></i></div>
+                    <div class="card-label">Média geral 5 Estrelas</div>
                 </div>
                 <div class="dashboard-card">
-                    <div class="card-header">
-                        <div class="card-icon-d roxo"><i class="fas fa-certificate"></i></div>
-                    </div>
-                    <div class="card-value" id="adminCerts">0</div>
-                    <div class="card-label">Certificados emitidos</div>
+                    <div class="card-header"><div class="card-icon-d roxo"><i class="fas fa-trophy"></i></div></div>
+                    <div class="card-value" id="admin5EstrCount"><i class="fas fa-spinner fa-spin" style="font-size:18px;"></i></div>
+                    <div class="card-label">No 5 Estrelas este mês</div>
                 </div>
             </div>
-            <div class="admin-panel active">
-                <h2><i class="fas fa-users" style="color:var(--turquesa);margin-right:8px;"></i>Progresso dos colaboradores</h2>
+            <div class="admin-panel active" style="margin-bottom:18px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+                    <h2 style="margin:0;"><i class="fas fa-star" style="color:var(--turquesa);margin-right:8px;"></i>Programa 5 Estrelas — visão da equipe</h2>
+                    <select id="admin5EFiltroMes" onchange="adminCarregar5E()" style="padding:7px 12px;border:1.5px solid var(--borda);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;">
+                        <option value="">Todos os meses</option>
+                    </select>
+                </div>
                 <table class="admin-table">
                     <thead>
-                        <tr>
-                            <th>Colaborador</th>
-                            <th>E-mail</th>
-                            <th>Progresso</th>
-                            <th>Módulos concluídos</th>
-                            <th>Status</th>
-                        </tr>
+                        <tr><th>Colaborador</th><th>Competência</th><th>Monitoria (60%)</th><th>Cliente (40%)</th><th>Nota Final</th><th>Classificação</th></tr>
+                    </thead>
+                    <tbody id="admin5ETableBody">
+                        <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--cinza);"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="admin-panel active">
+                <h2><i class="fas fa-users" style="color:var(--turquesa);margin-right:8px;"></i>Colaboradores cadastrados</h2>
+                <table class="admin-table">
+                    <thead>
+                        <tr><th>Nome</th><th>E-mail</th><th>Role</th><th>Avaliado</th><th>Status</th></tr>
                     </thead>
                     <tbody id="adminTableBody">
-                        <!-- Populated by JS -->
+                        <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--cinza);"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -2634,172 +2077,14 @@ img, iframe, video, svg { max-width: 100%; }
         <div class="page-section" id="page-admin-content">
             <div class="page-header">
                 <span class="badge" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;"><i class="fas fa-shield-alt"></i> Administrador</span>
-                <h1>Gerenciar conteúdo</h1>
-                <p>Adicione, edite ou remova materiais de treinamento.</p>
+                <h1>Configurações da Plataforma</h1>
+                <p>Gerencie o FAQ e as configurações gerais da plataforma.</p>
             </div>
             <div class="content-manager">
                 <div class="cm-tabs">
-                    <button class="cm-tab active" onclick="switchCmTab('add')">Adicionar material</button>
-                    <button class="cm-tab" onclick="switchCmTab('upload')">Upload de arquivos</button>
-                    <button class="cm-tab" onclick="switchCmTab('faq')">Gerenciar FAQ</button>
+                    <button class="cm-tab active" onclick="switchCmTab('faq')">Gerenciar FAQ</button>
                 </div>
-                <div class="cm-panel" id="cm-panel-list">
-                    <h3>Módulos cadastrados</h3>
-                    <div class="module-list" id="moduleList">
-                        <div class="module-item">
-                            <div class="module-icon turquesa" style="background:var(--turquesa-light);color:var(--turquesa);"><i class="fas fa-file-alt"></i></div>
-                            <div class="module-info">
-                                <h4>Módulo 1: Atendimento ao Cliente</h4>
-                                <p>3 PDFs, 4 vídeos, 2 apresentações</p>
-                            </div>
-                            <div class="module-meta">12 aulas</div>
-                            <div class="module-actions">
-                                <button title="Editar"><i class="fas fa-edit"></i></button>
-                                <button class="delete" title="Remover"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="module-item">
-                            <div class="module-icon azul" style="background:#e6f0f7;color:var(--azul-escuro);"><i class="fas fa-comments"></i></div>
-                            <div class="module-info">
-                                <h4>Módulo 2: Comunicação Efetiva</h4>
-                                <p>2 PDFs, 3 vídeos, 1 apresentação</p>
-                            </div>
-                            <div class="module-meta">10 aulas</div>
-                            <div class="module-actions">
-                                <button title="Editar"><i class="fas fa-edit"></i></button>
-                                <button class="delete" title="Remover"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="module-item">
-                            <div class="module-icon verde" style="background:#e6f7f0;color:#17a87d;"><i class="fas fa-headset"></i></div>
-                            <div class="module-info">
-                                <h4>Módulo 3: SAC e Ouvidoria</h4>
-                                <p>2 PDFs, 3 vídeos</p>
-                            </div>
-                            <div class="module-meta">8 aulas</div>
-                            <div class="module-actions">
-                                <button title="Editar"><i class="fas fa-edit"></i></button>
-                                <button class="delete" title="Remover"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="module-item">
-                            <div class="module-icon laranja" style="background:#fff5e6;color:#e89a1c;"><i class="fas fa-handshake"></i></div>
-                            <div class="module-info">
-                                <h4>Módulo 4: Relacionamento com Clientes</h4>
-                                <p>3 PDFs, 4 vídeos, 1 apresentação</p>
-                            </div>
-                            <div class="module-meta">11 aulas</div>
-                            <div class="module-actions">
-                                <button title="Editar"><i class="fas fa-edit"></i></button>
-                                <button class="delete" title="Remover"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="module-item">
-                            <div class="module-icon roxo" style="background:#f0e6f7;color:#8b5cf6;"><i class="fas fa-chart-line"></i></div>
-                            <div class="module-info">
-                                <h4>Módulo 5: Gestão e Liderança</h4>
-                                <p>2 PDFs, 3 vídeos</p>
-                            </div>
-                            <div class="module-meta">8 aulas</div>
-                            <div class="module-actions">
-                                <button title="Editar"><i class="fas fa-edit"></i></button>
-                                <button class="delete" title="Remover"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="cm-panel active" id="cm-panel-add">
-                    <h3>Adicionar Novo Material</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Título do material <span class="required">*</span></label>
-                            <input type="text" id="materialTitle" placeholder="Ex: Manual de Atendimento v3">
-                        </div>
-                        <div class="form-group">
-                            <label>Módulo <span class="required">*</span></label>
-                            <select id="materialModule">
-                                <option value="">Selecione...</option>
-                                <option value="mod1">Módulo 1: Atendimento</option>
-                                <option value="mod2">Módulo 2: Comunicação</option>
-                                <option value="mod3">Módulo 3: SAC e Ouvidoria</option>
-                                <option value="mod4">Módulo 4: Relacionamento</option>
-                                <option value="mod5">Módulo 5: Gestão e Liderança</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Tipo de arquivo <span class="required">*</span></label>
-                            <select id="materialType">
-                                <option value="">Selecione...</option>
-                                <option value="pdf">PDF</option>
-                                <option value="video">Video</option>
-                                <option value="slide">Apresentação (PPT)</option>
-                                <option value="doc">Documento Word</option>
-                                <option value="sheet">Planilha Excel</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>URL do arquivo <span class="required">*</span></label>
-                            <input type="url" id="materialUrl" placeholder="https://...">
-                            <span class="hint">Link do Google Drive, Dropbox ou outro serviço de nuvem</span>
-                        </div>
-                    </div>
-                    <div class="form-row single">
-                        <div class="form-group">
-                            <label>Descrição</label>
-                            <textarea id="materialDesc" placeholder="Breve descrição do conteúdo..."></textarea>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="addMaterial()">
-                            <i class="fas fa-plus"></i> Adicionar material
-                        </button>
-                        <button class="btn btn-secondary" onclick="resetMaterialForm()">
-                            <i class="fas fa-undo"></i> Limpar
-                        </button>
-                    </div>
-                </div>
-                <div class="cm-panel" id="cm-panel-upload">
-                    <h3>Upload de arquivos</h3>
-                    <div class="form-row" style="margin-bottom:16px;">
-                        <div class="form-group">
-                            <label>Módulo de destino</label>
-                            <select id="uploadModuleSelect">
-                                <option value="general">Geral</option>
-                                <option value="mod1">Módulo 1: Atendimento</option>
-                                <option value="mod2">Módulo 2: Comunicação</option>
-                                <option value="mod3">Módulo 3: SAC e Ouvidoria</option>
-                                <option value="mod4">Módulo 4: Relacionamento</option>
-                                <option value="mod5">Módulo 5: Gestão e Liderança</option>
-                                <option value="onboarding">Onboarding Relacionamento</option>
-                                <option value="relacionamento">Relacionamento</option>
-                                <option value="astec">ASTEC</option>
-                                <option value="backoffice">Backoffice</option>
-                                <option value="recuperacao">Recuperação de Crédito</option>
-                                <option value="juridico">Jurídico</option>
-                                <option value="compliance">Compliance</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Arraste arquivos aqui ou <span>clique para selecionar</span></p>
-                        <p class="upload-hint">PDF, PPT, DOC, XLS, MP4 (máx. 500 MB por arquivo)</p>
-                        <input type="file" id="fileInput" multiple onchange="handleFiles(this.files)">
-                    </div>
-                    <div class="upload-list" id="uploadList"></div>
-                    <div class="btn-group" style="margin-top:16px">
-                        <button class="btn btn-primary" onclick="processUploads()">
-                            <i class="fas fa-upload"></i> Enviar arquivos
-                        </button>
-                        <button class="btn btn-secondary" onclick="clearUploads()">
-                            <i class="fas fa-trash"></i> Limpar lista
-                        </button>
-                    </div>
-                </div>
-            
-                <div class="cm-panel" id="cm-panel-faq">
+                <div class="cm-panel active" id="cm-panel-faq">
                     <h3><i class="fas fa-question-circle" style="color:var(--turquesa);margin-right:8px;"></i>Gerenciar FAQ</h3>
                     <p style="color:var(--cinza);font-size:13px;margin-bottom:20px;">Cadastre perguntas e respostas para aparecerem na tela de FAQ dos colaboradores.</p>
 
@@ -2870,6 +2155,144 @@ img, iframe, video, svg { max-width: 100%; }
                 </ol>
                 <div style="margin-top:14px;padding:12px 14px;background:var(--turquesa-claro);border-radius:10px;font-size:13px;color:var(--azul-medio);">
                     <i class="fas fa-info-circle" style="margin-right:6px;"></i>Para que o colaborador troque a senha no pr&oacute;ximo login, marque o campo de primeiro acesso no perfil dele (must_change_password).
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<!-- ==================== ADMIN USERS ==================== -->
+
+<!-- ==================== ADMIN: GERENCIAR MATERIAIS ==================== -->
+        <div class="page-section" id="page-admin-materiais">
+            <div class="page-header">
+                <span class="badge" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;"><i class="fas fa-shield-alt"></i> Administrador</span>
+                <h1>Gerenciar Materiais</h1>
+                <p>Envie, organize e remova arquivos das trilhas de aprendizagem. Tudo é salvo no Supabase Storage.</p>
+            </div>
+
+            <!-- UPLOAD -->
+            <div class="admin-panel active" style="margin-bottom:18px;">
+                <h2><i class="fas fa-cloud-upload-alt" style="color:var(--turquesa);margin-right:8px;"></i>Enviar novo material</h2>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;">
+                    <div>
+                        <label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Nome do material</label>
+                        <input id="mat-nome" type="text" placeholder="Ex.: Manual de Atendimento Canopus v2026" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;box-sizing:border-box;">
+                    </div>
+                    <div>
+                        <label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Trilha / Módulo de destino</label>
+                        <select id="mat-modulo" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;">
+                            <option value="">Selecione a trilha / módulo</option>
+                            <optgroup label="Onboarding Relacionamento">
+                                <option value="mod-onboarding-1">1. Boas-vindas</option>
+                                <option value="mod-onboarding-2">2. Organograma</option>
+                                <option value="mod-onboarding-3">3. Nosso Jeito de Ser</option>
+                                <option value="mod-onboarding-4">4. Guia do Cliente</option>
+                            </optgroup>
+                            <optgroup label="Relacionamento com o Cliente">
+                                <option value="mod-rel-1">1. Jornada do Cliente</option>
+                                <option value="mod-rel-2">2. Atendimento Humanizado</option>
+                                <option value="mod-rel-3">3. Escrita Encantadora</option>
+                                <option value="mod-rel-4">4. Comunicação Profissional</option>
+                                <option value="mod-rel-5">5. Gestão de Conflitos</option>
+                                <option value="mod-rel-6">6. SLA e Prazos</option>
+                                <option value="mod-rel-7">7. Fluxos Operacionais</option>
+                                <option value="mod-rel-8">8. Sistemas Internos</option>
+                                <option value="mod-rel-9">9. Modelos de Resposta</option>
+                            </optgroup>
+                            <optgroup label="Jurídico">
+                                <option value="mod-jur-1">1. Contratos</option>
+                                <option value="mod-jur-2">2. Fluxos Jurídicos</option>
+                                <option value="mod-jur-3">3. Comunicação Jurídica</option>
+                                <option value="mod-jur-4">4. Padronizações</option>
+                            </optgroup>
+                            <optgroup label="Compliance">
+                                <option value="mod-comp-1">1. Ética Corporativa</option>
+                                <option value="mod-comp-2">2. LGPD</option>
+                                <option value="mod-comp-3">3. Segurança da Informação</option>
+                                <option value="mod-comp-4">4. Conduta Profissional</option>
+                                <option value="mod-comp-5">5. Políticas Internas</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div style="grid-column:1/-1;">
+                        <label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Descrição (opcional)</label>
+                        <input id="mat-descricao" type="text" placeholder="Ex.: PDF — 2,4 MB — Atualizado em 2026" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;box-sizing:border-box;">
+                    </div>
+                    <div style="grid-column:1/-1;">
+                        <label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Arquivo</label>
+                        <label id="mat-upload-label" class="mat-upload-label-base">
+                            <i class="fas fa-file-arrow-up" style="font-size:28px;color:var(--turquesa);flex-shrink:0;"></i>
+                            <div>
+                                <div style="font-size:14px;font-weight:600;color:var(--azul-escuro);" id="mat-upload-nome">Clique para selecionar ou arraste o arquivo</div>
+                                <div style="font-size:12px;color:var(--cinza);margin-top:3px;">PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, MP4, PNG, JPG — máx. 50MB</div>
+                            </div>
+                            <input type="file" id="mat-arquivo" style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp4,.mov,.png,.jpg,.jpeg,.webp" onchange="matArquivoSelecionado(this)">
+                        </label>
+                        <!-- Barra de progresso -->
+                        <div id="mat-progress-wrap" style="display:none;margin-top:10px;">
+                            <div style="background:var(--cinza-claro);border-radius:50px;height:8px;overflow:hidden;">
+                                <div id="mat-progress-bar" style="height:100%;background:linear-gradient(90deg,var(--turquesa),var(--azul-medio));border-radius:50px;width:0%;transition:width .3s;"></div>
+                            </div>
+                            <div id="mat-progress-txt" style="font-size:12px;color:var(--cinza);margin-top:5px;text-align:center;">Enviando...</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:18px;display:flex;justify-content:flex-end;">
+                    <button onclick="matEnviar()" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--turquesa),var(--azul-medio));color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:var(--transition);" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+                        <i class="fas fa-cloud-upload-alt"></i> Enviar material
+                    </button>
+                </div>
+            </div>
+
+            <!-- LISTAGEM -->
+            <div class="admin-panel active">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+                    <h2 style="margin:0;"><i class="fas fa-folder-open" style="color:var(--turquesa);margin-right:8px;"></i>Materiais cadastrados</h2>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <select id="mat-filtro-modulo" onchange="matCarregar()" style="padding:8px 12px;border:1.5px solid var(--borda);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;">
+                            <option value="">Todos</option>
+                            <optgroup label="Onboarding Relacionamento">
+                                <option value="mod-onboarding-1">1. Boas-vindas</option>
+                                <option value="mod-onboarding-2">2. Organograma</option>
+                                <option value="mod-onboarding-3">3. Nosso Jeito de Ser</option>
+                                <option value="mod-onboarding-4">4. Guia do Cliente</option>
+                            </optgroup>
+                            <optgroup label="Relacionamento com o Cliente">
+                                <option value="mod-rel-1">1. Jornada do Cliente</option>
+                                <option value="mod-rel-2">2. Atendimento Humanizado</option>
+                                <option value="mod-rel-3">3. Escrita Encantadora</option>
+                                <option value="mod-rel-4">4. Comunicação Profissional</option>
+                                <option value="mod-rel-5">5. Gestão de Conflitos</option>
+                                <option value="mod-rel-6">6. SLA e Prazos</option>
+                                <option value="mod-rel-7">7. Fluxos Operacionais</option>
+                                <option value="mod-rel-8">8. Sistemas Internos</option>
+                                <option value="mod-rel-9">9. Modelos de Resposta</option>
+                            </optgroup>
+                            <optgroup label="Jurídico">
+                                <option value="mod-jur-1">1. Contratos</option>
+                                <option value="mod-jur-2">2. Fluxos Jurídicos</option>
+                                <option value="mod-jur-3">3. Comunicação Jurídica</option>
+                                <option value="mod-jur-4">4. Padronizações</option>
+                            </optgroup>
+                            <optgroup label="Compliance">
+                                <option value="mod-comp-1">1. Ética Corporativa</option>
+                                <option value="mod-comp-2">2. LGPD</option>
+                                <option value="mod-comp-3">3. Segurança da Informação</option>
+                                <option value="mod-comp-4">4. Conduta Profissional</option>
+                                <option value="mod-comp-5">5. Políticas Internas</option>
+                            </optgroup>
+                        </select>
+                        <button onclick="matCarregar()" style="padding:8px 14px;border:1.5px solid var(--borda);border-radius:8px;background:#fff;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;color:var(--azul-escuro);display:flex;align-items:center;gap:6px;">
+                            <i class="fas fa-sync-alt"></i> Atualizar
+                        </button>
+                    </div>
+                </div>
+                <div id="mat-lista" class="pdf-grid" style="gap:12px;">
+                    <div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--cinza);">
+                        <i class="fas fa-spinner fa-spin" style="font-size:24px;margin-bottom:10px;display:block;"></i>
+                        Carregando materiais...
+                    </div>
                 </div>
             </div>
         </div>
@@ -3591,18 +3014,12 @@ img, iframe, video, svg { max-width: 100%; }
             <!-- SLIDES CONTAINER -->
             <div id="mod-slides-container" style="margin-bottom: 24px;"></div>
 
-            <div class="pdf-section">
+            <div class="pdf-section" id="mod-pdf-section" style="display:none;">
                 <div class="pdf-section-header">
                     <h2><i class="fas fa-file-pdf" style="color:var(--danger);margin-right:8px;"></i>Materiais em PDF</h2>
-                    <span class="count" id="mod-pdf-count">Carregando...</span>
+                    <span class="count" id="mod-pdf-count"></span>
                 </div>
-                <div class="pdf-grid" id="mod-pdf-grid">
-                    <div class="empty-state" style="grid-column:1/-1;padding:40px;">
-                        <i class="fas fa-spinner fa-spin" style="font-size:32px;color:var(--turquesa);margin-bottom:16px;"></i>
-                        <h3>Carregando materiais...</h3>
-                        <p>Buscando arquivos do Supabase para este módulo.</p>
-                    </div>
-                </div>
+                <div class="pdf-grid" id="mod-pdf-grid"></div>
             </div>
         </div>
 
@@ -3613,22 +3030,19 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="footer-col">
                 <h4>Plataforma</h4>
                 <a href="#" onclick="navigateTo('dashboard')"><i class="fas fa-home"></i> Dashboard</a>
-                <a href="#" onclick="navigateTo('modulos')"><i class="fas fa-book-open"></i> Módulos</a>
+                <a href="#" onclick="navigateTo('trilha-onboarding')"><i class="fas fa-book-open"></i> Trilhas</a>
                 <a href="#" onclick="navigateTo('faq')"><i class="fas fa-question-circle"></i> FAQ</a>
                 <a href="#" onclick="navigateTo('certificados')"><i class="fas fa-certificate"></i> Certificados</a>
                 <a href="#" onclick="navigateTo('central-conhecimento')"><i class="fas fa-book"></i> Central de Conhecimento</a>
             </div>
             <div class="footer-col">
-                <h4>Recursos</h4>
-                <a href="#"><i class="fas fa-file-pdf"></i> Materiais PDF</a>
-                <a href="#"><i class="fas fa-video"></i> Videos</a>
-                <a href="#"><i class="fas fa-headset"></i> Suporte</a>
+                <h4>Programa 5 Estrelas</h4>
+                <a href="#" onclick="navigateTo('cinco-estrelas')"><i class="fas fa-star"></i> Minha Avaliação</a>
+                <a href="#" onclick="navigateTo('user-profile')"><i class="fas fa-user"></i> Meu Perfil</a>
             </div>
             <div class="footer-col">
                 <h4>Empresa</h4>
                 <a href="https://canopus.com.br" target="_blank"><i class="fas fa-globe"></i> Site Canopus</a>
-                <a href="#"><i class="fas fa-building"></i> Sobre nós</a>
-                <a href="#"><i class="fas fa-briefcase"></i> Carreiras</a>
             </div>
             <div class="footer-col">
                 <h4>Ajuda</h4>
@@ -3637,12 +3051,7 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
         </div>
         <div class="footer-bottom">
-            <p> 2026 Canopus Construtora. Todos os direitos reservados.</p>
-            <div class="social">
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-            </div>
+            <p>&copy; 2026 Canopus Construtora. Todos os direitos reservados.</p>
         </div>
     </footer>
 
@@ -3650,16 +3059,12 @@ img, iframe, video, svg { max-width: 100%; }
 <script>
 // ==================== CONFIGURATION ====================
 const CONFIG = {
-    // Admin credentials (in production, use secure backend)
-    ADMIN_USER: 'admin_canopus',
-    ADMIN_PASS: atob('Q2Fub3B1c0AyMDI0IQ=='),
-    // Allowed domain
+    // Admin autenticado exclusivamente via Supabase Auth (role='admin' em profiles)
+    // Credenciais hardcoded removidas por segurança
     ALLOWED_DOMAIN: '@canopus.com.br',
     // Storage keys
     STORAGE_USER: 're_user',
-    STORAGE_ADMIN: 're_admin',
     STORAGE_PROGRESS: 're_progress',
-    STORAGE_USERS: 're_users_list'
 };
 
 // ==================== STATE ====================
@@ -3875,23 +3280,7 @@ async function loginAdmin() {
             }
         }
 
-        // Fallback to hardcoded credentials (backward compatibility)
-        if (username === CONFIG.ADMIN_USER && password === CONFIG.ADMIN_PASS) {
-            currentUser = { name: 'Administrador', email: 'admin@canopus.com.br', role: 'admin', loginTime: new Date().toISOString() };
-            currentRole = 'admin';
-
-            localStorage.setItem(CONFIG.STORAGE_ADMIN, JSON.stringify(currentUser));
-
-            showSuccess('admin', 'Acesso administrativo concedido!');
-
-            setTimeout(() => {
-                hideLoginScreen();
-                showApp();
-                updateAdminDashboard();
-                showNotification('Painel administrativo ativo', 'success');
-            }, 800);
-            return;
-        }
+        // Login admin exclusivamente via Supabase Auth — sem fallback hardcoded
 
         showError('admin', 'Usuário ou senha incorretos, ou acesso não autorizado.');
         passInput.classList.add('error');
@@ -3921,7 +3310,6 @@ async function logout() {
 
     // Clear localStorage
     localStorage.removeItem(CONFIG.STORAGE_USER);
-    localStorage.removeItem(CONFIG.STORAGE_ADMIN);
 
     // Reset UI
     document.getElementById('loginScreen').classList.remove('hidden');
@@ -4358,6 +3746,8 @@ function navigateTo(page) {
         updateDashboard();
     } else if (page === 'admin-dashboard') {
         updateAdminDashboard();
+    } else if (page === 'admin-materiais') {
+        setTimeout(matCarregar, 100);
     } else if (page === 'certificados') {
         updateCertificates();
     } else if (page === 'cinco-estrelas') {
@@ -4366,9 +3756,20 @@ function navigateTo(page) {
         if (typeof initAvaliador5E === 'function') setTimeout(initAvaliador5E, 100);
     } else if (page === 'user-profile') {
         updateUserProfilePage();
+    } else if (page === 'modulo-1') {
+        setTimeout(function(){ matRenderizarModulo('modulo-1','mat-grid-mod1'); }, 150);
+    } else if (page === 'modulo-2') {
+        setTimeout(function(){ matRenderizarModulo('modulo-2','mat-grid-mod2'); }, 150);
+    } else if (page === 'modulo-3') {
+        setTimeout(function(){ matRenderizarModulo('modulo-3','mat-grid-mod3'); }, 150);
+    } else if (page === 'modulo-4') {
+        setTimeout(function(){ matRenderizarModulo('modulo-4','mat-grid-mod4'); }, 150);
+    } else if (page === 'modulo-5') {
+        setTimeout(function(){ matRenderizarModulo('modulo-5','mat-grid-mod5'); }, 150);
     } else if (page === 'trilha-onboarding') {
         updateDashboard();
         setTimeout(updateOnboardingLocks, 100);
+        setTimeout(function(){ matRenderizarModulo('trilha-onboarding','mat-grid-onboarding'); }, 200);
         // Personalizar banner de boas-vindas
         var wn = document.getElementById('welcomeUserName');
         if (wn) {
@@ -5052,6 +4453,32 @@ function updateTrailLocks(trailName) {
     if (progress) progress.textContent = pct + '%';
 }
 
+// Salva registro do certificado no Supabase (sem duplicar)
+async function salvarCertificadoSupabase(nomeTrilha, modulo, carga) {
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient || !currentUser) return;
+        var sess = await supabaseClient.auth.getSession();
+        if (!sess || !sess.data || !sess.data.session) return;
+        var userId = sess.data.session.user.id;
+        var exists = await supabaseClient.from('certificados')
+            .select('id').eq('colaborador_id', userId).eq('modulo', modulo).limit(1);
+        if (exists.data && exists.data.length > 0) return;
+        await supabaseClient.from('certificados').insert({
+            colaborador_id: userId,
+            email: currentUser.email,
+            nome: currentUser.name || currentUser.email,
+            trilha: nomeTrilha,
+            modulo: modulo,
+            carga_horaria: carga || null,
+            emitido_em: new Date().toISOString()
+        });
+        console.log('[Cert] Salvo no Supabase:', modulo);
+    } catch(e) {
+        console.warn('[Cert] Erro ao salvar no Supabase:', e.message);
+    }
+}
+
 function generateOnboardingCertificate(moduleId) {
     if (!currentUser) return;
 
@@ -5081,6 +4508,7 @@ function generateOnboardingCertificate(moduleId) {
             type: 'onboarding'
         });
         localStorage.setItem(certKey, JSON.stringify(certs));
+        salvarCertificadoSupabase('Onboarding Relacionamento', moduleId, mod.hours);
     }
 }
 
@@ -5161,11 +4589,7 @@ function loadModuleContent(moduleId) {
         btn.onclick = function() { markComplete(moduleId); };
     }
 
-    // Hide pdf-section for clean EAD layout — iframe content is primary delivery method
-    const pdfSection = document.querySelector('#page-module-generic .pdf-section');
-    if (pdfSection) {
-        pdfSection.style.display = 'none';
-    }
+    // pdf-section gerenciada por injetarMateriaisComoSlides — começa oculta
 }
 
 function loadModuleSlides(moduleId, data) {
@@ -5173,52 +4597,144 @@ function loadModuleSlides(moduleId, data) {
     if (!slidesContainer) return;
 
     // Módulos com conteúdo interativo customizado
-    if (moduleId === 'mod-rel-2') {
-        renderModRelDois(slidesContainer);
-        return;
-    }
-    if (moduleId === 'mod-rel-3') {
-        renderModRelTres(slidesContainer);
-        return;
-    }
-    if (moduleId === 'mod-rel-4') {
-        renderModRelQuatro(slidesContainer);
+    if (moduleId === 'mod-rel-2') { renderModRelDois(slidesContainer); return; }
+    if (moduleId === 'mod-rel-3') { renderModRelTres(slidesContainer); return; }
+    if (moduleId === 'mod-rel-4') { renderModRelQuatro(slidesContainer); return; }
+
+    // Slides hardcoded têm prioridade (conteúdo já publicado)
+    const staticSlides = MODULE_CONTENT[moduleId];
+    const hasStatic = staticSlides && staticSlides.slides && staticSlides.slides.length > 0
+        && !staticSlides.slides[0].text.includes('Conte&uacute;do em breve')
+        && !staticSlides.slides[0].text.includes('Conteúdo em breve');
+
+    if (hasStatic) {
+        // Renderiza slides estáticos e depois adiciona materiais do Supabase
+        renderSlidesHTML(slidesContainer, staticSlides.slides);
+        setTimeout(function() { injetarMateriaisComoSlides(moduleId, slidesContainer); }, 400);
         return;
     }
 
-    const slides = MODULE_CONTENT[moduleId];
-    if (!slides || !slides.slides || slides.slides.length === 0) {
-        slidesContainer.innerHTML = '<div class="empty-state"><i class="fas fa-book-open"></i><h3>Conteúdo em desenvolvimento</h3><p>Os materiais deste módulo serão adicionados em breve pela equipe de conteúdo.</p></div>';
-        return;
-    }
+    // Sem conteúdo estático: busca tudo do Supabase
+    slidesContainer.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--cinza);"><i class="fas fa-spinner fa-spin" style="font-size:24px;margin-bottom:8px;display:block;"></i>Carregando materiais...</div>';
+    injetarMateriaisComoSlides(moduleId, slidesContainer, true);
+}
 
-    let html = '<div class="slides-wrapper" style="margin-bottom: 24px;">';
-    html += '<div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px;">';
-
-    slides.slides.forEach((slide, idx) => {
-        html += '<button class="slide-tab" id="slide-tab-' + idx + '" onclick="showSlide(' + idx + ')" style="padding: 8px 16px; border: 1.5px solid var(--borda); border-radius: 8px; background: ' + (idx === 0 ? 'var(--turquesa)' : 'white') + '; color: ' + (idx === 0 ? 'white' : 'var(--texto)') + '; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); white-space: nowrap; font-family: Inter, sans-serif;">' + (idx + 1) + '. ' + slide.title + '</button>';
+function renderSlidesHTML(container, slides) {
+    var html = '<div class="slides-wrapper" style="margin-bottom: 24px;">';
+    html += '<div style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:8px;">';
+    slides.forEach(function(slide, idx) {
+        html += '<button class="slide-tab" id="slide-tab-' + idx + '" onclick="showSlide(' + idx + ')" style="padding:8px 16px;border:1.5px solid var(--borda);border-radius:8px;background:' + (idx===0?'var(--turquesa)':'white') + ';color:' + (idx===0?'white':'var(--texto)') + ';font-size:13px;font-weight:600;cursor:pointer;transition:var(--transition);white-space:nowrap;font-family:Inter,sans-serif;">' + (idx+1) + '. ' + slide.title + '</button>';
     });
-
-    html += '</div>';
-    html += '<div class="slides-content">';
-
-    slides.slides.forEach((slide, idx) => {
-        html += '<div class="slide-panel" id="slide-panel-' + idx + '" style="display: ' + (idx === 0 ? 'block' : 'none') + '; background: white; border-radius: var(--radius); padding: 32px; box-shadow: var(--sombra); border: 1px solid var(--borda);">';
-        html += '<h3 style="font-family: Oswald, sans-serif; font-size: 22px; color: var(--azul-escuro); margin-bottom: 16px;"><i class="fas fa-book-open" style="color: var(--turquesa); margin-right: 10px;"></i>' + slide.title + '</h3>';
-        html += '<div style="font-size: 15px; line-height: 1.8; color: var(--texto-leve);">';
-        html += '<p>' + slide.text + '</p>';
-        html += '</div>';
-        html += '<div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">';
-        html += '<span style="font-size: 12px; color: var(--cinza);">Slide ' + (idx + 1) + ' de ' + slides.slides.length + '</span>';
-        if (idx < slides.slides.length - 1) {
-            html += '<button class="btn btn-primary" onclick="showSlide(' + (idx + 1) + ')" style="padding: 8px 16px; font-size: 13px;"><i class="fas fa-arrow-right"></i> Próximo slide</button>';
-        }
-        html += '</div>';
-        html += '</div>';
+    html += '</div><div class="slides-content">';
+    slides.forEach(function(slide, idx) {
+        html += '<div class="slide-panel" id="slide-panel-' + idx + '" style="display:' + (idx===0?'block':'none') + ';background:white;border-radius:var(--radius);padding:32px;box-shadow:var(--sombra);border:1px solid var(--borda);">';
+        html += '<h3 style="font-family:Oswald,sans-serif;font-size:22px;color:var(--azul-escuro);margin-bottom:16px;"><i class="fas fa-book-open" style="color:var(--turquesa);margin-right:10px;"></i>' + slide.title + '</h3>';
+        html += '<div style="font-size:15px;line-height:1.8;color:var(--texto-leve);"><p>' + slide.text + '</p></div>';
+        html += '<div style="margin-top:20px;display:flex;justify-content:space-between;align-items:center;">';
+        html += '<span style="font-size:12px;color:var(--cinza);">Slide ' + (idx+1) + ' de ' + slides.length + '</span>';
+        if (idx < slides.length - 1) html += '<button class="btn btn-primary" onclick="showSlide(' + (idx+1) + ')" style="padding:8px 16px;font-size:13px;"><i class="fas fa-arrow-right"></i> Próximo slide</button>';
+        html += '</div></div>';
     });
-
     html += '</div></div>';
-    slidesContainer.innerHTML = html;
+    container.innerHTML = html;
+}
+
+// Busca materiais do Supabase e injeta como slides interativos
+async function injetarMateriaisComoSlides(moduleId, container, substituir) {
+    try {
+        if (!supabaseClient) initSupabase();
+        if (!supabaseClient) return;
+        var res = await supabaseClient.from('materiais').select('*').eq('modulo', moduleId).order('criado_em', { ascending: true });
+        var arquivos = (res.data && !res.error) ? res.data : [];
+
+        if (arquivos.length === 0) {
+            if (substituir) {
+                container.innerHTML = '<div style="text-align:center;padding:3rem 1rem"><i class="fas fa-book-open" style="font-size:36px;color:#2CD5C4;display:block;margin-bottom:1rem"></i><h3 style="font-size:18px;font-weight:600;color:#003349;margin-bottom:.5rem">Conteúdo em breve</h3><p style="font-size:14px;color:#78909c;line-height:1.6;max-width:320px;margin:0 auto">Este módulo está sendo preparado pela equipe Canopus.</p></div>';
+            }
+            // Esconde a pdf-section quando todos os materiais estão nos slides
+            var pdfSec = document.getElementById('mod-pdf-section');
+            if (pdfSec) pdfSec.style.display = 'none';
+            return;
+        }
+
+        // Esconde a pdf-section — os materiais ficam nos slides
+        var pdfSec = document.getElementById('mod-pdf-section');
+        if (pdfSec) pdfSec.style.display = 'none';
+
+        // Gera slides para cada arquivo
+        var slides = arquivos.map(function(m) {
+            var isPDF = m.tipo === 'pdf';
+            var isVideo = m.tipo === 'video';
+            var conteudo;
+            var isPPT = m.tipo === 'apresentacao';
+            var isDoc = m.tipo === 'documento' || m.tipo === 'planilha';
+            if (isPDF) {
+                conteudo = '<iframe src="' + m.url + '" width="100%" height="620px" style="border:none;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);" allow="autoplay"></iframe>';
+            } else if (isVideo) {
+                conteudo = '<video src="' + m.url + '" controls style="width:100%;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);max-height:600px;"></video>';
+            } else if (isPPT || isDoc) {
+                // Office Online viewer — funciona com URLs públicas
+                var officeUrl = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(m.url);
+                conteudo = '<iframe src="' + officeUrl + '" width="100%" height="620px" style="border:none;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);" frameborder="0"></iframe>'
+                    + '<div style="margin-top:10px;text-align:right;"><a href="' + m.url + '" target="_blank" style="font-size:12px;color:var(--cinza);text-decoration:none;"><i class="fas fa-external-link-alt" style="margin-right:4px;"></i>Abrir em nova aba</a></div>';
+            } else {
+                // Imagens: exibe inline; outros: botão de download
+                var isImg = m.tipo === 'imagem';
+                if (isImg) {
+                    conteudo = '<div style="text-align:center;"><img src="' + m.url + '" style="max-width:100%;max-height:600px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);" alt="' + matEscapar(m.nome) + '"></div>';
+                } else {
+                    conteudo = '<div style="text-align:center;padding:3rem 1rem;">'
+                        + '<i class="fas fa-file" style="font-size:48px;color:var(--turquesa);display:block;margin-bottom:1rem;"></i>'
+                        + '<h3 style="font-size:18px;font-weight:600;color:var(--azul-escuro);margin-bottom:.5rem;">' + matEscapar(m.nome) + '</h3>'
+                        + (m.descricao ? '<p style="font-size:13px;color:var(--cinza);margin-bottom:1.5rem;">' + matEscapar(m.descricao) + '</p>' : '')
+                        + '<a href="' + m.url + '" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--turquesa);color:#003349;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;font-family:Inter,sans-serif;">'
+                        + '<i class="fas fa-download"></i> Baixar arquivo</a></div>';
+                }
+            }
+            return { title: matEscapar(m.nome), text: conteudo };
+        });
+
+        if (substituir) {
+            // Módulo sem conteúdo estático: renderiza só os slides do Supabase
+            renderSlidesHTML(container, slides);
+        } else {
+            // Módulo com conteúdo estático: adiciona os slides do Supabase após os existentes
+            var existingPanels = container.querySelectorAll('.slide-panel');
+            var existingTabs = container.querySelectorAll('.slide-tab');
+            var baseIdx = existingPanels.length;
+            var tabsContainer = container.querySelector('.slides-content').previousElementSibling;
+            var slidesContent = container.querySelector('.slides-content');
+
+            slides.forEach(function(slide, i) {
+                var idx = baseIdx + i;
+                // Tab
+                var tab = document.createElement('button');
+                tab.className = 'slide-tab';
+                tab.id = 'slide-tab-' + idx;
+                tab.setAttribute('onclick', 'showSlide(' + idx + ')');
+                tab.style.cssText = 'padding:8px 16px;border:1.5px solid var(--borda);border-radius:8px;background:white;color:var(--texto);font-size:13px;font-weight:600;cursor:pointer;transition:var(--transition);white-space:nowrap;font-family:Inter,sans-serif;';
+                tab.textContent = (idx+1) + '. ' + slide.title;
+                if (tabsContainer) tabsContainer.appendChild(tab);
+                // Panel
+                var panel = document.createElement('div');
+                panel.className = 'slide-panel';
+                panel.id = 'slide-panel-' + idx;
+                panel.style.cssText = 'display:none;background:white;border-radius:var(--radius);padding:32px;box-shadow:var(--sombra);border:1px solid var(--borda);';
+                panel.innerHTML = '<h3 style="font-family:Oswald,sans-serif;font-size:22px;color:var(--azul-escuro);margin-bottom:16px;"><i class="fas fa-book-open" style="color:var(--turquesa);margin-right:10px;"></i>' + slide.title + '</h3>'
+                    + '<div style="font-size:15px;line-height:1.8;color:var(--texto-leve);">' + slide.text + '</div>'
+                    + '<div style="margin-top:20px;"><span style="font-size:12px;color:var(--cinza);">Slide ' + (idx+1) + ' de ' + (baseIdx + slides.length) + '</span></div>';
+                if (slidesContent) slidesContent.appendChild(panel);
+            });
+
+            // Atualiza contador nos slides existentes
+            existingPanels.forEach(function(panel, i) {
+                var countEl = panel.querySelector('span[style*="font-size:12px"]');
+                if (countEl) countEl.textContent = 'Slide ' + (i+1) + ' de ' + (baseIdx + slides.length);
+            });
+        }
+    } catch(e) {
+        console.error('[injetarMateriaisComoSlides]', e);
+    }
 }
 
 function showSlide(index) {
@@ -5557,116 +5073,131 @@ let currentModuleId = null;
 
 // ==================== ADMIN DASHBOARD ====================
 
-function updateAdminDashboard() {
+async function updateAdminDashboard() {
     if (!currentUser || currentRole !== 'admin') return;
+    if (!supabaseClient) initSupabase();
+    if (!supabaseClient) return;
 
-    // Load all users
-    const usersData = localStorage.getItem(CONFIG.STORAGE_USERS);
-    allUsers = usersData ? JSON.parse(usersData) : [];
+    try {
+        // 1. Busca todos os profiles
+        var resProfiles = await supabaseClient.from('profiles')
+            .select('id, email, nome, name, role, ativo, avaliado')
+            .order('nome', { ascending: true });
 
-    // Update stats
-    document.getElementById('adminTotalUsers').textContent = allUsers.length;
+        var profiles = (resProfiles.data && !resProfiles.error) ? resProfiles.data : [];
+        var colaboradores = profiles.filter(function(p){ return p.role === 'user'; });
+        var ativos = profiles.filter(function(p){ return p.ativo === 'ativo' || p.ativo === true; });
 
-    let totalCompleted = 0;
-    let totalProgress = 0;
-    let totalCerts = 0;
-    const totalModules = 42; // All modules across all trails
+        // Cards
+        var el = function(id){ return document.getElementById(id); };
+        if(el('adminTotalUsers')) el('adminTotalUsers').textContent = colaboradores.length;
+        if(el('adminActiveUsers')) el('adminActiveUsers').textContent = ativos.filter(function(p){ return p.role === 'user'; }).length;
 
-    allUsers.forEach(user => {
-        const progress = localStorage.getItem(CONFIG.STORAGE_PROGRESS + '_' + user.email);
-        if (progress) {
-            const p = JSON.parse(progress);
-            const completed = Object.values(p).filter(v => v.completed).length;
-            totalCompleted += completed;
-            totalProgress += completed;
-            totalCerts += completed;
+        // 2. Busca avaliações 5 Estrelas
+        var resAv = await supabaseClient.from('avaliacoes_mensais')
+            .select('colaborador_id, competencia, nota_monitoria, nota_cliente, nota_final, colab')
+            .order('competencia', { ascending: false });
+
+        var avaliacoes = (resAv.data && !resAv.error) ? resAv.data : [];
+
+        // Popula select de competências
+        var meses = [...new Set(avaliacoes.map(function(a){ return a.competencia; }))].slice(0, 12);
+        var selMes = el('admin5EFiltroMes');
+        if (selMes) {
+            selMes.innerHTML = '<option value="">Todos os meses</option>';
+            meses.forEach(function(m) {
+                var nomesMes = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+                var p = m.split('-');
+                var label = nomesMes[parseInt(p[1])] + ' ' + p[0];
+                selMes.innerHTML += '<option value="' + m + '">' + label + '</option>';
+            });
         }
-    });
 
-    document.getElementById('adminCompleted').textContent = totalCompleted;
-    document.getElementById('adminCerts').textContent = totalCerts;
+        // Média geral e contagem 5 Estrelas (mês mais recente)
+        var mesMaisRecente = meses[0] || '';
+        var avMesAtual = avaliacoes.filter(function(a){ return a.competencia === mesMaisRecente; });
+        var media = avMesAtual.length > 0
+            ? (avMesAtual.reduce(function(s,a){ return s + Number(a.nota_final); }, 0) / avMesAtual.length).toFixed(2).replace('.',',')
+            : '—';
+        var count5E = avMesAtual.filter(function(a){ return Number(a.nota_final) >= 4.80; }).length;
 
-    const avgProgress = allUsers.length > 0 ? Math.round((totalProgress / (allUsers.length * totalModules)) * 100) : 0;
-    document.getElementById('adminAvgProgress').textContent = avgProgress + '%';
+        if(el('adminMedia5E')) el('adminMedia5E').textContent = media;
+        if(el('admin5EstrCount')) el('admin5EstrCount').textContent = count5E;
 
-    // Update table
-    const tbody = document.getElementById('adminTableBody');
+        // Conta certificados emitidos
+        var resCerts = await supabaseClient.from('certificados').select('id', { count: 'exact', head: true });
+        var totalCerts = (resCerts.count !== null && resCerts.count !== undefined) ? resCerts.count : '—';
+        if(el('adminCerts')) el('adminCerts').textContent = totalCerts;
+
+        // Tabela 5 Estrelas
+        adminRender5ETable(avaliacoes, '');
+
+        // Tabela colaboradores
+        var tbody = el('adminTableBody');
+        if (tbody) {
+            tbody.innerHTML = '';
+            profiles.forEach(function(p) {
+                var nome = (p.nome && p.nome.trim() && p.nome !== 'Novo usuário') ? p.nome : (p.name || p.email);
+                var roleLabel = { admin: '<span style="color:#f59e0b;font-weight:700;">Admin</span>', avaliador: '<span style="color:var(--turquesa);font-weight:700;">Avaliador</span>', user: 'Colaborador' }[p.role] || p.role;
+                var avaliado = p.avaliado ? '<span style="color:var(--turquesa);font-weight:700;">✓ Sim</span>' : '<span style="color:var(--cinza);">Não</span>';
+                var ativo = (p.ativo === 'ativo' || p.ativo === true) ? '<span class="status-badge active">Ativo</span>' : '<span class="status-badge inactive">Inativo</span>';
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td><strong>' + escapeHtml(nome) + '</strong></td>'
+                    + '<td>' + escapeHtml(p.email || '') + '</td>'
+                    + '<td>' + roleLabel + '</td>'
+                    + '<td>' + avaliado + '</td>'
+                    + '<td>' + ativo + '</td>';
+                tbody.appendChild(tr);
+            });
+        }
+
+    } catch(e) {
+        console.error('[AdminDashboard]', e);
+        showNotification('Erro ao carregar dados: ' + e.message, 'error');
+    }
+}
+
+async function adminCarregar5E() {
+    if (!supabaseClient) return;
+    var sel = document.getElementById('admin5EFiltroMes');
+    var filtro = sel ? sel.value : '';
+    var query = supabaseClient.from('avaliacoes_mensais')
+        .select('colaborador_id, competencia, nota_monitoria, nota_cliente, nota_final, colab')
+        .order('competencia', { ascending: false });
+    if (filtro) query = query.eq('competencia', filtro);
+    var res = await query;
+    adminRender5ETable(res.data || [], filtro);
+}
+
+function adminRender5ETable(avaliacoes, filtroMes) {
+    var tbody = document.getElementById('admin5ETableBody');
+    if (!tbody) return;
+    var dados = filtroMes ? avaliacoes.filter(function(a){ return a.competencia === filtroMes; }) : avaliacoes;
+    if (dados.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--cinza);">Nenhuma avaliação encontrada.</td></tr>';
+        return;
+    }
+    var nomesMes = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    function compBR(iso){ var p = iso.split('-'); return nomesMes[parseInt(p[1])] + ' ' + p[0]; }
+    function tagFaixa(n) {
+        if(n>=4.80) return '<span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:#FBF1DF;color:#B97516;">★ 5 Estrelas</span>';
+        if(n>=4.50) return '<span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">★ Excelência</span>';
+        return '<span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:#f0f2f4;color:#9aacac;">Em construção</span>';
+    }
     tbody.innerHTML = '';
-
-    allUsers.forEach(user => {
-        const progress = localStorage.getItem(CONFIG.STORAGE_PROGRESS + '_' + user.email);
-        let completed = 0;
-        let percent = 0;
-        if (progress) {
-            const p = JSON.parse(progress);
-            completed = Object.values(p).filter(v => v.completed).length;
-            percent = Math.round((completed / totalModules) * 100);
-        }
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><strong>${escapeHtml(user.name)}</strong></td>
-            <td>${escapeHtml(user.email)}</td>
-            <td>
-                <div class="progress-cell">
-                    <div class="bar"><div class="bar-fill" style="width:${percent}%"></div></div>
-                    <span class="percent">${percent}%</span>
-                </div>
-            </td>
-            <td>${completed}/${totalModules}</td>
-            <td><span class="status-badge ${percent === 100 ? 'active' : 'inactive'}">${percent === 100 ? 'Concluído' : 'Em andamento'}</span></td>
-        `;
-        tbody.appendChild(row);
+    dados.forEach(function(a) {
+        var nf = Number(a.nota_final);
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td><strong>' + escapeHtml(a.colab || '') + '</strong></td>'
+            + '<td>' + compBR(a.competencia) + '</td>'
+            + '<td style="text-align:center;">' + Number(a.nota_monitoria).toFixed(2).replace('.',',') + '</td>'
+            + '<td style="text-align:center;">' + Number(a.nota_cliente).toFixed(2).replace('.',',') + '</td>'
+            + '<td style="text-align:center;font-size:17px;font-weight:700;font-family:Oswald,sans-serif;color:var(--azul-escuro);">' + nf.toFixed(2).replace('.',',') + '</td>'
+            + '<td>' + tagFaixa(nf) + '</td>';
+        tbody.appendChild(tr);
     });
-
-    // Update users table in admin-users page
-    const usersTbody = document.getElementById('usersTableBody');
-    if (usersTbody) {
-        usersTbody.innerHTML = '';
-        allUsers.forEach(user => {
-            const progress = localStorage.getItem(CONFIG.STORAGE_PROGRESS + '_' + user.email);
-            let completed = 0;
-            let percent = 0;
-            if (progress) {
-                const p = JSON.parse(progress);
-                completed = Object.values(p).filter(v => v.completed).length;
-                percent = Math.round((completed / totalModules) * 100);
-            }
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><strong>${escapeHtml(user.name)}</strong></td>
-                <td>${escapeHtml(user.email)}</td>
-                <td>${new Date(user.registeredAt).toLocaleDateString('pt-BR')}</td>
-                <td>
-                    <div class="progress-cell">
-                        <div class="bar"><div class="bar-fill" style="width:${percent}%"></div></div>
-                        <span class="percent">${percent}%</span>
-                    </div>
-                </td>
-                <td>${completed}</td>
-                <td><button class="btn btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="viewUserDetail('${escapeHtml(user.email)}')"><i class="fas fa-eye"></i> Ver</button></td>
-            `;
-            usersTbody.appendChild(row);
-        });
-    }
 }
 
-function registerUser(name, email) {
-    const usersData = localStorage.getItem(CONFIG.STORAGE_USERS);
-    let users = usersData ? JSON.parse(usersData) : [];
-
-    // Check if user already exists
-    const exists = users.find(u => u.email === email);
-    if (!exists) {
-        users.push({
-            name: name,
-            email: email,
-            registeredAt: new Date().toISOString()
-        });
-        localStorage.setItem(CONFIG.STORAGE_USERS, JSON.stringify(users));
-    }
-}
 
 // ==================== CERTIFICATES ====================
 
@@ -5817,6 +5348,8 @@ function obterNotaCertificado(modulo) {
 // Gera o certificado em PDF capturando o DOM real do preview (pixel-perfect)
 function downloadCertificate(moduleName, hours) {
     var nome = currentUser && currentUser.name ? currentUser.name : 'Colaborador';
+    // Persiste no Supabase ao baixar o certificado
+    salvarCertificadoSupabase(moduleName || 'Trilha', moduleName || 'geral', hours || null);
     var modulo = moduleName || (document.getElementById('certModuleName') ? document.getElementById('certModuleName').textContent : 'Módulo');
     var carga = hours || (document.getElementById('certHours') ? document.getElementById('certHours').textContent : '');
 
@@ -6130,14 +5663,15 @@ async function uploadFileToSupabase(file, moduleValue) {
 
     const modulo = moduleNames[moduleValue] || moduleValue;
 
-    // Save metadata to "Arquivos" table in Supabase
-    const { data: dbData, error: dbError } = await supabaseClient
-        .from('Arquivos')
+    // Salva metadados na tabela materiais (tabela ativa)
+    const { error: dbError } = await supabaseClient
+        .from('materiais')
         .insert([{
-            Nome: file.name,
-            URL: publicUrl,
-            Tipo: tipo,
-            Módulo: modulo,
+            nome: file.name,
+            url: publicUrl,
+            tipo: tipo.toLowerCase(),
+            modulo: modulo,
+            tamanho_bytes: file.size,
             criado_em: new Date().toISOString()
         }]);
 
@@ -6229,21 +5763,13 @@ async function loadFilesFromSupabase(moduleFilter) {
     if (!supabaseClient) {
         if (!initSupabase()) return [];
     }
-
     try {
-        let query = supabaseClient.from('Arquivos').select('*').order('criado_em', { ascending: false });
-
+        let query = supabaseClient.from('materiais').select('*').order('criado_em', { ascending: false });
         if (moduleFilter && moduleFilter !== 'all') {
-            query = query.eq('Módulo', moduleFilter);
+            query = query.eq('modulo', moduleFilter);
         }
-
         const { data, error } = await query;
-
-        if (error) {
-            console.error('Error loading files:', error);
-            return [];
-        }
-
+        if (error) { console.error('Error loading files:', error); return []; }
         return data || [];
     } catch (e) {
         console.error('Error:', e);
@@ -6252,52 +5778,7 @@ async function loadFilesFromSupabase(moduleFilter) {
 }
 
 // ==================== DISPLAY FILES IN MODULE PAGE ====================
-async function renderModuleFiles(moduleId) {
-    const container = document.getElementById('mod-pdf-grid');
-    if (!container) return;
-
-    // Map moduleId to module name for filtering
-    const moduleMap = {
-        'mod1': 'Módulo 1: Atendimento',
-        'mod2': 'Módulo 2: Comunicação',
-        'mod3': 'Módulo 3: SAC e Ouvidoria',
-        'mod4': 'Módulo 4: Relacionamento',
-        'mod5': 'Módulo 5: Gestão e Liderança',
-        'mod-onboarding-1': 'Onboarding Relacionamento',
-        'mod-onboarding-2': 'Onboarding Relacionamento',
-        'mod-onboarding-3': 'Onboarding Relacionamento',
-        'mod-onboarding-4': 'Onboarding Relacionamento'
-    };
-
-    const moduloNome = moduleMap[moduleId] || moduleId;
-    const files = await loadFilesFromSupabase(moduloNome);
-
-    if (files.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-file-pdf"></i>
-                <h3>Nenhum material disponível ainda</h3>
-                <p>Os materiais deste módulo serão adicionados em breve.</p>
-            </div>
-        `;
-        return;
-    }
-
-    let html = '';
-    files.forEach(file => {
-        html += `
-            <a href="${file.URL}" target="_blank" class="pdf-btn" download="${file.Nome}">
-                <i class="fas fa-file-pdf pdf-icon"></i>
-                <div class="pdf-info">
-                    <div class="pdf-title">${escapeHtml(file.Nome)}</div>
-                    <div class="pdf-meta">${file.Tipo} — ${new Date(file.criado_em).toLocaleDateString('pt-BR')}</div>
-                </div>
-                <i class="fas fa-download pdf-arrow"></i>
-            </a>
-        `;
-    });
-    container.innerHTML = html;
-}
+// renderModuleFiles definida abaixo (versão Supabase/materiais)
 // ==================== NOTIFICATIONS ====================
 
 function showNotification(message, type) {
@@ -6345,6 +5826,17 @@ const SEARCH_PAGES = [
 ];
 
 // Monta o índice a partir do conteúdo REAL do sistema (títulos e descrições dos módulos, FAQ carregado)
+// Cache dos materiais para busca (atualizado ao carregar a plataforma)
+var searchMaterialsCache = [];
+
+async function buildSearchMaterialsCache() {
+    if (!supabaseClient) return;
+    try {
+        var res = await supabaseClient.from('materiais').select('id, nome, descricao, modulo');
+        if (!res.error && res.data) searchMaterialsCache = res.data;
+    } catch(e) { console.warn('Search cache:', e); }
+}
+
 function buildSearchIndex() {
     const idx = [];
 
@@ -6355,7 +5847,7 @@ function buildSearchIndex() {
                    text: normalizeText(p.label + ' ' + p.keywords) });
     });
 
-    // Módulos: lê os cards reais de cada trilha (título + descrição + nome da trilha)
+    // Módulos: lê os cards reais de cada trilha
     document.querySelectorAll('.page-section [id^="card-"]').forEach(card => {
         const oc = card.getAttribute('onclick') || '';
         const m = oc.match(/navigateTo\('([^']+)'\)/);
@@ -6377,6 +5869,28 @@ function buildSearchIndex() {
                           text: normalizeText(t) });
     });
 
+    // Materiais do Supabase (indexados em cache)
+    var modLabels = {
+        'mod-onboarding-1':'Onboarding — Boas-vindas','mod-onboarding-2':'Onboarding — Organograma',
+        'mod-onboarding-3':'Onboarding — Nosso Jeito de Ser','mod-onboarding-4':'Onboarding — Guia do Cliente',
+        'mod-rel-1':'Relacionamento — Jornada do Cliente','mod-rel-2':'Relacionamento — Atendimento Humanizado',
+        'mod-rel-3':'Relacionamento — Escrita Encantadora','mod-rel-4':'Relacionamento — Comunicação Profissional',
+        'mod-rel-5':'Relacionamento — Gestão de Conflitos','mod-rel-6':'Relacionamento — SLA e Prazos',
+        'mod-rel-7':'Relacionamento — Fluxos Operacionais','mod-rel-8':'Relacionamento — Sistemas Internos',
+        'mod-rel-9':'Relacionamento — Modelos de Resposta',
+        'mod-jur-1':'Jurídico — Contratos','mod-jur-2':'Jurídico — Fluxos Jurídicos',
+        'mod-jur-3':'Jurídico — Comunicação Jurídica','mod-jur-4':'Jurídico — Padronizações',
+        'mod-comp-1':'Compliance — Ética Corporativa','mod-comp-2':'Compliance — LGPD',
+        'mod-comp-3':'Compliance — Segurança da Informação','mod-comp-4':'Compliance — Conduta Profissional',
+        'mod-comp-5':'Compliance — Políticas Internas'
+    };
+    searchMaterialsCache.forEach(function(m) {
+        var sub = modLabels[m.modulo] || m.modulo || 'Materiais';
+        idx.push({ tipo: 'Materiais', target: m.modulo || 'trilha-onboarding', title: m.nome,
+                   sub: sub, icon: 'fa-file-alt',
+                   text: normalizeText((m.nome||'') + ' ' + (m.descricao||'') + ' ' + sub) });
+    });
+
     return idx;
 }
 
@@ -6394,6 +5908,7 @@ function runSearch(query) {
 
     const termos = q.split(/\s+/).filter(Boolean);
     const idx = buildSearchIndex();
+    setTimeout(buildSearchMaterialsCache, 2500);
     const scored = [];
 
     idx.forEach(item => {
@@ -6708,6 +6223,270 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ==================== USER PROFILE FUNCTIONS ====================
 
+// ==================== GERENCIADOR DE MATERIAIS (ADMIN) ====================
+
+var matArquivoAtual = null;
+
+// Detecta tipo pelo mime/extensão
+function matDetectarTipo(file) {
+    var m = file.type || '';
+    var n = file.name.toLowerCase();
+    if (m === 'application/pdf' || n.endsWith('.pdf')) return 'pdf';
+    if (m.startsWith('video/') || n.endsWith('.mp4') || n.endsWith('.mov')) return 'video';
+    if (m.startsWith('image/')) return 'imagem';
+    if (n.endsWith('.doc') || n.endsWith('.docx')) return 'documento';
+    if (n.endsWith('.xls') || n.endsWith('.xlsx')) return 'planilha';
+    if (n.endsWith('.ppt') || n.endsWith('.pptx')) return 'apresentacao';
+    return 'documento';
+}
+
+// Formata tamanho
+function matFmtTamanho(bytes) {
+    if (!bytes) return '';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024*1024) return (bytes/1024).toFixed(0) + ' KB';
+    return (bytes/(1024*1024)).toFixed(1) + ' MB';
+}
+
+// Ícone e cor por tipo
+function matIconeTipo(tipo) {
+    var map = {
+        'pdf':          { icon: 'fa-file-pdf',          bg: '#fee2e2', cor: '#dc2626' },
+        'video':        { icon: 'fa-file-video',         bg: '#e0f2fe', cor: '#0284c7' },
+        'imagem':       { icon: 'fa-file-image',         bg: '#dcfce7', cor: '#16a34a' },
+        'documento':    { icon: 'fa-file-word',          bg: '#eff6ff', cor: '#2563eb' },
+        'planilha':     { icon: 'fa-file-excel',         bg: '#f0fdf4', cor: '#15803d' },
+        'apresentacao': { icon: 'fa-file-powerpoint',    bg: '#fff7ed', cor: '#ea580c' },
+    };
+    return map[tipo] || { icon: 'fa-file', bg: 'var(--cinza-claro)', cor: 'var(--cinza)' };
+}
+
+// Callback ao selecionar arquivo
+function matArquivoSelecionado(input) {
+    if (!input.files || !input.files[0]) return;
+    matArquivoAtual = input.files[0];
+    var nome = matArquivoAtual.name;
+    var tam = matFmtTamanho(matArquivoAtual.size);
+    document.getElementById('mat-upload-nome').textContent = nome + (tam ? '  (' + tam + ')' : '');
+    // Preenche nome automaticamente se estiver vazio
+    var nomeInput = document.getElementById('mat-nome');
+    if (nomeInput && !nomeInput.value.trim()) {
+        nomeInput.value = nome.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+    }
+    // Detecta descrição automática
+    var descInput = document.getElementById('mat-descricao');
+    if (descInput && !descInput.value.trim()) {
+        var tipo = matDetectarTipo(matArquivoAtual).toUpperCase();
+        descInput.value = tipo + (tam ? ' — ' + tam : '') + ' — ' + new Date().getFullYear();
+    }
+}
+
+// Envio do material
+async function matEnviar() {
+    var nome = (document.getElementById('mat-nome').value || '').trim();
+    var modulo = document.getElementById('mat-modulo').value || '';
+    var descricao = (document.getElementById('mat-descricao').value || '').trim();
+
+    if (!nome) { showNotification('Informe o nome do material.', 'error'); return; }
+    if (!modulo) { showNotification('Selecione a trilha de destino.', 'error'); return; }
+    if (!matArquivoAtual) { showNotification('Selecione um arquivo.', 'error'); return; }
+    if (matArquivoAtual.size > 50 * 1024 * 1024) { showNotification('Arquivo muito grande. Máximo 50MB.', 'error'); return; }
+
+    if (!supabaseClient) initSupabase();
+    if (!supabaseClient) { showNotification('Supabase indisponível.', 'error'); return; }
+
+    // Mostra progresso
+    var progressWrap = document.getElementById('mat-progress-wrap');
+    var progressBar = document.getElementById('mat-progress-bar');
+    var progressTxt = document.getElementById('mat-progress-txt');
+    if (progressWrap) progressWrap.style.display = 'block';
+    if (progressBar) progressBar.style.width = '30%';
+    if (progressTxt) progressTxt.textContent = 'Enviando arquivo...';
+
+    try {
+        var ext = matArquivoAtual.name.split('.').pop();
+        var slug = nome.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 40);
+        var filePath = 'arquivos/' + modulo + '/' + slug + '_' + Date.now() + '.' + ext;
+
+        var { error: upErr } = await supabaseClient.storage
+            .from(SUPABASE_CONFIG.BUCKET_NAME)
+            .upload(filePath, matArquivoAtual, { upsert: false, contentType: matArquivoAtual.type });
+
+        if (upErr) throw new Error(upErr.message);
+        if (progressBar) progressBar.style.width = '70%';
+        if (progressTxt) progressTxt.textContent = 'Registrando no banco...';
+
+        var { data: urlData } = supabaseClient.storage
+            .from(SUPABASE_CONFIG.BUCKET_NAME)
+            .getPublicUrl(filePath);
+
+        var tipo = matDetectarTipo(matArquivoAtual);
+        var sess = await supabaseClient.auth.getSession();
+        var userId = sess && sess.data && sess.data.session ? sess.data.session.user.id : null;
+
+        var { error: dbErr } = await supabaseClient.from('materiais').insert({
+            nome: nome,
+            descricao: descricao || null,
+            tipo: tipo,
+            modulo: modulo,
+            url: urlData.publicUrl,
+            tamanho_bytes: matArquivoAtual.size,
+            enviado_por: userId
+        });
+
+        if (dbErr) throw new Error(dbErr.message);
+
+        if (progressBar) progressBar.style.width = '100%';
+        if (progressTxt) progressTxt.textContent = 'Concluído!';
+
+        showNotification('Material enviado com sucesso!', 'success');
+
+        // Limpa formulário
+        setTimeout(function() {
+            document.getElementById('mat-nome').value = '';
+            document.getElementById('mat-descricao').value = '';
+            document.getElementById('mat-modulo').value = '';
+            document.getElementById('mat-arquivo').value = '';
+            document.getElementById('mat-upload-nome').textContent = 'Clique para selecionar ou arraste o arquivo';
+            matArquivoAtual = null;
+            if (progressWrap) progressWrap.style.display = 'none';
+            if (progressBar) progressBar.style.width = '0%';
+            matCarregar();
+        }, 1200);
+
+    } catch(e) {
+        if (progressWrap) progressWrap.style.display = 'none';
+        showNotification('Erro ao enviar: ' + e.message, 'error');
+        console.error('[Materiais] Erro envio:', e);
+    }
+}
+
+// Carrega e renderiza a lista de materiais
+async function matCarregar() {
+    var lista = document.getElementById('mat-lista');
+    if (!lista) return;
+    lista.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--cinza);"><i class="fas fa-spinner fa-spin" style="font-size:24px;margin-bottom:10px;display:block;"></i>Carregando...</div>';
+
+    if (!supabaseClient) initSupabase();
+    if (!supabaseClient) { lista.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--cinza);">Supabase indisponível.</div>'; return; }
+
+    try {
+        var filtroModulo = document.getElementById('mat-filtro-modulo');
+        var query = supabaseClient.from('materiais').select('*').order('criado_em', { ascending: false });
+        if (filtroModulo && filtroModulo.value) query = query.eq('modulo', filtroModulo.value);
+
+        var { data, error } = await query;
+        if (error) throw new Error(error.message);
+
+        if (!data || data.length === 0) {
+            lista.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--cinza);"><i class="fas fa-folder-open" style="font-size:32px;margin-bottom:12px;display:block;opacity:.4;"></i>Nenhum material cadastrado ainda.</div>';
+            return;
+        }
+
+        var html = '';
+        data.forEach(function(m) {
+            var ic = matIconeTipo(m.tipo);
+            var tam = m.tamanho_bytes ? matFmtTamanho(m.tamanho_bytes) : '';
+            var meta = (m.descricao || '') + (tam && !m.descricao ? tam : (tam ? ' · ' + tam : ''));
+            var modLabel = {
+                'mod-onboarding-1':'Onboarding — Boas-vindas',
+                'mod-onboarding-2':'Onboarding — Organograma',
+                'mod-onboarding-3':'Onboarding — Nosso Jeito de Ser',
+                'mod-onboarding-4':'Onboarding — Guia do Cliente',
+                'mod-rel-1':'Relacionamento — Jornada do Cliente',
+                'mod-rel-2':'Relacionamento — Atendimento Humanizado',
+                'mod-rel-3':'Relacionamento — Escrita Encantadora',
+                'mod-rel-4':'Relacionamento — Comunicação Profissional',
+                'mod-rel-5':'Relacionamento — Gestão de Conflitos',
+                'mod-rel-6':'Relacionamento — SLA e Prazos',
+                'mod-rel-7':'Relacionamento — Fluxos Operacionais',
+                'mod-rel-8':'Relacionamento — Sistemas Internos',
+                'mod-rel-9':'Relacionamento — Modelos de Resposta',
+                'mod-jur-1':'Jurídico — Contratos',
+                'mod-jur-2':'Jurídico — Fluxos Jurídicos',
+                'mod-jur-3':'Jurídico — Comunicação Jurídica',
+                'mod-jur-4':'Jurídico — Padronizações',
+                'mod-comp-1':'Compliance — Ética Corporativa',
+                'mod-comp-2':'Compliance — LGPD',
+                'mod-comp-3':'Compliance — Segurança da Informação',
+                'mod-comp-4':'Compliance — Conduta Profissional',
+                'mod-comp-5':'Compliance — Políticas Internas'
+            }[m.modulo] || m.modulo || '';
+            html += '<div style="display:flex;align-items:center;padding:16px 20px;background:white;border:1.5px solid var(--borda);border-radius:var(--radius-sm);gap:14px;position:relative;overflow:hidden;">'
+                + '<div style="width:4px;position:absolute;left:0;top:0;bottom:0;background:' + ic.cor + ';border-radius:4px 0 0 4px;"></div>'
+                + '<div style="width:40px;height:40px;min-width:40px;border-radius:10px;background:' + ic.bg + ';color:' + ic.cor + ';display:flex;align-items:center;justify-content:center;font-size:16px;"><i class="fas ' + ic.icon + '"></i></div>'
+                + '<div style="flex:1;min-width:0;">'
+                + '<div style="font-size:13px;font-weight:600;color:var(--azul-escuro);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + matEscapar(m.nome) + '</div>'
+                + '<div style="font-size:11px;color:var(--cinza);margin-top:2px;">' + (meta ? matEscapar(meta) + ' · ' : '') + '<span style="color:var(--turquesa);font-weight:600;">' + modLabel + '</span></div>'
+                + '</div>'
+                + '<a href="' + m.url + '" target="_blank" title="Baixar" class="mat-btn-dl"><i class="fas fa-download" style="font-size:13px;"></i></a>'
+                + '<button class="mat-btn-del" onclick="matExcluir(\'' + m.id + '\',\'' + matEscapar(m.nome).replace(/\x27/g, '&#39;') + '\')" title="Excluir"><i class="fas fa-trash" style="font-size:12px;"></i></button>'
+                + '</div>';
+        });
+        lista.innerHTML = html;
+
+    } catch(e) {
+        lista.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:#dc2626;">Erro ao carregar: ' + e.message + '</div>';
+        console.error('[Materiais] Erro lista:', e);
+    }
+}
+
+function matEscapar(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Exclusão com confirmação
+async function matExcluir(id, nome) {
+    if (!confirm('Excluir "' + nome + '"? Essa ação não pode ser desfeita.')) return;
+    if (!supabaseClient) initSupabase();
+    try {
+        var { error } = await supabaseClient.from('materiais').delete().eq('id', id);
+        if (error) throw new Error(error.message);
+        showNotification('Material removido.', 'success');
+        matCarregar();
+    } catch(e) {
+        showNotification('Erro ao excluir: ' + e.message, 'error');
+    }
+}
+
+// Renderiza materiais do Supabase nos módulos (para o colaborador)
+async function matRenderizarModulo(moduloId, containerId) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    if (!supabaseClient) initSupabase();
+    if (!supabaseClient) return;
+
+    try {
+        var { data, error } = await supabaseClient
+            .from('materiais')
+            .select('*')
+            .eq('modulo', moduloId)
+            .order('criado_em', { ascending: true });
+
+        if (error || !data || data.length === 0) return; // fallback: mantém HTML estático
+
+        var html = '';
+        data.forEach(function(m) {
+            var ic = matIconeTipo(m.tipo);
+            var meta = m.descricao || matFmtTamanho(m.tamanho_bytes) || '';
+            html += '<a href="' + m.url + '" target="_blank" class="pdf-btn">'
+                + '<i class="fas ' + ic.icon + ' pdf-icon" style="background:' + ic.bg + ';color:' + ic.cor + ';"></i>'
+                + '<div class="pdf-info"><div class="pdf-title">' + matEscapar(m.nome) + '</div>'
+                + (meta ? '<div class="pdf-meta">' + matEscapar(meta) + '</div>' : '')
+                + '</div><i class="fas fa-download pdf-arrow"></i></a>';
+        });
+
+        // Substitui APENAS o conteúdo do grid, mantém o header da seção
+        container.innerHTML = html;
+        // Atualiza o contador
+        var countEl = container.closest('.pdf-section') && container.closest('.pdf-section').querySelector('.count');
+        if (countEl) countEl.textContent = data.length + (data.length === 1 ? ' arquivo' : ' arquivos');
+
+    } catch(e) {
+        console.warn('[Materiais] Erro ao renderizar módulo ' + moduloId + ':', e);
+    }
+}
+
 // ==================== FOTO DE PERFIL (SUPABASE STORAGE) ====================
 
 const PROFILE_PHOTO_FOLDER = 'avatars';
@@ -6763,17 +6542,7 @@ async function uploadProfilePhotoToSupabase(file) {
         localStorage.setItem('re_photo_v_' + key, String(version));
     } catch(_) {}
 
-    // Best-effort: persiste a URL no perfil (se a coluna foto_url existir no banco)
-    try {
-        if (currentUser && currentUser.id) {
-            await supabaseClient
-                .from('profiles')
-                .update({ foto_url: publicUrl })
-                .eq('id', currentUser.id);
-        }
-    } catch (e) {
-        console.warn('Não foi possível salvar foto_url no perfil:', e);
-    }
+    // foto_url não existe em profiles — URL salva no Storage e no localStorage
 
     return publicUrl + '?v=' + version;
 }
@@ -6795,10 +6564,11 @@ function updateProfilePhoto(input) {
 
     const reader = new FileReader();
     reader.onload = function(e) {
+        // Reset ANTES de abrir o modal para não causar loop de re-render
+        setTimeout(function(){ try{ input.value = ''; }catch(_){} }, 0);
         openPhotoCrop(e.target.result);
     };
     reader.readAsDataURL(file);
-    input.value = ''; // permite selecionar o mesmo arquivo novamente
 }
 
 // ---------- Ajuste de enquadramento (arrastar + zoom) ----------
@@ -6934,22 +6704,26 @@ function savePhotoCrop() {
 // ---------- Persistência (preview + cache + Supabase Storage) ----------
 
 async function persistProfilePhoto(file, dataUrl) {
-    // Preview imediato (perfil + menu lateral)
-    applyProfilePhoto(dataUrl);
-
-    // Cache local (fallback offline / carregamento instantâneo)
-    if (currentUser && currentUser.email) {
-        try { localStorage.setItem('re_photo_' + currentUser.email, dataUrl); } catch(_) {}
-    }
-
-    // Upload para o Supabase Storage (persistência após logout)
+    // NÃO aplica preview antes do upload — evita repaint que fecha o modal
+    // Upload para o Supabase Storage
     try {
+        showNotification('Enviando foto...', 'info');
         const url = await uploadProfilePhotoToSupabase(file);
+        // Só aplica a foto APÓS o upload completar com sucesso
         applyProfilePhoto(url);
+        // Cache local após confirmação
+        if (currentUser && currentUser.email) {
+            try { localStorage.setItem('re_photo_' + currentUser.email, url); } catch(_) {}
+        }
         showNotification('Foto de perfil atualizada!', 'success');
     } catch (err) {
         console.error('Erro ao enviar foto para o Supabase:', err);
-        showNotification('Foto aplicada localmente, mas houve erro ao salvar no servidor: ' + err.message, 'warning');
+        // Só usa preview local como fallback se o upload falhou
+        applyProfilePhoto(dataUrl);
+        if (currentUser && currentUser.email) {
+            try { localStorage.setItem('re_photo_' + currentUser.email, dataUrl); } catch(_) {}
+        }
+        showNotification('Erro ao salvar no servidor: ' + err.message, 'warning');
     }
 
     if (typeof addActivity === 'function') {
@@ -7300,15 +7074,7 @@ async function changePassword() {
         return;
     }
 
-    if (currentRole === 'admin') {
-        if (current.value !== CONFIG.ADMIN_PASS) {
-            errorEl.textContent = 'Senha atual incorreta.';
-            errorEl.style.display = 'block';
-            return;
-        }
-    }
-    // Para colaboradores, a senha atual é verificada pelo próprio Supabase
-    // no momento da atualização (não guardamos senha localmente).
+    // Verificação de senha atual feita pelo Supabase Auth para todos os perfis
 
     if (newPass.value.length < 8) {
         errorEl.textContent = 'A nova senha deve ter no mínimo 8 caracteres.';
@@ -7322,9 +7088,7 @@ async function changePassword() {
         return;
     }
 
-    if (currentRole === 'admin') {
-        CONFIG.ADMIN_PASS = newPass.value;
-    } else {
+    if (currentRole !== 'admin') {
         // Colaborador: trocar a senha de verdade no Supabase Auth (armazenada com segurança).
         if (typeof supabaseClient !== 'undefined' && supabaseClient && supabaseClient.auth) {
             try {
@@ -8844,61 +8608,53 @@ if (savedConfig) {
 // Table: "Faq" with columns: pergunta, resposta, criado_em
 
 async function loadFaqForUser() {
-    const container = document.getElementById('faq-dynamic-container');
-    const loading = document.getElementById('faq-loading');
-    const empty = document.getElementById('faq-empty');
-    const staticWrapper = document.getElementById('faq-static-wrapper');
-
+    var container = document.getElementById('faq-dynamic-container');
+    var loading = document.getElementById('faq-loading');
+    var empty = document.getElementById('faq-empty');
     if (!loading) return;
 
     loading.style.display = 'block';
     if (container) container.style.display = 'none';
     if (empty) empty.style.display = 'none';
-    if (staticWrapper) staticWrapper.style.display = 'none';
 
     try {
         if (!supabaseClient) initSupabase();
         if (!supabaseClient) {
             loading.style.display = 'none';
-            if (staticWrapper) staticWrapper.style.display = 'block';
-            else if (empty) empty.style.display = 'block';
+            if (empty) empty.style.display = 'block';
             return;
         }
 
-        const { data, error } = await supabaseClient
-            .from('Faq')
-            .select('*')
-            .order('criado_em', { ascending: true });
+        var res = await supabaseClient.from('faq').select('*').order('criado_em', { ascending: true });
+        if (res.error) throw res.error;
 
-        if (error) throw error;
+        loading.style.display = 'none';
 
-        if (!data || data.length === 0) {
-            loading.style.display = 'none';
-            if (staticWrapper) staticWrapper.style.display = 'block';
-            else if (empty) empty.style.display = 'block';
+        if (!res.data || res.data.length === 0) {
+            if (empty) empty.style.display = 'block';
             return;
         }
 
-        let html = '<div class="faq-section">';
-        html += '<div class="faq-header">';
-        html += '<h2><i class="fas fa-question-circle" style="color:var(--turquesa);margin-right:8px;"></i>Perguntas Frequentes</h2>';
-        html += '<p>Respostas padrão para as situações mais comuns do dia a dia.</p>';
-        html += '</div>';
+        var html = '<div class="faq-section"><div class="faq-header">'
+            + '<h2><i class="fas fa-question-circle" style="color:var(--turquesa);margin-right:8px;"></i>Perguntas Frequentes</h2>'
+            + '<p>Respostas padrão para as situações mais comuns do dia a dia, organizadas por área.</p>'
+            + '</div>';
 
-        data.forEach(item => {
-            html += '<div class="faq-item">';
-            html += '<div class="faq-question" onclick="toggleFaq(this)">';
-            html += '<h3>' + escapeHtml(item.pergunta) + '</h3>';
-            html += '<i class="fas fa-chevron-down"></i>';
-            html += '</div>';
-            html += '<div class="faq-answer">';
-            html += '<div class="faq-answer-content" id="faq-content-' + item.id + '">';
-            const formattedAnswer = escapeHtml(item.resposta).replace(/\n/g, '<br>');
-            html += '<p>' + formattedAnswer + '</p>';
-            html += '</div>';
-            html += '<button class="copy-btn" onclick="copyFaqContent(' + "'" + 'faq-content-' + item.id + "'" + ', this)"><i class="fas fa-copy"></i> Copiar conteúdo</button>';
-            html += '</div>';
-            html += '</div>';
+        res.data.forEach(function(item) {
+            var contentId = 'faq-content-' + item.id;
+            var respFormatada = escapeHtml(item.resposta || '').replace(/\n/g, '<br>');
+            html += '<div class="faq-item">'
+                + '<div class="faq-question" onclick="toggleFaq(this)">'
+                + '<h3>' + escapeHtml(item.pergunta) + '</h3>'
+                + '<i class="fas fa-chevron-down"></i>'
+                + '</div>'
+                + '<div class="faq-answer">'
+                + '<div class="faq-answer-content" id="' + contentId + '">'
+                + '<p>' + respFormatada + '</p>'
+                + '</div>'
+                + '<button class="copy-btn" onclick="copyFaqContent(\'' + contentId + '\', this)">'
+                + '<i class="fas fa-copy"></i> Copiar conteúdo</button>'
+                + '</div></div>';
         });
 
         html += '</div>';
@@ -8907,14 +8663,11 @@ async function loadFaqForUser() {
             container.innerHTML = html;
             container.style.display = 'block';
         }
-        loading.style.display = 'none';
-        if (staticWrapper) staticWrapper.style.display = 'none';
 
-    } catch (err) {
-        console.error('Error loading FAQ:', err);
-        loading.style.display = 'none';
-        if (staticWrapper) staticWrapper.style.display = 'block';
-        else if (empty) empty.style.display = 'block';
+    } catch(err) {
+        console.error('[FAQ]', err);
+        if (loading) loading.style.display = 'none';
+        if (empty) { empty.style.display = 'block'; }
     }
 }
 async function addFaqItem() {
@@ -8934,7 +8687,7 @@ async function addFaqItem() {
         }
 
         const { data, error } = await supabaseClient
-            .from('Faq')
+            .from('faq')
             .insert([{
                 pergunta: pergunta,
                 resposta: resposta,
@@ -8965,7 +8718,7 @@ async function loadFaqAdminList() {
         }
 
         const { data, error } = await supabaseClient
-            .from('Faq')
+            .from('faq')
             .select('*')
             .order('criado_em', { ascending: false });
 
@@ -9001,7 +8754,7 @@ async function deleteFaqItem(id) {
 
     try {
         if (!supabaseClient) initSupabase();
-        const { error } = await supabaseClient.from('Faq').delete().eq('id', id);
+        const { error } = await supabaseClient.from('faq').delete().eq('id', id);
         if (error) throw error;
         showNotification('Pergunta removida.', 'success');
         loadFaqAdminList();
@@ -9174,114 +8927,60 @@ function closeUserDetailModal() {
 async function renderModuleFiles(moduleId) {
     const container = document.getElementById('mod-pdf-grid');
     const sectionHeader = document.getElementById('mod-pdf-count');
-
     if (!container) return;
-
-    // Map moduleId to module name for filtering
-    const moduleMap = {
-        'mod1': 'Módulo 1: Atendimento',
-        'mod2': 'Módulo 2: Comunicação',
-        'mod3': 'Módulo 3: SAC e Ouvidoria',
-        'mod4': 'Módulo 4: Relacionamento',
-        'mod5': 'Módulo 5: Gestão e Liderança',
-        'mod-onboarding-1': 'Onboarding Relacionamento',
-        'mod-onboarding-2': 'Onboarding Relacionamento',
-        'mod-onboarding-3': 'Onboarding Relacionamento',
-        'mod-onboarding-4': 'Onboarding Relacionamento',
-        'mod-rel-1': 'Relacionamento',
-        'mod-rel-2': 'Relacionamento',
-        'mod-rel-3': 'Relacionamento',
-        'mod-rel-4': 'Relacionamento',
-        'mod-rel-5': 'Relacionamento',
-        'mod-rel-6': 'Relacionamento',
-        'mod-rel-7': 'Relacionamento',
-        'mod-rel-8': 'Relacionamento',
-        'mod-rel-9': 'Relacionamento',
-        'mod-rel-10': 'Relacionamento',
-        'mod-astec-1': 'ASTEC',
-        'mod-astec-2': 'ASTEC',
-        'mod-astec-3': 'ASTEC',
-        'mod-astec-4': 'ASTEC',
-        'mod-astec-5': 'ASTEC',
-        'mod-back-1': 'Backoffice',
-        'mod-back-2': 'Backoffice',
-        'mod-back-3': 'Backoffice',
-        'mod-back-4': 'Backoffice',
-        'mod-rec-1': 'Recuperação de Crédito',
-        'mod-rec-2': 'Recuperação de Crédito',
-        'mod-rec-3': 'Recuperação de Crédito',
-        'mod-rec-4': 'Recuperação de Crédito',
-        'mod-rec-5': 'Recuperação de Crédito',
-        'mod-jur-1': 'Jurídico',
-        'mod-jur-2': 'Jurídico',
-        'mod-jur-3': 'Jurídico',
-        'mod-jur-4': 'Jurídico',
-        'mod-comp-1': 'Compliance',
-        'mod-comp-2': 'Compliance',
-        'mod-comp-3': 'Compliance',
-        'mod-comp-4': 'Compliance',
-        'mod-comp-5': 'Compliance'
-    };
-
-    const moduloNome = moduleMap[moduleId] || moduleId;
 
     try {
         if (!supabaseClient) initSupabase();
+        if (!supabaseClient) return;
 
-        let files = [];
-        if (supabaseClient) {
-            const { data, error } = await supabaseClient
-                .from('Arquivos')
-                .select('*')
-                .eq('Módulo', moduloNome)
-                .order('criado_em', { ascending: false });
+        const { data, error } = await supabaseClient
+            .from('materiais')
+            .select('*')
+            .eq('modulo', moduleId)
+            .order('criado_em', { ascending: true });
 
-            if (!error) files = data || [];
-        }
+        const files = (!error && data) ? data : [];
 
         if (sectionHeader) sectionHeader.textContent = files.length + ' arquivo(s)';
 
         if (files.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>Nenhum material disponível ainda</h3>
-                    <p>Os materiais deste módulo serão adicionados em breve.</p>
-                </div>
-            `;
+            // Sem materiais: esconde a seção inteira
+            var sec = container.closest('.pdf-section');
+            if (sec) sec.style.display = 'none';
             return;
         }
+        // Tem materiais: garante que a seção está visível
+        var sec2 = container.closest('.pdf-section');
+        if (sec2) sec2.style.display = '';
+        if (sectionHeader) sectionHeader.textContent = files.length + (files.length === 1 ? ' arquivo' : ' arquivos');
 
-        let html = '';
-        files.forEach(file => {
-            const iconClass = file.Tipo === 'PDF' ? 'fa-file-pdf' : 
-                             file.Tipo === 'Vídeo' ? 'fa-file-video' :
-                             file.Tipo === 'Apresentação' ? 'fa-file-powerpoint' :
-                             file.Tipo === 'Documento' ? 'fa-file-word' :
-                             file.Tipo === 'Planilha' ? 'fa-file-excel' : 'fa-file';
+        var icMap = {
+            'pdf':          { icon: 'fa-file-pdf',       bg: '#fee2e2', cor: '#dc2626' },
+            'video':        { icon: 'fa-file-video',      bg: '#e0f2fe', cor: '#0284c7' },
+            'imagem':       { icon: 'fa-file-image',      bg: '#dcfce7', cor: '#16a34a' },
+            'documento':    { icon: 'fa-file-word',       bg: '#eff6ff', cor: '#2563eb' },
+            'planilha':     { icon: 'fa-file-excel',      bg: '#f0fdf4', cor: '#15803d' },
+            'apresentacao': { icon: 'fa-file-powerpoint', bg: '#fff7ed', cor: '#ea580c' }
+        };
 
-            html += `
-                <a href="${file.URL}" target="_blank" class="pdf-btn" download="${file.Nome}">
-                    <i class="fas ${iconClass} pdf-icon" style="background:var(--turquesa-light);color:var(--turquesa);"></i>
-                    <div class="pdf-info">
-                        <div class="pdf-title">${escapeHtml(file.Nome)}</div>
-                        <div class="pdf-meta">${file.Tipo} — ${new Date(file.criado_em).toLocaleDateString('pt-BR')}</div>
-                    </div>
-                    <i class="fas fa-download pdf-arrow"></i>
-                </a>
-            `;
+        var html = '';
+        files.forEach(function(m) {
+            var ic = icMap[m.tipo] || { icon: 'fa-file', bg: 'var(--cinza-claro)', cor: 'var(--cinza)' };
+            var meta = m.descricao || '';
+            html += '<a href="' + m.url + '" target="_blank" class="pdf-btn">'
+                + '<i class="fas ' + ic.icon + ' pdf-icon" style="background:' + ic.bg + ';color:' + ic.cor + ';"></i>'
+                + '<div class="pdf-info">'
+                + '<div class="pdf-title">' + matEscapar(m.nome) + '</div>'
+                + (meta ? '<div class="pdf-meta">' + matEscapar(meta) + '</div>' : '')
+                + '</div>'
+                + '<i class="fas fa-download pdf-arrow"></i>'
+                + '</a>';
         });
         container.innerHTML = html;
 
-    } catch (err) {
-        console.error('Error loading files:', err);
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-exclamation-circle" style="color:var(--danger);"></i>
-                <h3>Erro ao carregar materiais</h3>
-                <p>Verifique a conexão com o Supabase.</p>
-            </div>
-        `;
+    } catch(err) {
+        console.error('[renderModuleFiles] erro:', err);
+        container.innerHTML = '';
     }
 }
 
@@ -10125,29 +9824,7 @@ navigateTo = function(page) {
     }
 };
 
-// ==================== ENHANCED LOAD MODULE CONTENT (hook for materials) ====================
-
-const originalLoadModuleContent = loadModuleContent;
-loadModuleContent = function(moduleId) {
-    originalLoadModuleContent(moduleId);
-
-    // Update the PDF section to use dynamic grid
-    const slidesContainer = document.getElementById('mod-slides-container');
-    if (slidesContainer) {
-        // Check if we need to add the dynamic PDF grid
-        const existingPdfGrid = document.getElementById('mod-pdf-grid');
-        if (!existingPdfGrid) {
-            // The PDF section already exists in the HTML, just update its ID
-            const pdfSection = slidesContainer.parentElement.querySelector('.pdf-section .pdf-grid');
-            if (pdfSection) {
-                pdfSection.id = 'mod-pdf-grid';
-            }
-        }
-    }
-
-    // Load files for this module
-    setTimeout(() => renderModuleFiles(moduleId), 600);
-};
+// ENHANCED LOAD MODULE CONTENT — removido: materiais agora injetados como slides em injetarMateriaisComoSlides
 
 // ==================== ENHANCED SWITCH CM TAB (hook for FAQ admin) ====================
 
