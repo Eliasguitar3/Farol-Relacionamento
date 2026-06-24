@@ -81,6 +81,7 @@ input, textarea, select { font-size: 16px; }
 .user-info .user-email { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; text-align: center; width: 100%; }
 .user-info .user-role { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 .user-role.admin { background: rgba(245,158,11,0.2); color: #fbbf24; }
+.user-role.gestor { background: rgba(8,145,178,0.2); color: #0891b2; }
 .user-role.user { background: rgba(29,188,176,0.2); color: var(--turquesa); }
 .logout-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: calc(100% - 24px); margin: 8px 12px 0; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif; }
 .logout-btn:hover { background: rgba(220,38,38,0.2); color: #fca5a5; border-color: rgba(220,38,38,0.3); }
@@ -528,6 +529,146 @@ input, textarea, select { font-size: 16px; }
     * { max-width: 100%; }
     img, video, iframe, object, embed { max-width: 100%; height: auto; }
     table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+
+/* ==================== MOBILE RESPONSIVO ==================== */
+
+/* Top bar: ajuste para mobile-toggle */
+@media (max-width: 1024px) {
+    .top-bar { padding-left: 70px; }
+    .breadcrumb { max-width: calc(100vw - 200px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .main-content { width: 100vw; max-width: 100vw; }
+}
+
+/* Sidebar fecha ao navegar no mobile */
+@media (max-width: 1024px) {
+    .sidebar { box-shadow: 4px 0 24px rgba(0,0,0,0.18); }
+}
+
+/* Dashboard grid mobile */
+@media (max-width: 768px) {
+    .dashboard-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .top-bar { padding-left: 64px; gap: 8px; }
+    .search-box { display: none; }
+}
+@media (max-width: 480px) {
+    .dashboard-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .dashboard-card { padding: 16px 12px; }
+    .dashboard-card .card-value { font-size: 22px; }
+    .dashboard-card .card-label { font-size: 11px; }
+    .dashboard-card .card-icon-d { width: 32px; height: 32px; font-size: 14px; }
+}
+
+/* Cards de trilha mobile */
+@media (max-width: 768px) {
+    .cards-grid { grid-template-columns: 1fr; gap: 12px; }
+    .card { border-radius: 12px; }
+    .complete-btn { font-size: 12px; padding: 8px 12px; }
+}
+
+/* Avaliador 5E — formulário mobile */
+@media (max-width: 768px) {
+    #page-avaliador-5e .admin-panel { padding: 16px; }
+    #page-avaliador-5e [style*="grid-template-columns:1fr 1fr"] { display:block; }
+    #page-avaliador-5e [style*="gap:20px"] { gap:12px; }
+}
+
+/* Tabelas admin mobile */
+@media (max-width: 768px) {
+    .admin-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 12px; }
+    .admin-table th, .admin-table td { padding: 8px; white-space: nowrap; }
+    .admin-panel { padding: 16px; }
+    .admin-panel h2 { font-size: 16px; }
+}
+
+/* PDF grid mobile */
+@media (max-width: 768px) {
+    .pdf-grid { grid-template-columns: 1fr !important; }
+    .pdf-btn { padding: 12px 14px; }
+    .pdf-section { padding: 16px; border-radius: 12px; }
+    .pdf-section-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+
+/* Gerenciar Materiais mobile */
+@media (max-width: 768px) {
+    #page-admin-materiais .admin-panel { padding: 16px; }
+    #mat-lista { grid-template-columns: 1fr !important; }
+    #page-admin-materiais [style*="grid-template-columns:1fr 1fr"] { display:block; }
+}
+
+/* 5 Estrelas colaborador mobile */
+@media (max-width: 768px) {
+    #page-cinco-estrelas [style*="grid-template-columns:repeat(auto-fit"] { 
+        grid-template-columns: repeat(2,1fr) !important; 
+        gap: 10px !important;
+    }
+}
+
+/* Módulo genérico — iframe responsivo */
+@media (max-width: 768px) {
+    #mod-slides-container iframe { height: 320px !important; }
+    #mod-slides-container video { max-height: 280px; }
+    .slide-panel { padding: 16px !important; }
+    .slides-wrapper > div:first-child { 
+        display: flex; flex-wrap: nowrap; overflow-x: auto; 
+        -webkit-overflow-scrolling: touch; gap: 6px; padding-bottom: 4px; 
+    }
+    .slide-tab { font-size: 11px !important; padding: 6px 10px !important; white-space: nowrap; flex-shrink: 0; }
+}
+@media (max-width: 480px) {
+    #mod-slides-container iframe { height: 240px !important; }
+}
+
+/* Hero das trilhas mobile */
+@media (max-width: 768px) {
+    .hero { padding: 20px 16px; }
+    .hero h1 { font-size: 20px; line-height: 1.3; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+    .hero-stat .number { font-size: 20px; }
+    .hero-stat .label { font-size: 9px; }
+}
+
+/* Modal e cert preview mobile */
+@media (max-width: 480px) {
+    .modal-content { padding: 20px 16px; margin: 10px; }
+    .cert-preview-content { padding: 16px; }
+    .cert-preview-content .cert-body .cert-recipient { font-size: 18px; }
+    .cert-preview-close { top: 8px; right: 8px; }
+}
+
+/* Footer mobile */
+@media (max-width: 768px) {
+    .site-footer { padding: 20px 16px; margin-left: 0 !important; }
+    .footer-grid { grid-template-columns: repeat(2,1fr); gap: 20px; }
+}
+@media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
+    .mat-upload-label-base { flex-direction: column; text-align: center; padding: 14px; }
+    #mat-progress-wrap { margin-top: 8px; }
+}
+
+/* Perfil do usuário mobile */
+@media (max-width: 768px) {
+    #page-user-profile .form-row { grid-template-columns: 1fr; }
+}
+
+/* Seletor de colaboradores avaliador mobile */
+@media (max-width: 768px) {
+    #av5-colab-dropdown { position: fixed !important; left: 8px !important; right: 8px !important; top: auto !important; }
+}
+
+/* Notificações mobile */
+@media (max-width: 480px) {
+    .notifications-panel { right: 0; left: 0; width: 100%; border-radius: 0 0 16px 16px; max-height: 70vh; }
+}
+
+/* Breadcrumb mobile */
+@media (max-width: 480px) {
+    .breadcrumb { display: none; }
+    .top-bar { justify-content: flex-end; }
 }
 
 /* ANIMATIONS */
@@ -1085,6 +1226,7 @@ img, iframe, video, svg { max-width: 100%; }
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <!-- base target removido -->
@@ -1109,49 +1251,25 @@ img, iframe, video, svg { max-width: 100%; }
             <p style="font-style:italic;font-size:14px;color:var(--turquesa);margin-top:10px;font-weight:500;">Todos numa só voz</p>
             <p style="font-size:11px;color:var(--cinza);margin-top:4px;letter-spacing:0.3px;">uma iniciativa Canopus</p>
 
-            <div class="login-tabs">
-                <button class="login-tab active" onclick="switchTab('user')" id="tab-user">
-                    <i class="fas fa-user"></i> Colaborador
-                </button>
-                <button class="login-tab" onclick="switchTab('admin')" id="tab-admin">
-                    <i class="fas fa-shield-alt"></i> Administrador
-                </button>
-            </div>
-
-            <!-- User Login Form -->
+            <!-- Formulário único — o sistema identifica o perfil pelo email/role -->
             <div class="login-form active" id="form-user">
                 <div class="login-error" id="error-user"><i class="fas fa-exclamation-circle"></i> <span></span></div>
                 <div class="login-success" id="success-user"><i class="fas fa-check-circle"></i> <span></span></div>
                 <div class="form-group">
-                    <label>Seu e-mail corporativo</label>
-                    <input type="email" id="userEmailInput" placeholder="Ex: joao.silva@canopus.com.br" onkeypress="if(event.key==='Enter')loginUser()">
+                    <label>SEU E-MAIL CORPORATIVO</label>
+                    <input type="email" id="userEmailInput" placeholder="Ex: joao.silva@canopus.com.br"
+                        onkeypress="if(event.key==='Enter')loginUser()"
+                        autocomplete="email">
                     <p class="domain-hint"><i class="fas fa-lock"></i> Apenas e-mails @canopus.com.br são permitidos</p>
                 </div>
                 <div class="form-group">
-                    <label>Sua senha</label>
-                    <input type="password" id="userPasswordInput" placeholder="Mínimo 8 caracteres" onkeypress="if(event.key==='Enter')loginUser()">
-                    <p class="domain-hint"><i class="fas fa-info-circle"></i> Primeiro acesso? Sua conta será criada automaticamente</p>
+                    <label>SUA SENHA</label>
+                    <input type="password" id="userPasswordInput" placeholder="Mínimo 8 caracteres"
+                        onkeypress="if(event.key==='Enter')loginUser()"
+                        autocomplete="current-password">
                 </div>
                 <button type="button" class="login-btn" id="btnLoginUser" onclick="loginUser()">
-                    <i class="fas fa-sign-in-alt"></i> Acessar minha trilha
-                </button>
-            </div>
-
-            <!-- Admin Login Form -->
-            <div class="login-form" id="form-admin">
-                <div class="admin-badge"><i class="fas fa-crown"></i> Acesso Administrativo</div>
-                <div class="login-error" id="error-admin"><i class="fas fa-exclamation-circle"></i> <span></span></div>
-                <div class="login-success" id="success-admin"><i class="fas fa-check-circle"></i> <span></span></div>
-                <div class="form-group">
-                    <label>Usuário ADM</label>
-                    <input type="text" id="adminUserInput" placeholder="Usuário administrador" onkeypress="if(event.key==='Enter')loginAdmin()">
-                </div>
-                <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" id="adminPassInput" placeholder="Sua senha" onkeypress="if(event.key==='Enter')loginAdmin()">
-                </div>
-                <button type="button" class="login-btn" id="btnLoginAdmin" onclick="loginAdmin()">
-                    <i class="fas fa-lock"></i> Acessar painel ADM
+                    <i class="fas fa-sign-in-alt"></i> Acessar a plataforma
                 </button>
             </div>
 
@@ -1232,6 +1350,7 @@ img, iframe, video, svg { max-width: 100%; }
                 <i class="fas fa-certificate"></i> Certificados
             </div>
             <div class="nav-item" data-page="central-conhecimento" onclick="navigateTo('central-conhecimento')"><i class="fas fa-book"></i> Central de Conhecimento</div>
+            <div class="nav-item" data-page="gestor" onclick="navigateTo('gestor')" id="nav-gestor" style="display:none;"><i class="fas fa-chart-line"></i> Painel do Gestor</div>
         </div>
 
         <!-- MENU ADMIN (hidden by default) -->
@@ -1246,7 +1365,7 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="nav-item" data-page="admin-users" onclick="navigateTo('admin-users')">
                 <i class="fas fa-users-cog"></i> Gerenciar Usuários
             </div>
-            <div class="nav-item" data-page="admin-materiais" onclick="navigateTo('admin-materiais')">
+            <div class="nav-item" data-page="admin-materiais" onclick="navigateTo('admin-materiais')" id="nav-admin-materiais">
                 <i class="fas fa-folder-open"></i> Gerenciar Materiais
             </div>
         </div>
@@ -1947,7 +2066,28 @@ img, iframe, video, svg { max-width: 100%; }
                 <div style="background:#fff;border:1px solid var(--borda);border-radius:18px;padding:22px;">
                     <h2 style="font-size:15px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;">Novo lan&ccedil;amento</h2>
                     <div style="font-size:12px;color:var(--cinza);margin-bottom:18px;">Os campos abaixo alimentam o c&aacute;lculo ao vivo ao lado.</div>
-                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Colaborador</label><select id="av5-colab" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option value="">Carregando colaboradores...</option></select></div>
+                    <div style="margin-bottom:15px;" id="av5-colab-wrap">
+                        <label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Colaborador</label>
+                        <div id="av5-colab-picker" style="position:relative;">
+                            <div id="av5-colab-display" onclick="av5ColabToggle()" style="display:flex;align-items:center;gap:10px;padding:10px 13px;border:1.5px solid var(--borda);border-radius:10px;background:#fff;cursor:pointer;transition:border-color .2s;user-select:none;" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')av5ColabToggle()">
+                                <div id="av5-colab-avatar" style="width:34px;height:34px;border-radius:50%;background:var(--cinza-claro);border:1.5px solid var(--borda);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:var(--cinza);overflow:hidden;">
+                                    <i class="fas fa-user" style="font-size:13px;color:var(--cinza);"></i>
+                                </div>
+                                <span id="av5-colab-label" style="flex:1;font-size:14px;color:var(--cinza);font-family:'Inter',sans-serif;">Selecione um colaborador</span>
+                                <i class="fas fa-chevron-down" id="av5-colab-chevron" style="font-size:11px;color:var(--cinza);transition:transform .2s;"></i>
+                            </div>
+                            <div id="av5-colab-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--turquesa);border-radius:12px;box-shadow:0 8px 24px rgba(0,60,80,0.13);z-index:500;overflow:hidden;max-height:320px;flex-direction:column;">
+                                <div style="padding:10px 10px 6px;border-bottom:1px solid var(--borda);">
+                                    <div style="display:flex;align-items:center;gap:8px;background:var(--cinza-claro);border-radius:8px;padding:7px 10px;">
+                                        <i class="fas fa-search" style="font-size:12px;color:var(--cinza);"></i>
+                                        <input id="av5-colab-search" type="text" placeholder="Buscar pelo nome…" oninput="av5ColabFiltrar()" style="border:none;background:transparent;outline:none;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);width:100%;">
+                                    </div>
+                                </div>
+                                <div id="av5-colab-list" style="overflow-y:auto;max-height:250px;padding:6px;"></div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="av5-colab" value="">
+                    </div>
                     <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Compet&ecirc;ncia (m&ecirc;s/ano)</label><select id="av5-comp" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option>Janeiro / 2026</option><option>Fevereiro / 2026</option><option>Mar&ccedil;o / 2026</option><option>Abril / 2026</option><option>Maio / 2026</option><option>Junho / 2026</option><option selected>Julho / 2026</option><option>Agosto / 2026</option><option>Setembro / 2026</option><option>Outubro / 2026</option><option>Novembro / 2026</option><option>Dezembro / 2026</option></select></div>
                     <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Data da avalia&ccedil;&atilde;o</label><input type="date" id="av5-data" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -2074,6 +2214,84 @@ img, iframe, video, svg { max-width: 100%; }
         </div>
 
         <!-- ==================== ADMIN CONTENT MANAGER ==================== -->
+        <!-- ==================== GESTOR / DIRETORA ==================== -->
+        <div class="page-section" id="page-gestor">
+            <div class="page-header">
+                <span class="badge" style="background:linear-gradient(135deg,#0891b2,#0369a1);color:white;"><i class="fas fa-chart-line"></i> Gestão</span>
+                <h1>Painel do Gestor</h1>
+                <p>Evolução real da equipe, dados do Programa 5 Estrelas e engajamento na plataforma. <button onclick="gestorCarregarDados()" style="background:none;border:none;color:var(--turquesa);font-size:12px;cursor:pointer;font-family:inherit;margin-left:8px;"><i class="fas fa-sync-alt"></i> Atualizar</button></p>
+            </div>
+
+            <!-- Cards de visão geral -->
+            <div class="dashboard-grid" style="margin-bottom:20px;">
+                <div class="dashboard-card">
+                    <div class="card-header"><div class="card-icon-d turquesa"><i class="fas fa-users"></i></div></div>
+                    <div class="card-value" id="g-total-colab">—</div>
+                    <div class="card-label">Colaboradores avaliados</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header"><div class="card-icon-d verde"><i class="fas fa-star"></i></div></div>
+                    <div class="card-value" id="g-media-geral">—</div>
+                    <div class="card-label">Média geral da equipe</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header"><div class="card-icon-d laranja"><i class="fas fa-trophy"></i></div></div>
+                    <div class="card-value" id="g-count-5e">—</div>
+                    <div class="card-label">No 5 Estrelas (último mês)</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header"><div class="card-icon-d roxo"><i class="fas fa-arrow-trend-up"></i></div></div>
+                    <div class="card-value" id="g-count-subindo">—</div>
+                    <div class="card-label">Com tendência de melhora</div>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="admin-panel active" style="margin-bottom:18px;padding:16px 20px;">
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <label style="font-size:12px;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:.04em;">Filtrar por mês:</label>
+                    <select id="g-filtro-mes" onchange="gestorCarregarDados()" style="padding:7px 12px;border:1.5px solid var(--borda);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;">
+                        <option value="">Todos os meses</option>
+                    </select>
+                    <label style="font-size:12px;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:.04em;margin-left:8px;">Colaborador:</label>
+                    <select id="g-filtro-colab" onchange="gestorRenderGrafico()" style="padding:7px 12px;border:1.5px solid var(--borda);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Gráfico de evolução individual -->
+            <div class="admin-panel active" style="margin-bottom:18px;">
+                <h2 style="margin-bottom:4px;"><i class="fas fa-chart-line" style="color:var(--turquesa);margin-right:8px;"></i>Evolução por Colaborador</h2>
+                <p style="font-size:13px;color:var(--cinza);margin-bottom:20px;">Selecione um colaborador para ver a curva de evolução mês a mês.</p>
+                <div id="g-grafico-wrap" style="position:relative;height:280px;width:100%;">
+                    <canvas id="g-grafico-canvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfico de ranking do último mês -->
+            <div class="admin-panel active" style="margin-bottom:18px;">
+                <h2 style="margin-bottom:4px;"><i class="fas fa-ranking-star" style="color:var(--turquesa);margin-right:8px;"></i>Ranking da Equipe</h2>
+                <p style="font-size:13px;color:var(--cinza);margin-bottom:16px;" id="g-ranking-mes-label">Último mês disponível</p>
+                <div id="g-ranking-lista" style="display:flex;flex-direction:column;gap:8px;">
+                    <div style="text-align:center;padding:24px;color:var(--cinza);"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>
+                </div>
+            </div>
+
+            <!-- Tabela completa -->
+            <div class="admin-panel active">
+                <h2><i class="fas fa-table" style="color:var(--turquesa);margin-right:8px;"></i>Histórico Completo da Equipe</h2>
+                <table class="admin-table" style="margin-top:12px;">
+                    <thead>
+                        <tr><th>Colaborador</th><th>Competência</th><th>Monitoria</th><th>Cliente</th><th>Nota Final</th><th>Classificação</th><th>Tendência</th></tr>
+                    </thead>
+                    <tbody id="g-tabela-body">
+                        <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--cinza);"><i class="fas fa-spinner fa-spin"></i></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="page-section" id="page-admin-content">
             <div class="page-header">
                 <span class="badge" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;"><i class="fas fa-shield-alt"></i> Administrador</span>
@@ -3304,6 +3522,7 @@ async function logout() {
     }
 
     // Clear session
+    pararRealtime();
     currentUser = null;
     currentRole = null;
     userProgress = {};
@@ -3488,14 +3707,49 @@ function showApp() {
         var mainMenu = document.getElementById('mainMenuSection');
         var adminMenu = document.getElementById('adminMenuSection');
         var avalMenu = document.getElementById('avaliadorMenuSection');
-        if (currentRole === 'admin') {
+        var isAdmin = currentRole === 'admin';
+        var isSubAdmin = currentRole && currentRole.startsWith('admin-');
+        var isGestor = currentRole === 'gestor' || currentRole === 'diretora';
+        var _rLabels = {
+            'admin': 'Administrador', 'avaliador': 'Avaliador',
+            'admin-juridico': 'Adm. Jurídico', 'admin-compliance': 'Adm. Compliance',
+            'admin-onboarding': 'Adm. Onboarding', 'admin-relacionamento': 'Adm. Relacionamento',
+            'gestor': 'Gestor', 'diretora': 'Diretora'
+        };
+        if (isAdmin) {
             roleEl.textContent = 'Administrador';
             roleEl.className = 'user-role admin';
             if (mainMenu) mainMenu.style.display = 'block';
             if (adminMenu) adminMenu.style.display = 'block';
             if (avalMenu) avalMenu.style.display = 'none';
+            var gestorItem = document.getElementById('nav-gestor');
+            if (gestorItem) gestorItem.style.display = 'flex';
+        } else if (isSubAdmin) {
+            // Sub-admin: vê menu principal + só Gerenciar Materiais no menu admin
+            roleEl.textContent = _rLabels[currentRole] || 'Sub-Admin';
+            roleEl.className = 'user-role admin';
+            if (mainMenu) mainMenu.style.display = 'block';
+            if (adminMenu) {
+                adminMenu.style.display = 'block';
+                // Esconde itens do admin que sub-admin não pode acessar
+                ['admin-dashboard','admin-content','admin-users'].forEach(function(pid) {
+                    var el = adminMenu.querySelector('[data-page="'+pid+'"]');
+                    if (el) el.style.display = 'none';
+                });
+                var matEl = adminMenu.querySelector('[data-page="admin-materiais"]');
+                if (matEl) matEl.style.display = 'flex';
+            }
+            if (avalMenu) avalMenu.style.display = 'none';
+        } else if (isGestor) {
+            roleEl.textContent = _rLabels[currentRole] || 'Gestor';
+            roleEl.className = 'user-role admin';
+            if (mainMenu) mainMenu.style.display = 'block';
+            if (adminMenu) adminMenu.style.display = 'none';
+            if (avalMenu) avalMenu.style.display = 'none';
+            // Mostra item do painel do gestor no menu principal
+            var gestorItem = document.getElementById('nav-gestor');
+            if (gestorItem) gestorItem.style.display = 'flex';
         } else if (currentRole === 'avaliador') {
-            // Perfil exclusivo de avaliação: vê SOMENTE a área de avaliação.
             roleEl.textContent = 'Avaliador';
             roleEl.className = 'user-role admin';
             if (mainMenu) mainMenu.style.display = 'none';
@@ -3669,9 +3923,15 @@ function navigateTo(page) {
     }
 
     // Admin route protection
+    var _isSubAdmin = currentRole && currentRole.startsWith('admin-');
     const adminPages = ['admin-dashboard', 'admin-content', 'admin-users'];
     if (adminPages.includes(page) && currentRole !== 'admin') {
-        showNotification('Acesso restrito a administradores', 'error');
+        navigateTo('dashboard');
+        return;
+    }
+    // Sub-admin pode acessar Gerenciar Materiais
+    if (page === 'admin-materiais' && currentRole !== 'admin' && !_isSubAdmin) {
+        navigateTo('dashboard');
         return;
     }
 
@@ -3683,6 +3943,13 @@ function navigateTo(page) {
             showNotification('Seu perfil tem acesso apenas à área de avaliação.', 'warning');
             return;
         }
+    }
+
+    // Gestor/diretora: acesso ao painel de gestão
+    var _isGestor = currentRole === 'gestor' || currentRole === 'diretora' || currentRole === 'admin';
+    if (page === 'gestor' && !_isGestor) {
+        navigateTo('dashboard');
+        return;
     }
 
     // 5 Estrelas: só quem é avaliado (atende) vê a própria nota. Admin pode ver.
@@ -3746,12 +4013,15 @@ function navigateTo(page) {
         updateDashboard();
     } else if (page === 'admin-dashboard') {
         updateAdminDashboard();
+    } else if (page === 'gestor') {
+        setTimeout(gestorCarregarDados, 200);
     } else if (page === 'admin-materiais') {
-        setTimeout(matCarregar, 100);
+        setTimeout(function(){ matFiltrarModulosPorRole(); matCarregar(); }, 100);
     } else if (page === 'certificados') {
         updateCertificates();
     } else if (page === 'cinco-estrelas') {
         if (typeof render5EstrelasColaborador === 'function') setTimeout(render5EstrelasColaborador, 100);
+        setTimeout(iniciarRealtime5E, 1500);
     } else if (page === 'avaliador-5e') {
         if (typeof initAvaliador5E === 'function') setTimeout(initAvaliador5E, 100);
     } else if (page === 'user-profile') {
@@ -5095,7 +5365,7 @@ async function updateAdminDashboard() {
 
         // 2. Busca avaliações 5 Estrelas
         var resAv = await supabaseClient.from('avaliacoes_mensais')
-            .select('colaborador_id, competencia, nota_monitoria, nota_cliente, nota_final, colab')
+            .select('colaborador_id, colaborador_nome, competencia, nota_monitoria, nota_cliente, nota_final')
             .order('competencia', { ascending: false });
 
         var avaliacoes = (resAv.data && !resAv.error) ? resAv.data : [];
@@ -5162,7 +5432,7 @@ async function adminCarregar5E() {
     var sel = document.getElementById('admin5EFiltroMes');
     var filtro = sel ? sel.value : '';
     var query = supabaseClient.from('avaliacoes_mensais')
-        .select('colaborador_id, competencia, nota_monitoria, nota_cliente, nota_final, colab')
+        .select('colaborador_id, colaborador_nome, competencia, nota_monitoria, nota_cliente, nota_final')
         .order('competencia', { ascending: false });
     if (filtro) query = query.eq('competencia', filtro);
     var res = await query;
@@ -5188,7 +5458,7 @@ function adminRender5ETable(avaliacoes, filtroMes) {
     dados.forEach(function(a) {
         var nf = Number(a.nota_final);
         var tr = document.createElement('tr');
-        tr.innerHTML = '<td><strong>' + escapeHtml(a.colab || '') + '</strong></td>'
+        tr.innerHTML = '<td><strong>' + escapeHtml(a.colaborador_nome || '') + '</strong></td>'
             + '<td>' + compBR(a.competencia) + '</td>'
             + '<td style="text-align:center;">' + Number(a.nota_monitoria).toFixed(2).replace('.',',') + '</td>'
             + '<td style="text-align:center;">' + Number(a.nota_cliente).toFixed(2).replace('.',',') + '</td>'
@@ -6261,6 +6531,29 @@ function matIconeTipo(tipo) {
     return map[tipo] || { icon: 'fa-file', bg: 'var(--cinza-claro)', cor: 'var(--cinza)' };
 }
 
+// Filtra os módulos disponíveis no select de acordo com o role do usuário
+function matFiltrarModulosPorRole() {
+    var permitidos = getModulosPermitidos();
+    if (!permitidos) return; // admin vê tudo
+    var sel = document.getElementById('mat-modulo');
+    var sel2 = document.getElementById('mat-filtro-modulo');
+    [sel, sel2].forEach(function(s) {
+        if (!s) return;
+        Array.from(s.options).forEach(function(opt) {
+            if (!opt.value) return; // mantém placeholder
+            opt.style.display = permitidos.includes(opt.value) ? '' : 'none';
+            opt.disabled = !permitidos.includes(opt.value);
+        });
+        // Esconde optgroups vazios
+        Array.from(s.querySelectorAll('optgroup')).forEach(function(og) {
+            var temVisivel = Array.from(og.querySelectorAll('option')).some(function(o) {
+                return !o.disabled;
+            });
+            og.style.display = temVisivel ? '' : 'none';
+        });
+    });
+}
+
 // Callback ao selecionar arquivo
 function matArquivoSelecionado(input) {
     if (!input.files || !input.files[0]) return;
@@ -6485,6 +6778,395 @@ async function matRenderizarModulo(moduloId, containerId) {
     } catch(e) {
         console.warn('[Materiais] Erro ao renderizar módulo ' + moduloId + ':', e);
     }
+}
+
+
+
+
+// ==================== PAINEL DO GESTOR ====================
+
+var gestorDados = []; // todos os lançamentos
+var gestorChart = null; // instância do Chart.js
+
+// Carrega todos os dados do Supabase e popula o painel
+async function gestorCarregarDados() {
+    if (!supabaseClient) initSupabase();
+    if (!supabaseClient) return;
+
+    try {
+        // Busca todas as avaliações
+        var res = await supabaseClient
+            .from('avaliacoes_mensais')
+            .select('colaborador_id, colaborador_nome, competencia, nota_monitoria, nota_cliente, nota_final')
+            .order('competencia', { ascending: true });
+
+        if (res.error) {
+            console.error('[Gestor] Erro avaliacoes_mensais:', res.error);
+            // Mostra erro na tela do gestor
+            var tbody = document.getElementById('g-tabela-body');
+            if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#dc2626;">'
+                + '<b>Erro ao carregar dados:</b> ' + res.error.message + '<br>'
+                + '<small style="color:var(--cinza);">Verifique a policy RLS de avaliacoes_mensais para role gestor/diretora</small>'
+                + '</td></tr>';
+            var rankEl = document.getElementById('g-ranking-lista');
+            if (rankEl) rankEl.innerHTML = '<div style="padding:20px;text-align:center;color:#dc2626;">Erro: ' + res.error.message + '</div>';
+            ['g-total-colab','g-media-geral','g-count-5e','g-count-subindo'].forEach(function(id){
+                var el = document.getElementById(id);
+                if (el) el.textContent = '!';
+            });
+            return;
+        }
+        gestorDados = res.data || [];
+        if (gestorDados.length === 0) {
+            var tbody2 = document.getElementById('g-tabela-body');
+            if (tbody2) tbody2.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--cinza);">Nenhum lançamento encontrado no banco.</td></tr>';
+            ['g-total-colab','g-media-geral','g-count-5e','g-count-subindo'].forEach(function(id){
+                var el = document.getElementById(id);
+                if (el) el.textContent = '0';
+            });
+        }
+
+        // Popula select de meses
+        var meses = [...new Set(gestorDados.map(function(d){ return d.competencia; }))].sort();
+        var selMes = document.getElementById('g-filtro-mes');
+        if (selMes) {
+            var mesAtual = selMes.value;
+            selMes.innerHTML = '<option value="">Todos os meses</option>';
+            var nomesMes = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            meses.forEach(function(m) {
+                var p = m.split('-');
+                selMes.innerHTML += '<option value="'+m+'">' + nomesMes[parseInt(p[1])] + ' ' + p[0] + '</option>';
+            });
+            if (mesAtual) selMes.value = mesAtual;
+        }
+
+        // Popula select de colaboradores
+        var colabs = [...new Set(gestorDados.map(function(d){ return d.colaborador_nome; }))].sort();
+        var selColab = document.getElementById('g-filtro-colab');
+        if (selColab) {
+            var colabAtual = selColab.value;
+            selColab.innerHTML = '<option value="">Todos</option>';
+            colabs.forEach(function(c) {
+                selColab.innerHTML += '<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>';
+            });
+            if (colabAtual) selColab.value = colabAtual;
+        }
+
+        // Cards de visão geral
+        var mesMaisRecente = meses[meses.length - 1] || '';
+        var dadosMesRecente = gestorDados.filter(function(d){ return d.competencia === mesMaisRecente; });
+
+        var totalColab = colabs.length;
+        var mediaGeral = dadosMesRecente.length > 0
+            ? (dadosMesRecente.reduce(function(s,d){ return s + Number(d.nota_final); }, 0) / dadosMesRecente.length).toFixed(2).replace('.', ',')
+            : '—';
+        var count5E = dadosMesRecente.filter(function(d){ return Number(d.nota_final) >= 4.80; }).length;
+
+        // Tendência: quem melhorou em relação ao mês anterior
+        var mesAnterior = meses.length >= 2 ? meses[meses.length - 2] : null;
+        var countSubindo = 0;
+        if (mesAnterior) {
+            dadosMesRecente.forEach(function(d) {
+                var ant = gestorDados.find(function(x){ return x.colaborador_nome === d.colaborador_nomeorador_nome && x.colaborador_nome === d.colaborador_nome && x.competencia === mesAnterior; });
+                if (ant && Number(d.nota_final) > Number(ant.nota_final)) countSubindo++;
+            });
+        }
+
+        var g = function(id){ return document.getElementById(id); };
+        if (g('g-total-colab')) g('g-total-colab').textContent = totalColab;
+        if (g('g-media-geral')) g('g-media-geral').textContent = mediaGeral;
+        if (g('g-count-5e')) g('g-count-5e').textContent = count5E;
+        if (g('g-count-subindo')) g('g-count-subindo').textContent = countSubindo || '—';
+
+        // Ranking e tabela
+        gestorRenderRanking(dadosMesRecente, mesMaisRecente);
+        gestorRenderTabela();
+        gestorRenderGrafico();
+
+    } catch(e) {
+        console.error('[Gestor] Erro:', e);
+    }
+}
+
+// Renderiza o gráfico de evolução do colaborador selecionado
+function gestorRenderGrafico() {
+    var selColab = document.getElementById('g-filtro-colab');
+    var colabSel = selColab ? selColab.value : '';
+    var canvas = document.getElementById('g-grafico-canvas');
+    if (!canvas) return;
+
+    // Filtra dados do colaborador selecionado
+    var dados;
+    if (colabSel) {
+        dados = gestorDados.filter(function(d){ return d.colaborador_nome === colabSel; });
+    } else {
+        // Sem seleção: mostra média mensal da equipe
+        var meses = [...new Set(gestorDados.map(function(d){ return d.competencia; }))].sort();
+        dados = meses.map(function(m) {
+            var dMes = gestorDados.filter(function(d){ return d.competencia === m; });
+            var media = dMes.reduce(function(s,d){ return s + Number(d.nota_final); }, 0) / dMes.length;
+            return { competencia: m, nota_final: media, colaborador_nome: 'Média da equipe' };
+        });
+    }
+
+    dados = dados.sort(function(a,b){ return a.competencia.localeCompare(b.competencia); });
+
+    var nomesMes = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    var labels = dados.map(function(d) {
+        var p = d.competencia.split('-');
+        return nomesMes[parseInt(p[1])] + '/' + p[0].slice(2);
+    });
+    var valores = dados.map(function(d){ return Number(d.nota_final); });
+
+    // Cores por faixa
+    var pointColors = valores.map(function(v) {
+        return v >= 4.80 ? '#f59e0b' : v >= 4.50 ? '#1DBCB0' : '#94a3b8';
+    });
+
+    if (gestorChart) {
+        gestorChart.destroy();
+        gestorChart = null;
+    }
+
+    var ctx = canvas.getContext('2d');
+    gestorChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: colabSel || 'Média da equipe',
+                data: valores,
+                borderColor: '#1DBCB0',
+                backgroundColor: 'rgba(29,188,176,0.08)',
+                borderWidth: 2.5,
+                pointBackgroundColor: pointColors,
+                pointBorderColor: pointColors,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                tension: 0.3,
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            var v = ctx.parsed.y;
+                            var faixa = v >= 4.80 ? '🏆 5 Estrelas' : v >= 4.50 ? '⭐ Excelência' : '📊 Em construção';
+                            return ' ' + v.toFixed(2).replace('.',',') + ' — ' + faixa;
+                        }
+                    }
+                },
+                annotation: {}
+            },
+            scales: {
+                y: {
+                    min: 4.0,
+                    max: 5.0,
+                    ticks: {
+                        stepSize: 0.1,
+                        callback: function(v) { return v.toFixed(1).replace('.',','); }
+                    },
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Linhas de referência via CSS overlay
+    var wrap = document.getElementById('g-grafico-wrap');
+    var linesEl = document.getElementById('g-grafico-lines');
+    if (!linesEl && wrap) {
+        linesEl = document.createElement('div');
+        linesEl.id = 'g-grafico-lines';
+        linesEl.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;';
+        wrap.appendChild(linesEl);
+    }
+}
+
+// Renderiza o ranking do mês
+function gestorRenderRanking(dados, mesLabel) {
+    var lista = document.getElementById('g-ranking-lista');
+    var label = document.getElementById('g-ranking-mes-label');
+    if (!lista) return;
+
+    var nomesMes = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    if (label && mesLabel) {
+        var p = mesLabel.split('-');
+        label.textContent = nomesMes[parseInt(p[1])] + ' ' + p[0];
+    }
+
+    var ordenado = dados.slice().sort(function(a,b){ return Number(b.nota_final) - Number(a.nota_final); });
+
+    if (ordenado.length === 0) {
+        lista.innerHTML = '<div style="text-align:center;padding:24px;color:var(--cinza);">Nenhum lançamento neste mês.</div>';
+        return;
+    }
+
+    var html = '';
+    ordenado.forEach(function(d, i) {
+        var nf = Number(d.nota_final);
+        var medalha = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1) + 'º';
+        var faixa = nf >= 4.80 ? { label:'5 Estrelas', bg:'#FBF1DF', cor:'#B97516' }
+                  : nf >= 4.50 ? { label:'Excelência', bg:'var(--turquesa-claro)', cor:'#0F6E56' }
+                  : { label:'Em construção', bg:'#f0f2f4', cor:'#9aacac' };
+
+        // Barra de progresso visual
+        var pct = Math.max(0, Math.min(100, ((nf - 4.0) / 1.0) * 100));
+
+        html += '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:white;border:1.5px solid var(--borda);border-radius:12px;">'
+            + '<div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">' + medalha + '</div>'
+            + '<div style="flex:1;min-width:0;">'
+            + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+            + '<span style="font-size:13px;font-weight:600;color:var(--azul-escuro);">' + d.colaborador_nome + '</span>'
+            + '<div style="display:flex;align-items:center;gap:8px;">'
+            + '<span style="font-size:17px;font-weight:700;font-family:Oswald,sans-serif;color:var(--azul-escuro);">' + nf.toFixed(2).replace('.',',') + '</span>'
+            + '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+faixa.bg+';color:'+faixa.cor+';">' + faixa.label + '</span>'
+            + '</div></div>'
+            + '<div style="height:6px;background:#f0f2f4;border-radius:50px;overflow:hidden;">'
+            + '<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#1DBCB0,#0891b2);border-radius:50px;transition:width .5s;"></div>'
+            + '</div></div></div>';
+    });
+    lista.innerHTML = html;
+}
+
+// Renderiza a tabela completa com filtros
+function gestorRenderTabela() {
+    var tbody = document.getElementById('g-tabela-body');
+    if (!tbody) return;
+
+    var selMes = document.getElementById('g-filtro-mes');
+    var filtroMes = selMes ? selMes.value : '';
+    var dados = filtroMes ? gestorDados.filter(function(d){ return d.competencia === filtroMes; }) : gestorDados;
+    dados = dados.slice().sort(function(a,b){
+        return a.competencia.localeCompare(b.competencia) || a.colaborador_nome.localeCompare(b.colaborador_nome);
+    });
+
+    if (dados.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--cinza);">Nenhum dado encontrado.</td></tr>';
+        return;
+    }
+
+    var nomesMes = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    function compBR(iso) { var p = iso.split('-'); return nomesMes[parseInt(p[1])] + ' ' + p[0]; }
+    function tagFaixa(n) {
+        if(n>=4.80) return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#FBF1DF;color:#B97516;">🏆 5 Estrelas</span>';
+        if(n>=4.50) return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">⭐ Excelência</span>';
+        return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#f0f2f4;color:#9aacac;">Em construção</span>';
+    }
+
+    // Calcula tendência por colaborador
+    var tendMap = {};
+    var mesesList = [...new Set(gestorDados.map(function(d){ return d.competencia; }))].sort();
+    var colabs2 = [...new Set(gestorDados.map(function(d){ return d.colaborador_nome; }))];
+    colabs2.forEach(function(c) {
+        var hist = gestorDados.filter(function(d){ return d.colaborador_nome === c; })
+            .sort(function(a,b){ return a.competencia.localeCompare(b.competencia); });
+        if (hist.length >= 2) {
+            var ult = Number(hist[hist.length-1].nota_final);
+            var pen = Number(hist[hist.length-2].nota_final);
+            tendMap[c] = ult > pen + 0.005 ? '↑' : ult < pen - 0.005 ? '↓' : '→';
+        } else {
+            tendMap[c] = '—';
+        }
+    });
+
+    tbody.innerHTML = '';
+    dados.forEach(function(d) {
+        var nf = Number(d.nota_final);
+        var tend = tendMap[d.colaborador_nome] || '—';
+        var tendCor = tend === '↑' ? '#059669' : tend === '↓' ? '#dc2626' : '#94a3b8';
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td><strong>' + d.colaborador_nome + '</strong></td>'
+            + '<td>' + compBR(d.competencia) + '</td>'
+            + '<td style="text-align:center;">' + Number(d.nota_monitoria).toFixed(2).replace('.',',') + '</td>'
+            + '<td style="text-align:center;">' + Number(d.nota_cliente).toFixed(2).replace('.',',') + '</td>'
+            + '<td style="text-align:center;font-family:Oswald,sans-serif;font-size:16px;font-weight:700;color:var(--azul-escuro);">' + nf.toFixed(2).replace('.',',') + '</td>'
+            + '<td>' + tagFaixa(nf) + '</td>'
+            + '<td style="text-align:center;font-size:16px;font-weight:700;color:'+tendCor+';">' + tend + '</td>';
+        tbody.appendChild(tr);
+    });
+}
+
+// ==================== SUPABASE REALTIME ====================
+
+var realtimeChannel = null;
+
+// Ativa o Realtime para o colaborador receber notificação quando nota for lançada
+async function iniciarRealtime5E() {
+    if (!supabaseClient || !currentUser) return;
+    if (!currentUser.avaliado) return; // só para quem é avaliado
+    if (realtimeChannel) return; // já ativo
+
+    try {
+        var sess = await supabaseClient.auth.getSession();
+        if (!sess || !sess.data || !sess.data.session) return;
+        var userId = sess.data.session.user.id;
+
+        realtimeChannel = supabaseClient
+            .channel('avaliacoes_' + userId)
+            .on('postgres_changes', {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'avaliacoes_mensais',
+                filter: 'colaborador_id=eq.' + userId
+            }, function(payload) {
+                var nf = Number(payload.new.nota_final);
+                var faixa = nf >= 4.80 ? '🏆 5 Estrelas' : nf >= 4.50 ? '⭐ Excelência' : '📊 Em construção';
+                var nfFmt = nf.toFixed(2).replace('.', ',');
+                showNotification('Nova avaliação lançada! Nota: ' + nfFmt + ' — ' + faixa, 'success');
+                // Atualiza a tela do 5 Estrelas se estiver aberta
+                if (document.getElementById('page-cinco-estrelas') &&
+                    document.getElementById('page-cinco-estrelas').classList.contains('active')) {
+                    carregar5EstrelasSupabase();
+                }
+                // Se atingiu 5 Estrelas, mostra a comemoração
+                if (nf >= 4.80 && typeof lancarConfetes5E === 'function') {
+                    setTimeout(lancarConfetes5E, 500);
+                }
+            })
+            .subscribe(function(status) {
+                if (status === 'SUBSCRIBED') {
+                    console.log('[Realtime] Canal 5 Estrelas ativo para', currentUser.email);
+                }
+            });
+    } catch(e) {
+        console.warn('[Realtime] Erro ao iniciar:', e.message);
+    }
+}
+
+// Para o Realtime ao fazer logout
+function pararRealtime() {
+    if (realtimeChannel && supabaseClient) {
+        supabaseClient.removeChannel(realtimeChannel);
+        realtimeChannel = null;
+    }
+}
+
+// ==================== SUB-ADMIN POR ÁREA ====================
+
+// Retorna os módulos que o role atual pode gerenciar
+function getModulosPermitidos() {
+    var role = currentRole || (currentUser && currentUser.role) || 'user';
+    var mapa = {
+        'admin': null, // null = todos
+        'admin-juridico': ['mod-jur-1','mod-jur-2','mod-jur-3','mod-jur-4'],
+        'admin-compliance': ['mod-comp-1','mod-comp-2','mod-comp-3','mod-comp-4','mod-comp-5'],
+        'admin-onboarding': ['mod-onboarding-1','mod-onboarding-2','mod-onboarding-3','mod-onboarding-4'],
+        'admin-relacionamento': ['mod-rel-1','mod-rel-2','mod-rel-3','mod-rel-4','mod-rel-5','mod-rel-6','mod-rel-7','mod-rel-8','mod-rel-9'],
+    };
+    return mapa[role] !== undefined ? mapa[role] : [];
+}
+
+// Verifica se o usuário atual é algum tipo de admin
+function isAnyAdmin() {
+    var role = currentRole || (currentUser && currentUser.role) || '';
+    return role === 'admin' || role.startsWith('admin-');
 }
 
 // ==================== FOTO DE PERFIL (SUPABASE STORAGE) ====================
@@ -8051,7 +8733,7 @@ function av5RenderLista(){
         var tag = r.editado ? ' <span style="font-size:10px;color:#B97516;background:#FBF1DF;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:6px;">editado</span>' : '';
         var metaEdit = r.editado ? ' &middot; editado '+r.editadoEm : '';
         html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;'+borda+'font-size:13px;">';
-        html += '<div><div style="color:var(--azul-escuro);font-weight:600;">'+r.colab+tag+'</div>';
+        html += '<div><div style="color:var(--azul-escuro);font-weight:600;">'+r.colaborador_nome+tag+'</div>';
         html += '<div style="font-size:11px;color:var(--cinza);margin-top:2px;">'+r.comp+' &middot; por '+r.por+' &middot; '+r.em+metaEdit+'</div></div>';
         html += '<div style="display:flex;align-items:center;gap:12px;"><span style="font-family:\'Oswald\',sans-serif;font-size:17px;font-weight:600;color:var(--azul-medio);">'+av5Fmt(r.nf)+'</span>';
         html += '<button onclick="av5Corrigir(\''+r.id+'\')" style="font-size:12px;color:var(--turquesa);font-weight:600;cursor:pointer;background:none;border:none;font-family:\'Inter\',sans-serif;">corrigir</button></div></div>';
@@ -8066,17 +8748,17 @@ function av5Corrigir(id){
     // Para o novo seletor visual: busca o colaborador pelo nome nos dados carregados
     var emailEncontrado = '';
     if(window.av5ColabData){
-        var found = window.av5ColabData.filter(function(p){ return p.nome === r.colab; })[0];
+        var found = window.av5ColabData.filter(function(p){ return p.nome === r.colaborador_nome; })[0];
         if(found){ emailEncontrado = found.email; }
     }
     // Atualiza o input hidden
-    document.getElementById('av5-colab').value = emailEncontrado || r.colab;
+    document.getElementById('av5-colab').value = emailEncontrado || r.colaborador_nome;
     // Atualiza o display visual
     var labelEl = document.getElementById('av5-colab-label');
     var avatarEl = document.getElementById('av5-colab-avatar');
-    if(labelEl){ labelEl.textContent = r.colab; labelEl.style.color = 'var(--azul-escuro)'; }
+    if(labelEl){ labelEl.textContent = r.colaborador_nome; labelEl.style.color = 'var(--azul-escuro)'; }
     if(avatarEl && window.av5ColabData){
-        var foundP = window.av5ColabData.filter(function(p){ return p.nome === r.colab; })[0];
+        var foundP = window.av5ColabData.filter(function(p){ return p.nome === r.colaborador_nome; })[0];
         if(foundP){
             var iniciais = foundP.nome.split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase();
             var cores = ['#1DBCB0','#147878','#003C50','#0891b2','#0d9488','#0f766e','#065f46','#1d4ed8'];
@@ -8119,61 +8801,54 @@ function initAvaliador5E(){
 window.av5ColabData = [];
 window.av5ColabAberto = false;
 
-// Carrega a lista real de colaboradores (profiles) para o seletor visual do avaliador.
+// Carrega colaboradores via RPC SECURITY DEFINER — bypassa RLS completamente
 async function av5CarregarColaboradores(){
     var lista = document.getElementById('av5-colab-list');
     if(!lista) return;
-    lista.innerHTML = '<div style="padding:12px;font-size:13px;color:var(--cinza);text-align:center;">Carregando...</div>';
+    lista.innerHTML = '<div style="padding:12px;font-size:13px;color:var(--cinza);text-align:center;"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
     try {
         if (!supabaseClient) initSupabase();
-        if (!supabaseClient) { lista.innerHTML = '<div style="padding:12px;font-size:13px;color:#dc2626;text-align:center;">Supabase indispon\u00edvel</div>'; return; }
+        if (!supabaseClient) { lista.innerHTML = '<div style="padding:12px;color:#dc2626;text-align:center;">Supabase indisponível</div>'; return; }
 
-        // Garante que a sessão está ativa antes de qualquer query
-        var sessCheck = await supabaseClient.auth.getSession();
-        var temSessao = !!(sessCheck && sessCheck.data && sessCheck.data.session);
-        console.log('[5E] Sessão ativa:', temSessao, sessCheck?.data?.session?.user?.email);
+        var dados = null;
+        var erroMsg = '';
 
-        if (!temSessao) {
-            lista.innerHTML = '<div style="padding:12px;font-size:12px;color:#dc2626;text-align:center;">Sem sess\u00e3o ativa. Fa\u00e7a login novamente.</div>';
+        // Tentativa 1: RPC SECURITY DEFINER (bypassa RLS)
+        var r1 = await supabaseClient.rpc('listar_colaboradores_avaliados');
+        console.log('[5E] RPC:', r1.error ? r1.error.message : 'OK', 'count:', r1.data ? r1.data.length : 0);
+        if (!r1.error && r1.data && r1.data.length > 0) {
+            dados = r1.data;
+        } else {
+            erroMsg = r1.error ? r1.error.message : '';
+            // Tentativa 2: query direta
+            var r2 = await supabaseClient.from('profiles')
+                .select('id, email, nome, role')
+                .eq('role', 'user')
+                .order('nome', { ascending: true });
+            console.log('[5E] Query direta:', r2.error ? r2.error.message : 'OK', 'count:', r2.data ? r2.data.length : 0);
+            if (!r2.error && r2.data && r2.data.length > 0) {
+                dados = r2.data;
+            } else if (r2.error) {
+                erroMsg = r2.error.message;
+            }
+        }
+
+        if (!dados || dados.length === 0) {
+            lista.innerHTML = '<div style="padding:12px;font-size:12px;color:#dc2626;text-align:center;line-height:1.6;">'
+                + '<b>Sem colaboradores</b>' + (erroMsg ? '<br><span style="color:var(--cinza);">' + erroMsg + '</span>' : '') + '</div>';
             return;
         }
 
-        // Busca todos os profiles
-        var res = await supabaseClient.from('profiles')
-            .select('id, email, nome, name, role')
-            .order('nome', { ascending: true });
-
-        console.log('[5E] profiles query result:', {
-            error: res.error,
-            count: res.data ? res.data.length : 0,
-            data: res.data ? res.data.slice(0,3) : null
+        window.av5ColabData = dados.filter(function(p){ return p.email; }).map(function(p){
+            var nome = (p.nome && p.nome.trim() && p.nome !== 'Novo usuário')
+                ? p.nome.trim() : p.email;
+            return { email: p.email, nome: nome, avatar: null };
         });
-
-        if (res.error) {
-            lista.innerHTML = '<div style="padding:12px;font-size:12px;color:#dc2626;text-align:center;line-height:1.5;"><b>Erro RLS:</b> ' + res.error.message + '<br><span style="color:var(--cinza)">C\u00f3digo: ' + (res.error.code||'?') + '</span></div>';
-            console.error('[5E] profiles RLS error:', res.error);
-            return;
-        }
-        if (!res.data || res.data.length === 0) {
-            lista.innerHTML = '<div style="padding:12px;font-size:13px;color:#dc2626;text-align:center;">Supabase retornou 0 registros.<br><span style="font-size:11px;color:var(--cinza)">Policy RLS bloqueia a leitura. Veja o console (F12).</span></div>';
-            return;
-        }
-        // Filtra: exclui avaliador e admin da lista de avaliados.
-        window.av5ColabData = res.data.filter(function(p){
-            return p.email && p.role !== 'admin' && p.role !== 'avaliador';
-        }).map(function(p){
-            return {
-                email: p.email,
-                nome: (p.nome && p.nome.trim() && p.nome !== 'Novo usu\u00e1rio') ? p.nome.trim() : (p.name ? p.name.trim() : p.email),
-                avatar: null
-            };
-        });
-        console.log('[5E] Colaboradores após filtro:', window.av5ColabData.length);
+        console.log('[5E] Colaboradores carregados:', window.av5ColabData.length);
         av5ColabRenderLista(window.av5ColabData);
     } catch(e){
-        var lista2 = document.getElementById('av5-colab-list');
-        if(lista2) lista2.innerHTML = '<div style="padding:12px;font-size:12px;color:#dc2626;text-align:center;">Exce\u00e7\u00e3o: ' + e.message + '</div>';
-        console.error('[5E] av5CarregarColaboradores exception:', e);
+        console.error('[5E] Exceção:', e);
+        if(lista) lista.innerHTML = '<div style="padding:12px;font-size:12px;color:#dc2626;text-align:center;">Erro: ' + e.message + '</div>';
     }
 }
 
@@ -8219,6 +8894,10 @@ function av5ColabToggle(){
     var display = document.getElementById('av5-colab-display');
     var chev = document.getElementById('av5-colab-chevron');
     var busca = document.getElementById('av5-colab-search');
+    // Se ainda não carregou, tenta novamente
+    if (!window.av5ColabData || window.av5ColabData.length === 0) {
+        av5CarregarColaboradores();
+    }
     window.av5ColabAberto = !window.av5ColabAberto;
     if(window.av5ColabAberto){
         dd.style.display = 'flex';
