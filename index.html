@@ -1227,6 +1227,7 @@ img, iframe, video, svg { max-width: 100%; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <!-- base target removido -->
@@ -1313,7 +1314,8 @@ img, iframe, video, svg { max-width: 100%; }
 
     <nav class="sidebar-nav">
         <!-- MENU PRINCIPAL -->
-        <div class="nav-section" id="mainMenuSection">
+        <!-- MENU COLABORADOR -->
+        <div class="nav-section" id="mainMenuSection" style="display:none;">
             <div class="nav-section-title">Menu Principal</div>
             <div class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
                 <i class="fas fa-home"></i> Dashboard
@@ -1321,40 +1323,70 @@ img, iframe, video, svg { max-width: 100%; }
             <div class="nav-item" data-page="user-profile" onclick="navigateTo('user-profile')">
                 <i class="fas fa-user-circle"></i> Meu Perfil
             </div>
-            <div class="nav-item" data-page="trilhas" onclick="toggleSubmenu('trilhas-submenu', this)">
-                <i class="fas fa-route"></i> Trilhas de Aprendizagem
-                <i class="fas fa-chevron-down chevron"></i>
+            <!-- Trilhas: só para quem tem acesso a conteúdo -->
+            <div id="nav-trilhas-wrap">
+                <div class="nav-item" data-page="trilhas" onclick="toggleSubmenu('trilhas-submenu', this)">
+                    <i class="fas fa-route"></i> Trilhas de Aprendizagem
+                    <i class="fas fa-chevron-down chevron"></i>
+                </div>
+                <div class="nav-submenu" id="trilhas-submenu">
+                    <div class="nav-item" data-page="trilha-onboarding" onclick="navigateTo('trilha-onboarding')">
+                        <i class="fas fa-compass"></i> Onboarding Relacionamento
+                        <span class="check-indicator"><i class="fas fa-check"></i></span>
+                    </div>
+                    <div class="nav-item" data-page="trilha-relacionamento" onclick="navigateTo('trilha-relacionamento')">
+                        <i class="fas fa-heart"></i> Relacionamento
+                        <span class="check-indicator"><i class="fas fa-check"></i></span>
+                    </div>
+                    <div class="nav-item" data-page="trilha-juridico" id="nav-trilha-juridico" onclick="navigateTo('trilha-juridico')">
+                        <i class="fas fa-balance-scale"></i> Jurídico
+                        <span class="check-indicator"><i class="fas fa-check"></i></span>
+                    </div>
+                    <div class="nav-item" data-page="trilha-compliance" id="nav-trilha-compliance" onclick="navigateTo('trilha-compliance')">
+                        <i class="fas fa-shield-alt"></i> Compliance
+                        <span class="check-indicator"><i class="fas fa-check"></i></span>
+                    </div>
+                </div>
             </div>
-            <div class="nav-submenu" id="trilhas-submenu">
-                <div class="nav-item" data-page="trilha-onboarding" onclick="navigateTo('trilha-onboarding')">
-                    <i class="fas fa-compass"></i> Onboarding Relacionamento
-                    <span class="check-indicator"><i class="fas fa-check"></i></span>
-                </div>
-                <div class="nav-item" data-page="trilha-relacionamento" onclick="navigateTo('trilha-relacionamento')">
-                    <i class="fas fa-heart"></i> Relacionamento
-                    <span class="check-indicator"><i class="fas fa-check"></i></span>
-                </div>
-                <div class="nav-item" data-page="trilha-juridico" onclick="navigateTo('trilha-juridico')">
-                    <i class="fas fa-balance-scale"></i> Jurídico
-                    <span class="check-indicator"><i class="fas fa-check"></i></span>
-                </div>
-                <div class="nav-item" data-page="trilha-compliance" onclick="navigateTo('trilha-compliance')">
-                    <i class="fas fa-shield-alt"></i> Compliance
-                    <span class="check-indicator"><i class="fas fa-check"></i></span>
-                </div>
-            </div>
-            <div class="nav-item" data-page="faq" onclick="navigateTo('faq')">
+            <div class="nav-item" id="nav-faq" data-page="faq" onclick="navigateTo('faq')">
                 <i class="fas fa-question-circle"></i> FAQ — Perguntas Frequentes
             </div>
-            <div class="nav-item" data-page="certificados" onclick="navigateTo('certificados')">
+            <div class="nav-item" id="nav-certificados" data-page="certificados" onclick="navigateTo('certificados')">
                 <i class="fas fa-certificate"></i> Certificados
             </div>
-            <div class="nav-item" data-page="central-conhecimento" onclick="navigateTo('central-conhecimento')"><i class="fas fa-book"></i> Central de Conhecimento</div>
-            <div class="nav-item" data-page="gestor" onclick="navigateTo('gestor')" id="nav-gestor" style="display:none;"><i class="fas fa-chart-line"></i> Painel do Gestor</div>
+            <!-- 5 Estrelas: só para avaliados -->
+            <div class="nav-item" id="nav-cinco-estrelas" data-page="cinco-estrelas" onclick="navigateTo('cinco-estrelas')" style="display:none;">
+                <i class="fas fa-star"></i> Meu 5 Estrelas
+            </div>
+            <!-- Painel do Gestor: só para gestoras -->
+            <div class="nav-item" id="nav-gestor" data-page="gestor" onclick="navigateTo('gestor')" style="display:none;">
+                <i class="fas fa-chart-line"></i> Painel do Gestor
+            </div>
+            <!-- Central de Conhecimento: oculta até ter conteúdo -->
+            <div class="nav-item" data-page="central-conhecimento" onclick="navigateTo('central-conhecimento')" id="nav-central-conhecimento" style="display:none;">
+                <i class="fas fa-book"></i> Central de Conhecimento
+            </div>
         </div>
 
-        <!-- MENU ADMIN (hidden by default) -->
-        <div class="nav-section" id="adminMenuSection" style="display:none">
+        <!-- MENU AVALIADOR -->
+        <div class="nav-section" id="avaliadorMenuSection" style="display:none;">
+            <div class="nav-section-title">Avaliação</div>
+            <div class="nav-item" data-page="user-profile" onclick="navigateTo('user-profile')">
+                <i class="fas fa-user-circle"></i> Meu Perfil
+            </div>
+            <div class="nav-item" data-page="avaliador-5e" onclick="navigateTo('avaliador-5e')">
+                <i class="fas fa-star"></i> Lançar Notas 5 Estrelas
+            </div>
+            <div class="nav-item" data-page="trilha-onboarding" onclick="navigateTo('trilha-onboarding')">
+                <i class="fas fa-route"></i> Trilhas de Aprendizagem
+            </div>
+            <div class="nav-item" data-page="faq" onclick="navigateTo('faq')">
+                <i class="fas fa-question-circle"></i> FAQ
+            </div>
+        </div>
+
+        <!-- MENU ADMIN -->
+        <div class="nav-section" id="adminMenuSection" style="display:none;">
             <div class="nav-section-title">Administração</div>
             <div class="nav-item" data-page="admin-dashboard" onclick="navigateTo('admin-dashboard')">
                 <i class="fas fa-chart-bar"></i> Painel Administrativo
@@ -1367,17 +1399,6 @@ img, iframe, video, svg { max-width: 100%; }
             </div>
             <div class="nav-item" data-page="admin-materiais" onclick="navigateTo('admin-materiais')" id="nav-admin-materiais">
                 <i class="fas fa-folder-open"></i> Gerenciar Materiais
-            </div>
-        </div>
-
-        <!-- MENU EXCLUSIVO DO AVALIADOR (Célula CS) — só lançamento/avaliação -->
-        <div class="nav-section" id="avaliadorMenuSection" style="display:none">
-            <div class="nav-section-title">Avaliação</div>
-            <div class="nav-item" data-page="avaliador-5e" onclick="navigateTo('avaliador-5e')">
-                <i class="fas fa-shield-halved"></i> Lançar Notas 5 Estrelas
-            </div>
-            <div class="nav-item" data-page="user-profile" onclick="navigateTo('user-profile')">
-                <i class="fas fa-user-circle"></i> Meu Perfil
             </div>
         </div>
     </nav>
@@ -1606,13 +1627,13 @@ img, iframe, video, svg { max-width: 100%; }
                     <div class="card-value">35h</div>
                     <div class="card-label">Horas de conteúdo</div>
                 </div>
-                <div class="dashboard-card animate-in delay-4">
+                <div class="dashboard-card animate-in delay-4" id="certCardWrap" style="display:none;">
                     <div class="card-header">
                         <div class="card-icon-d roxo"><i class="fas fa-certificate"></i></div>
-                        <span class="card-trend up"><i class="fas fa-arrow-up"></i> Aguardando</span>
+                        <span class="card-trend up"><i class="fas fa-check"></i> Conquistado</span>
                     </div>
                     <div class="card-value" id="statCertificados">0</div>
-                    <div class="card-label">Certificados disponíveis</div>
+                    <div class="card-label">Certificados emitidos</div>
                 </div>
             </div>
 
@@ -2057,9 +2078,21 @@ img, iframe, video, svg { max-width: 100%; }
                 <p>Registre as notas mensais de monitoria e avalia&ccedil;&atilde;o do cliente. O sistema calcula a nota final e a classifica&ccedil;&atilde;o automaticamente.</p>
             </div>
 
-            <div style="display:flex;gap:10px;align-items:flex-start;background:#fff8ec;border:1px solid #f3dca6;border-radius:12px;padding:12px 15px;font-size:13px;color:#8a6420;margin-bottom:22px;line-height:1.6;">
-                <span style="font-size:16px;">&#128274;</span>
-                <span>Seu acesso &eacute; exclusivo a esta &aacute;rea. Voc&ecirc; lan&ccedil;a e corrige as notas do programa 5 Estrelas &mdash; o conte&uacute;do dos cursos e trilhas da plataforma n&atilde;o fica dispon&iacute;vel para edi&ccedil;&atilde;o no seu perfil.</span>
+            <!-- Status do mês para o avaliador -->
+            <div id="av-status-mes" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;">
+                <div style="background:var(--azul-escuro);border-radius:14px;padding:16px;text-align:center;">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Avaliados este mês</div>
+                    <div id="av-count-lancados" style="font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:var(--turquesa);">—</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px;" id="av-count-total">de — colaboradores</div>
+                </div>
+                <div id="av-pendentes-card" style="background:#FEF9C3;border:1.5px solid #F59E0B;border-radius:14px;padding:16px;">
+                    <div style="font-size:11px;color:#92400e;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px;">⏳ Faltam avaliar</div>
+                    <div id="av-pendentes-lista" style="font-size:13px;color:#92400e;line-height:1.7;">Carregando...</div>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;background:var(--turquesa-claro);border:1px solid rgba(29,188,176,0.3);border-radius:12px;padding:12px 15px;font-size:13px;color:var(--azul-escuro);margin-bottom:22px;line-height:1.6;">
+                <i class="fas fa-star" style="color:var(--turquesa);font-size:16px;margin-top:1px;flex-shrink:0;"></i>
+                <span>Voc&ecirc; &eacute; respons&aacute;vel pela avalia&ccedil;&atilde;o dos colaboradores do Programa 5 Estrelas. Cada lan&ccedil;amento &eacute; notificado em tempo real ao colaborador avaliado.</span>
             </div>
 
             <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:18px;" id="av5-grid">
@@ -2088,7 +2121,7 @@ img, iframe, video, svg { max-width: 100%; }
                         </div>
                         <input type="hidden" id="av5-colab" value="">
                     </div>
-                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Compet&ecirc;ncia (m&ecirc;s/ano)</label><select id="av5-comp" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"><option>Janeiro / 2026</option><option>Fevereiro / 2026</option><option>Mar&ccedil;o / 2026</option><option>Abril / 2026</option><option>Maio / 2026</option><option>Junho / 2026</option><option selected>Julho / 2026</option><option>Agosto / 2026</option><option>Setembro / 2026</option><option>Outubro / 2026</option><option>Novembro / 2026</option><option>Dezembro / 2026</option></select></div>
+                    <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Compet&ecirc;ncia (m&ecirc;s/ano)</label><select id="av5-comp" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;"></select></div>
                     <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Data da avalia&ccedil;&atilde;o</label><input type="date" id="av5-data" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                         <div style="margin-bottom:15px;"><label style="display:block;font-size:12px;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;">Nota de Monitoria</label><input type="number" id="av5-mon" min="0" max="5" step="0.01" value="4.50" style="width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--azul-escuro);"></div>
@@ -2204,7 +2237,7 @@ img, iframe, video, svg { max-width: 100%; }
                 <h2><i class="fas fa-users" style="color:var(--turquesa);margin-right:8px;"></i>Colaboradores cadastrados</h2>
                 <table class="admin-table">
                     <thead>
-                        <tr><th>Nome</th><th>E-mail</th><th>Role</th><th>Avaliado</th><th>Status</th></tr>
+                        <tr><th>Nome</th><th>E-mail</th><th>Role</th><th>Avaliado</th><th>Status</th><th>Último acesso</th></tr>
                     </thead>
                     <tbody id="adminTableBody">
                         <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--cinza);"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>
@@ -2214,73 +2247,189 @@ img, iframe, video, svg { max-width: 100%; }
         </div>
 
         <!-- ==================== ADMIN CONTENT MANAGER ==================== -->
-        <!-- ==================== GESTOR / DIRETORA ==================== -->
-        <div class="page-section" id="page-gestor">
-            <div class="page-header">
-                <span class="badge" style="background:linear-gradient(135deg,#0891b2,#0369a1);color:white;"><i class="fas fa-chart-line"></i> Gestão</span>
-                <h1>Painel do Gestor</h1>
-                <p>Evolução real da equipe, dados do Programa 5 Estrelas e engajamento na plataforma. <button onclick="gestorCarregarDados()" style="background:none;border:none;color:var(--turquesa);font-size:12px;cursor:pointer;font-family:inherit;margin-left:8px;"><i class="fas fa-sync-alt"></i> Atualizar</button></p>
+        <!-- ==================== VISÃO EXECUTIVA — DIRETORA ==================== -->
+        <div class="page-section" id="page-executivo">
+            <div style="margin-bottom:24px;">
+                <span class="badge" style="background:linear-gradient(135deg,#003C50,#00566f);color:#1DBCB0;margin-bottom:10px;display:inline-flex;align-items:center;gap:6px;"><i class="fas fa-building"></i> Diretoria</span>
+                <h1 style="font-size:22px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;">Visão Executiva</h1>
+                <p style="font-size:13px;color:var(--cinza);">Canopus Construtora · Área de Relacionamento <button onclick="executivoCarregar()" style="background:none;border:none;color:var(--turquesa);font-size:12px;cursor:pointer;margin-left:8px;"><i class="fas fa-sync-alt"></i> Atualizar</button></p>
             </div>
 
-            <!-- Cards de visão geral -->
-            <div class="dashboard-grid" style="margin-bottom:20px;">
-                <div class="dashboard-card">
+            <!-- Cards executivos — 4 números que importam -->
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px;">
+                <div style="background:var(--azul-escuro);border-radius:16px;padding:20px;text-align:center;">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Média da empresa</div>
+                    <div id="exec-media" style="font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;color:var(--turquesa);line-height:1;">—</div>
+                    <div id="exec-media-tend" style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:6px;">vs mês anterior</div>
+                </div>
+                <div style="background:#fff;border:1.5px solid var(--borda);border-radius:16px;padding:20px;text-align:center;">
+                    <div style="font-size:11px;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">No 5 Estrelas</div>
+                    <div id="exec-count5e" style="font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;color:#F59E0B;line-height:1;">—</div>
+                    <div style="font-size:11px;color:var(--cinza);margin-top:6px;" id="exec-count5e-pct">colaboradores</div>
+                </div>
+                <div style="background:#fff;border:1.5px solid var(--borda);border-radius:16px;padding:20px;text-align:center;">
+                    <div style="font-size:11px;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Em risco</div>
+                    <div id="exec-risco" style="font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;color:#DC2626;line-height:1;">—</div>
+                    <div style="font-size:11px;color:var(--cinza);margin-top:6px;">abaixo de 4,50</div>
+                </div>
+                <div style="background:#fff;border:1.5px solid var(--borda);border-radius:16px;padding:20px;text-align:center;">
+                    <div style="font-size:11px;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Colaboradores</div>
+                    <div id="exec-total" style="font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;color:var(--azul-escuro);line-height:1;">—</div>
+                    <div style="font-size:11px;color:var(--cinza);margin-top:6px;">ativos na plataforma</div>
+                </div>
+            </div>
+
+            <!-- Alertas executivos -->
+            <div id="exec-alertas" style="display:none;margin-bottom:20px;"></div>
+
+            <!-- Insight do mês -->
+            <div id="exec-insight" style="display:none;margin-bottom:20px;background:linear-gradient(135deg,#003C50,#00566f);border-radius:16px;padding:20px 24px;">
+                <div style="font-size:11px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;"><i class="fas fa-lightbulb" style="color:#F59E0B;margin-right:6px;"></i>Insight do mês</div>
+                <div id="exec-insight-txt" style="font-size:14px;color:#fff;line-height:1.6;"></div>
+            </div>
+
+            <!-- Comparativo por área -->
+            <div class="admin-panel active">
+                <h2 style="margin-bottom:16px;font-size:15px;"><i class="fas fa-layer-group" style="color:var(--turquesa);margin-right:8px;"></i>Desempenho por Área</h2>
+                <div id="exec-areas" style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="text-align:center;padding:24px;color:var(--cinza);"><i class="fas fa-spinner fa-spin"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PAINEL DE GESTÃO (todos os perfis) ==================== -->
+        <div class="page-section" id="page-gestor">
+            <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                    <span class="badge" id="g-badge-role" style="background:linear-gradient(135deg,#0891b2,#0369a1);color:white;margin-bottom:8px;display:inline-flex;"><i class="fas fa-chart-line" style="margin-right:6px;"></i> <span id="g-badge-txt">Gestão</span></span>
+                    <h1 id="gestor-titulo">Painel de Gestão</h1>
+                    <p id="gestor-subtitulo" style="color:var(--cinza);font-size:14px;margin-top:4px;"></p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                    <button onclick="gestorCarregarDados()" style="padding:8px 14px;border:1.5px solid var(--borda);border-radius:8px;background:#fff;font-size:13px;font-family:'Inter',sans-serif;cursor:pointer;color:var(--cinza);display:flex;align-items:center;gap:6px;">
+                        <i class="fas fa-sync-alt"></i> Atualizar
+                    </button>
+                    <button onclick="gestorExportarCSV()" id="g-btn-exportar" style="padding:8px 14px;border:1.5px solid var(--turquesa);border-radius:8px;background:#fff;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;color:var(--turquesa);display:flex;align-items:center;gap:6px;">
+                        <i class="fas fa-file-excel"></i> Exportar Excel
+                    </button>
+                </div>
+            </div>
+
+            <!-- MURAL DE AVISOS (só admin/diretora/gerente postam) -->
+            <div id="g-mural-wrap" style="display:none;margin-bottom:18px;">
+                <div class="admin-panel active" style="border-left:4px solid var(--turquesa);">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                        <h2 style="margin:0;font-size:15px;"><i class="fas fa-bullhorn" style="color:var(--turquesa);margin-right:8px;"></i>Mural de Avisos</h2>
+                        <button id="g-mural-novo-btn" onclick="gestorMuralToggleForm()" style="padding:6px 12px;border:1.5px solid var(--turquesa);border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:var(--turquesa);">
+                            <i class="fas fa-plus"></i> Novo aviso
+                        </button>
+                    </div>
+                    <div id="g-mural-form" style="display:none;margin-bottom:12px;background:var(--cinza-claro);border-radius:10px;padding:14px;">
+                        <textarea id="g-mural-texto" placeholder="Digite o aviso para a equipe..." style="width:100%;min-height:70px;border:1.5px solid var(--borda);border-radius:8px;padding:10px;font-family:'Inter',sans-serif;font-size:13px;resize:vertical;box-sizing:border-box;"></textarea>
+                        <div style="display:flex;gap:8px;margin-top:8px;">
+                            <button onclick="gestorMuralPostar()" style="padding:7px 16px;background:var(--turquesa);border:none;border-radius:8px;color:white;font-size:13px;font-weight:600;cursor:pointer;">Publicar</button>
+                            <button onclick="gestorMuralToggleForm()" style="padding:7px 16px;background:#fff;border:1.5px solid var(--borda);border-radius:8px;font-size:13px;cursor:pointer;color:var(--cinza);">Cancelar</button>
+                        </div>
+                    </div>
+                    <div id="g-mural-lista" style="display:flex;flex-direction:column;gap:8px;">
+                        <div style="text-align:center;padding:16px;color:var(--cinza);font-size:13px;">Nenhum aviso publicado ainda.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALERTAS AUTOMÁTICOS -->
+            <div id="g-alertas-wrap" style="display:none;margin-bottom:18px;">
+                <div id="g-alertas-lista" style="display:flex;flex-direction:column;gap:8px;"></div>
+            </div>
+
+            <!-- CARDS DE MÉTRICAS -->
+            <div class="dashboard-grid" style="margin-bottom:18px;" id="g-cards-grid">
+                <div class="dashboard-card" id="g-card-total">
                     <div class="card-header"><div class="card-icon-d turquesa"><i class="fas fa-users"></i></div></div>
                     <div class="card-value" id="g-total-colab">—</div>
-                    <div class="card-label">Colaboradores avaliados</div>
+                    <div class="card-label" id="g-label-total">Colaboradores avaliados</div>
                 </div>
                 <div class="dashboard-card">
                     <div class="card-header"><div class="card-icon-d verde"><i class="fas fa-star"></i></div></div>
                     <div class="card-value" id="g-media-geral">—</div>
-                    <div class="card-label">Média geral da equipe</div>
+                    <div class="card-label">Média geral</div>
                 </div>
                 <div class="dashboard-card">
                     <div class="card-header"><div class="card-icon-d laranja"><i class="fas fa-trophy"></i></div></div>
                     <div class="card-value" id="g-count-5e">—</div>
-                    <div class="card-label">No 5 Estrelas (último mês)</div>
+                    <div class="card-label">No 5 Estrelas</div>
                 </div>
                 <div class="dashboard-card">
-                    <div class="card-header"><div class="card-icon-d roxo"><i class="fas fa-arrow-trend-up"></i></div></div>
-                    <div class="card-value" id="g-count-subindo">—</div>
-                    <div class="card-label">Com tendência de melhora</div>
+                    <div class="card-header"><div class="card-icon-d vermelho"><i class="fas fa-triangle-exclamation"></i></div></div>
+                    <div class="card-value" id="g-count-atencao" style="color:#dc2626;">—</div>
+                    <div class="card-label">Precisam de atenção</div>
                 </div>
             </div>
 
-            <!-- Filtros -->
-            <div class="admin-panel active" style="margin-bottom:18px;padding:16px 20px;">
-                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                    <label style="font-size:12px;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:.04em;">Filtrar por mês:</label>
+            <!-- COMPARATIVO POR ÁREA (só diretora e gerente) -->
+            <div id="g-comparativo-wrap" style="display:none;margin-bottom:18px;">
+                <div class="admin-panel active">
+                    <h2 style="margin-bottom:16px;"><i class="fas fa-layer-group" style="color:var(--turquesa);margin-right:8px;"></i>Comparativo por Área</h2>
+                    <div id="g-comparativo-lista" style="display:flex;flex-direction:column;gap:10px;"></div>
+                </div>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="admin-panel active" style="margin-bottom:18px;padding:14px 18px;">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                     <select id="g-filtro-mes" onchange="gestorCarregarDados()" style="padding:7px 12px;border:1.5px solid var(--borda);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;">
                         <option value="">Todos os meses</option>
                     </select>
-                    <label style="font-size:12px;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:.04em;margin-left:8px;">Colaborador:</label>
                     <select id="g-filtro-colab" onchange="gestorRenderGrafico()" style="padding:7px 12px;border:1.5px solid var(--borda);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--azul-escuro);background:#fff;">
-                        <option value="">Todos</option>
+                        <option value="">Todos os colaboradores</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Gráfico de evolução individual -->
+            <!-- GRÁFICO DE EVOLUÇÃO -->
             <div class="admin-panel active" style="margin-bottom:18px;">
                 <h2 style="margin-bottom:4px;"><i class="fas fa-chart-line" style="color:var(--turquesa);margin-right:8px;"></i>Evolução por Colaborador</h2>
-                <p style="font-size:13px;color:var(--cinza);margin-bottom:20px;">Selecione um colaborador para ver a curva de evolução mês a mês.</p>
-                <div id="g-grafico-wrap" style="position:relative;height:280px;width:100%;">
+                <p style="font-size:13px;color:var(--cinza);margin-bottom:16px;">Selecione um colaborador no filtro acima para ver a curva individual.</p>
+                <div id="g-grafico-wrap" style="position:relative;height:260px;width:100%;">
                     <canvas id="g-grafico-canvas"></canvas>
                 </div>
             </div>
 
-            <!-- Gráfico de ranking do último mês -->
+            <!-- CARDS INDIVIDUAIS (coordenadora/lider) -->
+            <div id="g-cards-equipe-wrap" style="display:none;margin-bottom:18px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                    <h2 style="font-size:15px;font-weight:700;color:var(--azul-escuro);margin:0;">
+                        <i class="fas fa-user-group" style="color:var(--turquesa);margin-right:8px;"></i>Status da Equipe
+                    </h2>
+                    <span style="font-size:12px;color:var(--cinza);">Clique para ver o histórico individual</span>
+                </div>
+                <div id="g-cards-equipe-lista" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;"></div>
+            </div>
+
+            <!-- RANKING COM HISTÓRICO CLICÁVEL -->
             <div class="admin-panel active" style="margin-bottom:18px;">
-                <h2 style="margin-bottom:4px;"><i class="fas fa-ranking-star" style="color:var(--turquesa);margin-right:8px;"></i>Ranking da Equipe</h2>
-                <p style="font-size:13px;color:var(--cinza);margin-bottom:16px;" id="g-ranking-mes-label">Último mês disponível</p>
-                <div id="g-ranking-lista" style="display:flex;flex-direction:column;gap:8px;">
-                    <div style="text-align:center;padding:24px;color:var(--cinza);"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                    <h2 style="margin:0;"><i class="fas fa-ranking-star" style="color:var(--turquesa);margin-right:8px;"></i>Ranking da Equipe</h2>
+                    <span style="font-size:12px;color:var(--cinza);" id="g-ranking-mes-label">Último mês disponível</span>
+                </div>
+                <div id="g-ranking-lista" style="display:flex;flex-direction:column;gap:8px;"></div>
+            </div>
+
+            <!-- MODAL HISTÓRICO INDIVIDUAL -->
+            <div id="g-modal-historico" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9000;align-items:center;justify-content:center;">
+                <div style="background:#fff;border-radius:16px;padding:28px;max-width:560px;width:90%;max-height:80vh;overflow-y:auto;position:relative;">
+                    <button onclick="gestorFecharHistorico()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--cinza);">&times;</button>
+                    <h3 id="g-modal-nome" style="font-size:18px;font-weight:700;color:var(--azul-escuro);margin-bottom:4px;"></h3>
+                    <p id="g-modal-dept" style="font-size:12px;color:var(--cinza);margin-bottom:16px;"></p>
+                    <div id="g-modal-cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;"></div>
+                    <h4 style="font-size:13px;font-weight:600;color:var(--azul-escuro);margin-bottom:10px;">Histórico de avaliações</h4>
+                    <div id="g-modal-historico-lista" style="display:flex;flex-direction:column;gap:6px;"></div>
                 </div>
             </div>
 
-            <!-- Tabela completa -->
+            <!-- TABELA COMPLETA -->
             <div class="admin-panel active">
-                <h2><i class="fas fa-table" style="color:var(--turquesa);margin-right:8px;"></i>Histórico Completo da Equipe</h2>
+                <h2><i class="fas fa-table" style="color:var(--turquesa);margin-right:8px;"></i>Histórico Completo</h2>
                 <table class="admin-table" style="margin-top:12px;">
                     <thead>
                         <tr><th>Colaborador</th><th>Competência</th><th>Monitoria</th><th>Cliente</th><th>Nota Final</th><th>Classificação</th><th>Tendência</th></tr>
@@ -3251,7 +3400,7 @@ img, iframe, video, svg { max-width: 100%; }
                 <a href="#" onclick="navigateTo('trilha-onboarding')"><i class="fas fa-book-open"></i> Trilhas</a>
                 <a href="#" onclick="navigateTo('faq')"><i class="fas fa-question-circle"></i> FAQ</a>
                 <a href="#" onclick="navigateTo('certificados')"><i class="fas fa-certificate"></i> Certificados</a>
-                <a href="#" onclick="navigateTo('central-conhecimento')"><i class="fas fa-book"></i> Central de Conhecimento</a>
+                <!-- Central de Conhecimento oculta até ter conteúdo -->
             </div>
             <div class="footer-col">
                 <h4>Programa 5 Estrelas</h4>
@@ -3408,108 +3557,7 @@ async function logoutUser() {
     }
 }
 
-async function loginAdmin() {
-    const userInput = document.getElementById('adminUserInput');
-    const passInput = document.getElementById('adminPassInput');
-    const username = userInput.value.trim();
-    const password = passInput.value;
-
-    hideError('admin');
-    hideSuccess('admin');
-
-    if (!username) {
-        showError('admin', 'Digite o usuário administrador.');
-        userInput.classList.add('error');
-        reenableBtn('admin');
-        return;
-    }
-    userInput.classList.remove('error');
-
-    if (!password) {
-        showError('admin', 'Digite a senha.');
-        passInput.classList.add('error');
-        reenableBtn('admin');
-        return;
-    }
-    passInput.classList.remove('error');
-
-    // Loading state
-    const btn = document.getElementById('btnLoginAdmin');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Autenticando...';
-
-    try {
-        await ensureSupabase();
-
-        // Try Supabase Auth first (admin as regular user with role=admin)
-        const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
-            email: username,
-            password: password
-        });
-
-        if (!signInError && signInData.user) {
-            // Check if user has admin role in profile
-            const profile = await getUserProfile(signInData.user.id);
-
-            if (profile && profile.role === 'admin') {
-                currentUser = {
-                    name: profile.name || 'Administrador',
-                    email: signInData.user.email,
-                    role: 'admin',
-                    id: signInData.user.id,
-                    loginTime: new Date().toISOString()
-                };
-                currentRole = 'admin';
-
-                localStorage.setItem(CONFIG.STORAGE_ADMIN, JSON.stringify(currentUser));
-
-                showSuccess('admin', 'Acesso administrativo concedido!');
-
-                setTimeout(() => {
-                    hideLoginScreen();
-                    showApp();
-                    updateAdminDashboard();
-                    showNotification('Painel administrativo ativo', 'success');
-                }, 800);
-                return;
-            }
-
-            // Papel AVALIADOR: perfil exclusivo de avaliação.
-            if (profile && profile.role === 'avaliador') {
-                currentUser = {
-                    name: profile.name || profile.nome || 'Avaliador',
-                    email: signInData.user.email,
-                    role: 'avaliador',
-                    id: signInData.user.id,
-                    mustChangePassword: profile.must_change_password === true,
-                    loginTime: new Date().toISOString()
-                };
-                currentRole = 'avaliador';
-                setTimeout(() => {
-                    hideLoginScreen();
-                    showApp();
-                    if (currentUser.mustChangePassword) {
-                        forcarTrocaSenhaPrimeiroAcesso();
-                        return;
-                    }
-                    navigateTo('avaliador-5e');
-                }, 600);
-                return;
-            }
-        }
-
-        // Login admin exclusivamente via Supabase Auth — sem fallback hardcoded
-
-        showError('admin', 'Usuário ou senha incorretos, ou acesso não autorizado.');
-        passInput.classList.add('error');
-        reenableBtn('admin');
-
-    } catch (err) {
-        console.error('Admin login error:', err);
-        showError('admin', err.message || 'Erro na autenticação.');
-        reenableBtn('admin');
-    }
-}
+// [loginAdmin removida — login unificado em loginUser, formulário de admin removido da UI]
 
 async function logout() {
     // Sign out from Supabase Auth
@@ -3597,12 +3645,14 @@ async function checkAuthState() {
 
                 if (profile) {
                     currentUser = {
-                        name: profile.name || session.user.user_metadata?.name || 'Colaborador',
+                        name: profile.nome || profile.name || session.user.user_metadata?.name || 'Colaborador',
                         email: session.user.email,
                         role: profile.role || 'user',
                         id: session.user.id,
                         mustChangePassword: profile.must_change_password === true,
                         avaliado: profile.avaliado === true,
+                        departamento: profile.departamento || '',
+                        gestor_email: profile.gestor_email || '',
                         loginTime: new Date().toISOString()
                     };
                     currentRole = currentUser.role;
@@ -3633,6 +3683,11 @@ async function checkAuthState() {
                 }
                 if (currentRole === 'admin') {
                     updateAdminDashboard();
+                } else if (currentRole === 'diretora') {
+                    navigateTo('executivo');
+                } else if (['gerente','coordenadora','lider',
+                    'admin-juridico-contratos','admin-juridico-credito'].indexOf(currentRole) !== -1) {
+                    navigateTo('gestor');
                 } else if (currentRole === 'avaliador') {
                     navigateTo('avaliador-5e');
                 } else {
@@ -3707,60 +3762,141 @@ function showApp() {
         var mainMenu = document.getElementById('mainMenuSection');
         var adminMenu = document.getElementById('adminMenuSection');
         var avalMenu = document.getElementById('avaliadorMenuSection');
-        var isAdmin = currentRole === 'admin';
-        var isSubAdmin = currentRole && currentRole.startsWith('admin-');
-        var isGestor = currentRole === 'gestor' || currentRole === 'diretora';
+        // ── Labels de role ────────────────────────────────────────
         var _rLabels = {
             'admin': 'Administrador', 'avaliador': 'Avaliador',
-            'admin-juridico': 'Adm. Jurídico', 'admin-compliance': 'Adm. Compliance',
-            'admin-onboarding': 'Adm. Onboarding', 'admin-relacionamento': 'Adm. Relacionamento',
-            'gestor': 'Gestor', 'diretora': 'Diretora'
+            'diretora': 'Diretora', 'gerente': 'Gerente',
+            'coordenadora': 'Coordenadora', 'lider': 'Líder de Equipe',
+            'admin-juridico-contratos': 'Gestora Jurídico',
+            'admin-juridico-credito': 'Gestora Jurídico',
+            'admin-juridico': 'Adm. Jurídico',
+            'admin-compliance': 'Adm. Compliance',
+            'admin-onboarding': 'Adm. Onboarding',
+            'admin-relacionamento': 'Adm. Relacionamento',
+            'gestor': 'Gestor', 'user': 'Colaborador'
         };
-        if (isAdmin) {
-            roleEl.textContent = 'Administrador';
+
+        // ── Helper: oculta todos os menus antes de montar ─────────
+        function ocultarTodosMenus() {
+            [mainMenu, adminMenu, avalMenu].forEach(function(m){ if(m) m.style.display='none'; });
+            ['nav-gestor','nav-cinco-estrelas','nav-central-conhecimento',
+             'nav-admin-materiais','nav-trilha-juridico','nav-trilha-compliance'].forEach(function(id){
+                var el=document.getElementById(id); if(el) el.style.display='none';
+            });
+        }
+
+        ocultarTodosMenus();
+
+        roleEl.textContent = _rLabels[currentRole] || 'Colaborador';
+
+        // ── ADMIN ─────────────────────────────────────────────────
+        if (currentRole === 'admin') {
             roleEl.className = 'user-role admin';
             if (mainMenu) mainMenu.style.display = 'block';
             if (adminMenu) adminMenu.style.display = 'block';
+            // Admin vê tudo no menu principal
+            ['nav-gestor','nav-cinco-estrelas','nav-trilha-juridico','nav-trilha-compliance'].forEach(function(id){
+                var el=document.getElementById(id); if(el) el.style.display='flex';
+            });
+
+        // ── AVALIADOR ─────────────────────────────────────────────
+        } else if (currentRole === 'avaliador') {
+            roleEl.className = 'user-role admin';
+            // Só menu de avaliação (perfil + lançar notas + trilhas + faq)
+            if (avalMenu) avalMenu.style.display = 'block';
+
+        // ── DIRETORA ──────────────────────────────────────────────
+        } else if (currentRole === 'diretora') {
+            // Diretora: APENAS painel executivo — sem trilhas, FAQ, certificados
+            roleEl.className = 'user-role admin';
+            // Oculta o menu principal (trilhas, faq, cert) — não é colaboradora
+            if (mainMenu) mainMenu.style.display = 'none';
+            if (adminMenu) adminMenu.style.display = 'none';
             if (avalMenu) avalMenu.style.display = 'none';
-            var gestorItem = document.getElementById('nav-gestor');
-            if (gestorItem) gestorItem.style.display = 'flex';
-        } else if (isSubAdmin) {
-            // Sub-admin: vê menu principal + só Gerenciar Materiais no menu admin
-            roleEl.textContent = _rLabels[currentRole] || 'Sub-Admin';
+            // Cria menu exclusivo da diretora dinamicamente
+            var dirMenu = document.getElementById('diretoraMenuSection');
+            if (!dirMenu) {
+                dirMenu = document.createElement('div');
+                dirMenu.id = 'diretoraMenuSection';
+                dirMenu.className = 'nav-section';
+                dirMenu.innerHTML = '<div class="nav-section-title">Diretoria</div>'
+                    + '<div class="nav-item active" data-page="executivo" onclick="navigateTo(&quot;executivo&quot;)" id="nav-dir-painel"><i class="fas fa-building"></i> Visão Executiva</div>'
+                    /* Gerenciar Usuários removido da Diretora — responsabilidade do admin técnico */
+                    + '<div class="nav-item" data-page="user-profile" onclick="navigateTo(&quot;user-profile&quot;)" id="nav-dir-perfil"><i class="fas fa-user-circle"></i> Meu Perfil</div>';
+                var nav = document.querySelector('nav .sidebar-nav') || document.querySelector('nav');
+                if (nav) nav.appendChild(dirMenu);
+            }
+            dirMenu.style.display = 'block';
+
+        // ── GERENTE ───────────────────────────────────────────────
+        } else if (currentRole === 'gerente') {
             roleEl.className = 'user-role admin';
             if (mainMenu) mainMenu.style.display = 'block';
+            var gEl = document.getElementById('nav-gestor');
+            if (gEl) { gEl.style.display = 'flex'; gEl.textContent = ''; gEl.innerHTML = '<i class="fas fa-users"></i> Painel da Gerência'; gEl.setAttribute('onclick',"navigateTo('gestor')"); }
+
+        // ── COORDENADORA ──────────────────────────────────────────
+        } else if (currentRole === 'coordenadora') {
+            roleEl.className = 'user-role admin';
+            if (mainMenu) mainMenu.style.display = 'block';
+            var gEl = document.getElementById('nav-gestor');
+            if (gEl) { gEl.style.display = 'flex'; gEl.innerHTML = '<i class="fas fa-users"></i> Minha Equipe'; gEl.setAttribute('onclick',"navigateTo('gestor')"); }
+
+        // ── LÍDER ─────────────────────────────────────────────────
+        } else if (currentRole === 'lider') {
+            roleEl.className = 'user-role admin';
+            if (mainMenu) mainMenu.style.display = 'block';
+            var gEl = document.getElementById('nav-gestor');
+            if (gEl) { gEl.style.display = 'flex'; gEl.innerHTML = '<i class="fas fa-users"></i> Minha Equipe'; gEl.setAttribute('onclick',"navigateTo('gestor')"); }
+
+        // ── GESTORAS DO JURÍDICO ──────────────────────────────────
+        } else if (currentRole === 'admin-juridico-contratos' || currentRole === 'admin-juridico-credito') {
+            roleEl.className = 'user-role admin';
+            if (mainMenu) mainMenu.style.display = 'block';
+            // Veem trilha jurídico + painel da equipe + gerenciar materiais
+            var jEl = document.getElementById('nav-trilha-juridico');
+            if (jEl) jEl.style.display = 'flex';
+            var gEl = document.getElementById('nav-gestor');
+            if (gEl) { gEl.style.display = 'flex'; gEl.innerHTML = '<i class="fas fa-users"></i> Minha Equipe'; gEl.setAttribute('onclick',"navigateTo('gestor')"); }
             if (adminMenu) {
-                adminMenu.style.display = 'block';
-                // Esconde itens do admin que sub-admin não pode acessar
-                ['admin-dashboard','admin-content','admin-users'].forEach(function(pid) {
-                    var el = adminMenu.querySelector('[data-page="'+pid+'"]');
-                    if (el) el.style.display = 'none';
+                ['admin-dashboard','admin-content','admin-users'].forEach(function(pid){
+                    var el=adminMenu.querySelector('[data-page="'+pid+'"]'); if(el) el.style.display='none';
                 });
                 var matEl = adminMenu.querySelector('[data-page="admin-materiais"]');
                 if (matEl) matEl.style.display = 'flex';
+                adminMenu.style.display = 'block';
             }
-            if (avalMenu) avalMenu.style.display = 'none';
-        } else if (isGestor) {
-            roleEl.textContent = _rLabels[currentRole] || 'Gestor';
+
+        // ── SUB-ADMIN DE CONTEÚDO ─────────────────────────────────
+        } else if (currentRole && currentRole.startsWith('admin-')) {
             roleEl.className = 'user-role admin';
             if (mainMenu) mainMenu.style.display = 'block';
-            if (adminMenu) adminMenu.style.display = 'none';
-            if (avalMenu) avalMenu.style.display = 'none';
-            // Mostra item do painel do gestor no menu principal
-            var gestorItem = document.getElementById('nav-gestor');
-            if (gestorItem) gestorItem.style.display = 'flex';
-        } else if (currentRole === 'avaliador') {
-            roleEl.textContent = 'Avaliador';
-            roleEl.className = 'user-role admin';
-            if (mainMenu) mainMenu.style.display = 'none';
-            if (adminMenu) adminMenu.style.display = 'none';
-            if (avalMenu) avalMenu.style.display = 'block';
+            if (adminMenu) {
+                ['admin-dashboard','admin-content','admin-users'].forEach(function(pid){
+                    var el=adminMenu.querySelector('[data-page="'+pid+'"]'); if(el) el.style.display='none';
+                });
+                var matEl = adminMenu.querySelector('[data-page="admin-materiais"]');
+                if (matEl) matEl.style.display = 'flex';
+                adminMenu.style.display = 'block';
+            }
+
+        // ── COLABORADOR (user) ────────────────────────────────────
         } else {
-            roleEl.textContent = 'Colaborador';
             roleEl.className = 'user-role user';
             if (mainMenu) mainMenu.style.display = 'block';
-            if (adminMenu) adminMenu.style.display = 'none';
-            if (avalMenu) avalMenu.style.display = 'none';
+            // 5 Estrelas só para avaliados
+            if (currentUser && currentUser.avaliado) {
+                var ceEl = document.getElementById('nav-cinco-estrelas');
+                if (ceEl) ceEl.style.display = 'flex';
+            }
+            // Jurídico e Compliance só para quem é dessa área
+            var dept = (currentUser && currentUser.departamento) || '';
+            if (dept.indexOf('Juridico') !== -1 || dept.indexOf('Jurídico') !== -1 || dept.indexOf('Compliance') !== -1) {
+                var jEl = document.getElementById('nav-trilha-juridico');
+                var cEl = document.getElementById('nav-trilha-compliance');
+                if (jEl) jEl.style.display = 'flex';
+                if (cEl) cEl.style.display = 'flex';
+            }
         }
         // Exibe a foto de perfil salva (Supabase Storage) no menu lateral
         loadProfilePhoto();
@@ -3770,114 +3906,9 @@ function showApp() {
 
     // Sync user data with Supabase if online
     syncUserWithSupabase();
-    // ============================================================================
-// ESTADO GLOBAL DO SISTEMA (SUPABASE NATIVO)
-// ============================================================================
-// (declarações duplicadas de currentUser/currentUserProfile/currentRole removidas:
-//  causavam erro de inicialização dentro de showApp e interrompiam a montagem da interface)
-
-/**
- * CHECAGEM DE SESSÃO: Acionada automaticamente ao abrir a página
- */
-async function checkAuthState() {
-    if (!supabaseClient) return;
-
-    try {
-        // 1. Pergunta ao Supabase se há alguém logado no portão
-        const { data: { session }, error } = await supabaseClient.auth.getSession();
-        if (error) throw error;
-
-        if (session && session.user) {
-            currentUser = session.user;
-            
-            // 2. Vai ao banco de dados ler o perfil da pessoa
-            const { data: profile, error: profileError } = await supabaseClient
-                .from('profiles')
-                .select('*')
-                .eq('id', currentUser.id)
-                .single();
-
-            if (profileError || !profile) {
-                console.warn('Perfil não encontrado no banco de dados. Forçando saída.');
-                await logoutUser();
-                return;
-            }
-
-            // 3. Checa se o aluno não está de castigo (inativo)
-            if (profile.ativo !== 'ativo') {
-                showNotification('Sua conta não está ativa no sistema. Fale com o Administrador.', 'warning');
-                await logoutUser();
-                return;
-            }
-
-            // 4. Salva o crachá nas variáveis do sistema
-            currentUserProfile = profile;
-            currentRole = profile.perfil;
-
-            // 5. Atualiza os botões do painel visual
-            atualizarLayoutPorPerfil(profile);
-
-            // 6. Anota a entrada no diário de auditoria do banco
-            await supabaseClient.rpc('registrar_auditoria', {
-                p_acao: 'LOGIN_SESSÃO',
-                p_recurso: 'Entrada no Painel Principal',
-                p_detalhes: { navegador: navigator.userAgent }
-            });
-
-        } else {
-            // Se não houver ninguém logado, mostra a tela de login
-            exibirPainelLogin(true);
-        }
-    } catch (err) {
-        console.error('Erro na checagem de acesso:', err);
-        exibirPainelLogin(true);
-    }
 }
 
-/**
- * AJUSTE DE INTERFACE: Esconde ou mostra os botões baseados no crachá do usuário
- */
-function atualizarLayoutPorPerfil(profile) {
-    const lblNome = document.querySelector('.user-info .user-name') || document.getElementById('lblUserName');
-    const lblEmail = document.querySelector('.user-info .user-email') || document.getElementById('lblUserEmail');
-    const lblRole = document.getElementById('sidebarUserRole') || document.getElementById('lblUserRole');
-
-    if (lblNome) lblNome.textContent = profile.nome;
-    if (lblEmail) lblEmail.textContent = profile.email;
-    if (lblRole) {
-        lblRole.textContent = profile.perfil.toUpperCase();
-        lblRole.className = `user-role ${profile.perfil}`;
-    }
-
-    // Regras de exibição dos menus secretos
-    const secAdmin = document.getElementById('adminMenuSection') || document.getElementById('secAdmin');
-    const secGestor = document.getElementById('gestorMenuSection') || document.getElementById('secGestor');
-    const tabUsuarios = document.getElementById('nav-item-usuarios');
-
-    if (secAdmin) secAdmin.style.display = (profile.perfil === 'admin') ? 'block' : 'none';
-    if (secGestor) secGestor.style.display = (profile.perfil === 'gestor' || profile.perfil === 'admin') ? 'block' : 'none';
-    if (tabUsuarios) tabUsuarios.style.display = (profile.perfil === 'admin' || profile.perfil === 'gestor') ? 'flex' : 'none';
-
-    // Exibe a foto de perfil salva (Supabase Storage) no menu lateral
-    loadProfilePhoto();
-
-    exibirPainelLogin(false);
-}
-
-function exibirPainelLogin(mostrar) {
-    const loginScreen = document.getElementById('loginScreen');
-    const appLayout = document.getElementById('appLayout');
-    
-    if (loginScreen) {
-        if (mostrar) loginScreen.classList.remove('hidden');
-        else loginScreen.classList.add('hidden');
-    }
-    if (appLayout) {
-        if (mostrar) appLayout.style.display = 'none';
-        else appLayout.style.display = 'block';
-    }
-}
-}
+// [Código morto removido: checkAuthState v2, atualizarLayoutPorPerfil, exibirPainelLogin — conflitavam com as funções reais]
 
 async function syncUserWithSupabase() {
     try {
@@ -3946,8 +3977,23 @@ function navigateTo(page) {
     }
 
     // Gestor/diretora: acesso ao painel de gestão
-    var _isGestor = currentRole === 'gestor' || currentRole === 'diretora' || currentRole === 'admin';
-    if (page === 'gestor' && !_isGestor) {
+    // Diretora: acesso restrito a painel executivo, usuários e perfil
+    if (currentRole === 'diretora') {
+        var paginasDiretora = ['executivo','gestor','user-profile'];
+        if (paginasDiretora.indexOf(page) === -1) {
+            navigateTo('gestor');
+            return;
+        }
+    }
+
+    // Roles com acesso ao painel de gestão
+    var _rolesGestor = ['admin','diretora','gerente','coordenadora','lider',
+        'admin-juridico-contratos','admin-juridico-credito','gestor'];
+    if (page === 'executivo' && currentRole !== 'diretora' && currentRole !== 'admin') {
+        navigateTo('dashboard');
+        return;
+    }
+    if (page === 'gestor' && _rolesGestor.indexOf(currentRole) === -1) {
         navigateTo('dashboard');
         return;
     }
@@ -4013,8 +4059,11 @@ function navigateTo(page) {
         updateDashboard();
     } else if (page === 'admin-dashboard') {
         updateAdminDashboard();
+    } else if (page === 'executivo') {
+        setTimeout(executivoCarregar, 200);
     } else if (page === 'gestor') {
         setTimeout(gestorCarregarDados, 200);
+        setTimeout(iniciarRealtimeGestor, 800);
     } else if (page === 'admin-materiais') {
         setTimeout(function(){ matFiltrarModulosPorRole(); matCarregar(); }, 100);
     } else if (page === 'certificados') {
@@ -4024,6 +4073,7 @@ function navigateTo(page) {
         setTimeout(iniciarRealtime5E, 1500);
     } else if (page === 'avaliador-5e') {
         if (typeof initAvaliador5E === 'function') setTimeout(initAvaliador5E, 100);
+        setTimeout(avStatusMes, 300);
     } else if (page === 'user-profile') {
         updateUserProfilePage();
     } else if (page === 'modulo-1') {
@@ -4168,7 +4218,7 @@ function updateDashboard() {
 
     // Update stats
     document.getElementById('statModulosConcluidos').textContent = totalCompleted;
-    document.getElementById('statCertificados').textContent = totalCompleted;
+    // statCertificados é atualizado pela updateCertificates() — não duplicar aqui
 
     // Calculate trail progress
     const trails = {
@@ -4338,21 +4388,17 @@ async function syncProgressToSupabase(moduleId, completed) {
         var sess = await supabaseClient.auth.getSession();
         if (!sess || !sess.data || !sess.data.session) return;
         var userId = sess.data.session.user.id;
-        var trilhaSlug = null;
-        if (moduleId.indexOf('onboarding') !== -1) trilhaSlug = 'onboarding';
-        else if (moduleId.indexOf('rel-') !== -1) trilhaSlug = 'relacionamento';
-        else if (moduleId.indexOf('jur-') !== -1) trilhaSlug = 'juridico';
-        else if (moduleId.indexOf('comp-') !== -1) trilhaSlug = 'compliance';
-        var trilhaId = null;
-        if (trilhaSlug) {
-            var tr = await supabaseClient.from('trilhas').select('id').eq('slug', trilhaSlug).single();
-            if (tr && tr.data) trilhaId = tr.data.id;
-        }
+        // Slug da trilha derivado do moduleId — sem consulta à tabela trilhas
+        var trilhaSlug = moduleId.indexOf('onboarding') !== -1 ? 'onboarding'
+            : moduleId.indexOf('rel-') !== -1 ? 'relacionamento'
+            : moduleId.indexOf('jur-') !== -1 ? 'juridico'
+            : moduleId.indexOf('comp-') !== -1 ? 'compliance' : null;
+
         if (completed) {
             var res = await supabaseClient.from('progresso_modulos').upsert({
                 colaborador_id: userId,
                 modulo_id: moduleId,
-                trilha_id: trilhaId,
+                trilha_slug: trilhaSlug,
                 concluido: true,
                 percentual: 100,
                 concluido_em: new Date().toISOString()
@@ -5020,64 +5066,9 @@ function showSlide(index) {
 
 // Module content database - comprehensive slide content for all modules
 
-async function syncProgressToSupabase(moduleId, completed) {
-    try {
-        if (!supabaseClient) initSupabase();
-        if (!supabaseClient) return;
-        var sess = await supabaseClient.auth.getSession();
-        if (!sess || !sess.data || !sess.data.session) return;
-        var userId = sess.data.session.user.id;
-        var trilhaSlug = null;
-        if (moduleId.indexOf('onboarding') !== -1) trilhaSlug = 'onboarding';
-        else if (moduleId.indexOf('rel-') !== -1) trilhaSlug = 'relacionamento';
-        else if (moduleId.indexOf('jur-') !== -1) trilhaSlug = 'juridico';
-        else if (moduleId.indexOf('comp-') !== -1) trilhaSlug = 'compliance';
-        var trilhaId = null;
-        if (trilhaSlug) {
-            var tr = await supabaseClient.from('trilhas').select('id').eq('slug', trilhaSlug).single();
-            if (tr && tr.data) trilhaId = tr.data.id;
-        }
-        if (completed) {
-            var res = await supabaseClient.from('progresso_modulos').upsert({
-                colaborador_id: userId,
-                modulo_id: moduleId,
-                trilha_id: trilhaId,
-                concluido: true,
-                percentual: 100,
-                concluido_em: new Date().toISOString()
-            }, { onConflict: 'colaborador_id,modulo_id' });
-            if (res.error) { console.warn('Sync erro:', res.error.message); }
-            else { console.log('Progresso salvo no Supabase:', moduleId); }
-        } else {
-            await supabaseClient.from('progresso_modulos').delete()
-                .eq('colaborador_id', userId).eq('modulo_id', moduleId);
-        }
-    } catch(e) { console.warn('Supabase sync:', e.message); }
-}
+// [syncProgressToSupabase v2 removida — versão obsoleta que fazia query desnecessária à tabela trilhas]
 
-async function loadProgressFromSupabase() {
-    try {
-        if (!supabaseClient) initSupabase();
-        if (!supabaseClient) return;
-        var sess = await supabaseClient.auth.getSession();
-        if (!sess || !sess.data || !sess.data.session) return;
-        var userId = sess.data.session.user.id;
-        var res = await supabaseClient.from('progresso_modulos')
-            .select('modulo_id,concluido,concluido_em')
-            .eq('colaborador_id', userId).eq('concluido', true);
-        if (res.error || !res.data) return;
-        res.data.forEach(function(row) {
-            userProgress[row.modulo_id] = { completed: true, date: row.concluido_em || new Date().toISOString() };
-        });
-        if (currentUser && currentUser.email) {
-            localStorage.setItem(CONFIG.STORAGE_PROGRESS + '_' + currentUser.email, JSON.stringify(userProgress));
-        }
-        updateDashboard();
-        updateOnboardingLocks();
-        Object.keys(TRAIL_MODULES).forEach(function(t) { updateTrailLocks(t); });
-        console.log('Progresso carregado do Supabase:', res.data.length, 'modulos');
-    } catch(e) { console.warn('Load progress:', e.message); }
-}
+// [loadProgressFromSupabase v2 removida — idêntica à v1]
 
 const MODULE_CONTENT = {
     // Onboarding
@@ -5351,7 +5342,7 @@ async function updateAdminDashboard() {
     try {
         // 1. Busca todos os profiles
         var resProfiles = await supabaseClient.from('profiles')
-            .select('id, email, nome, name, role, ativo, avaliado')
+            .select('id, email, nome, role, ativo, avaliado, updated_at')
             .order('nome', { ascending: true });
 
         var profiles = (resProfiles.data && !resProfiles.error) ? resProfiles.data : [];
@@ -5416,7 +5407,8 @@ async function updateAdminDashboard() {
                     + '<td>' + escapeHtml(p.email || '') + '</td>'
                     + '<td>' + roleLabel + '</td>'
                     + '<td>' + avaliado + '</td>'
-                    + '<td>' + ativo + '</td>';
+                    + '<td>' + ativo + '</td>'
+                    + '<td style="font-size:11px;color:var(--cinza);">' + (p.updated_at ? new Date(p.updated_at).toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'2-digit'}) : '—') + '</td>';
                 tbody.appendChild(tr);
             });
         }
@@ -6139,6 +6131,24 @@ function buildSearchIndex() {
                           text: normalizeText(t) });
     });
 
+    // Slides dos módulos (títulos indexados — sem conteúdo HTML)
+    if (typeof MODULE_CONTENT !== 'undefined') {
+        Object.keys(MODULE_CONTENT).forEach(function(modId) {
+            var mod = MODULE_CONTENT[modId];
+            if (!mod || !mod.slides) return;
+            mod.slides.forEach(function(slide) {
+                if (!slide.title || slide.title.indexOf('breve') !== -1) return;
+                var trilha = modId.indexOf('onboarding') !== -1 ? 'Onboarding'
+                    : modId.indexOf('rel-') !== -1 ? 'Relacionamento'
+                    : modId.indexOf('jur-') !== -1 ? 'Jurídico'
+                    : modId.indexOf('comp-') !== -1 ? 'Compliance' : '';
+                idx.push({ tipo: 'Conteúdo', target: modId, title: slide.title,
+                    sub: trilha, icon: 'fa-play-circle',
+                    text: normalizeText(slide.title + ' ' + trilha) });
+            });
+        });
+    }
+
     // Materiais do Supabase (indexados em cache)
     var modLabels = {
         'mod-onboarding-1':'Onboarding — Boas-vindas','mod-onboarding-2':'Onboarding — Organograma',
@@ -6789,313 +6799,1279 @@ var gestorDados = []; // todos os lançamentos
 var gestorChart = null; // instância do Chart.js
 
 // Carrega todos os dados do Supabase e popula o painel
+
+// ==================== PAINEL DE GESTÃO — LÓGICA COMPLETA ====================
+
+var gestorDados = [];
+var gestorChart = null;
+var gestorMuralAberto = false;
+
+// ─── Utilitários compartilhados ───────────────────────────────────────────────
+var MESES_G = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+    'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+function gCompBR(iso) { var p=iso.split('-'); return MESES_G[parseInt(p[1])]+' '+p[0]; }
+function gFaixaLabel(n) { return n>=4.80?'5 Estrelas':(n>=4.50?'Excelência':'Em construção'); }
+function gFaixaTag(n) {
+    if(n>=4.80) return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#FBF1DF;color:#B97516;">★ 5 Estrelas</span>';
+    if(n>=4.50) return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">★ Excelência</span>';
+    return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#f0f2f4;color:#9aacac;">Em construção</span>';
+}
+function gTend(hist) {
+    if(hist.length<2) return {s:'—',c:'#94a3b8'};
+    return hist[hist.length-1]>hist[hist.length-2]+0.005?{s:'↑',c:'#059669'}
+        :hist[hist.length-1]<hist[hist.length-2]-0.005?{s:'↓',c:'#dc2626'}:{s:'→',c:'#94a3b8'};
+}
+function gTendMap() {
+    var map={};
+    var colabs=[...new Set(gestorDados.map(function(d){return d.colaborador_nome;}))];
+    colabs.forEach(function(c){
+        var hist=gestorDados.filter(function(d){return d.colaborador_nome===c;})
+            .sort(function(a,b){return a.competencia.localeCompare(b.competencia);})
+            .map(function(d){return Number(d.nota_final);});
+        map[c]=gTend(hist);
+    });
+    return map;
+}
+
+// ─── Configuração visual por role ─────────────────────────────────────────────
+function gestorConfigurarUI() {
+    var cfg = {
+        'diretora':   { badge:'Diretoria', titulo:'Visão Executiva da Empresa', sub:'Panorama estratégico — desempenho por área, alertas e tendências.', cor:'#003C50', icone:'fa-building', comparativo:true, mural:true },
+        'gerente':    { badge:'Gerência', titulo:'Painel da Gerência', sub:'Visão completa do Relacionamento — todas as equipes e coordenações.', cor:'#0891b2', icone:'fa-users', comparativo:true, mural:true },
+        'coordenadora':{ badge:'Coordenação', titulo:'Minha Equipe', sub:'Desempenho e evolução da sua equipe no Programa 5 Estrelas.', cor:'#1DBCB0', icone:'fa-user-group', comparativo:false, mural:true },
+        'lider':      { badge:'Liderança', titulo:'Acompanhamento de Equipe', sub:'Você acompanha a evolução da equipe — visão de leitura. Ações ficam com a coordenação.', cor:'#0d9488', icone:'fa-eye', comparativo:false, mural:false, exportar:false },
+        'admin-juridico-contratos':{ badge:'Jurídico — Contratos', titulo:'Painel Jurídico', sub:'Equipe de Contratos, Compliance e Societário.', cor:'#7c3aed', icone:'fa-balance-scale', comparativo:false, mural:false },
+        'admin-juridico-credito':  { badge:'Jurídico — Crédito', titulo:'Painel Jurídico', sub:'Equipe de Recuperação de Crédito, Imobiliário e Contencioso.', cor:'#7c3aed', icone:'fa-scale-unbalanced', comparativo:false, mural:false },
+        'admin':      { badge:'Administração', titulo:'Painel Completo', sub:'Visão total da plataforma.', cor:'#003C50', icone:'fa-chart-line', comparativo:true, mural:true },
+    };
+    var c = cfg[currentRole] || cfg['admin'];
+
+    var badge = document.getElementById('g-badge-role');
+    if(badge) badge.style.background = 'linear-gradient(135deg,'+c.cor+','+c.cor+'cc)';
+    var badgeTxt = document.getElementById('g-badge-txt');
+    if(badgeTxt) badgeTxt.textContent = c.badge;
+    var titulo = document.getElementById('gestor-titulo');
+    if(titulo) titulo.textContent = c.titulo;
+    var sub = document.getElementById('gestor-subtitulo');
+    if(sub) sub.textContent = c.sub;
+
+    var compWrap = document.getElementById('g-comparativo-wrap');
+    if(compWrap) compWrap.style.display = c.comparativo ? 'block' : 'none';
+
+    var muralWrap = document.getElementById('g-mural-wrap');
+    if(muralWrap) muralWrap.style.display = c.mural ? 'block' : 'none';
+    var muralNovoBtn = document.getElementById('g-mural-novo-btn');
+    if(muralNovoBtn) muralNovoBtn.style.display = (c.mural && currentRole !== 'lider') ? 'flex' : 'none';
+    var btnExportar = document.getElementById('g-btn-exportar');
+    if(btnExportar) btnExportar.style.display = (currentRole === 'lider') ? 'none' : 'flex';
+}
+
+// ─── Carregamento principal ───────────────────────────────────────────────────
 async function gestorCarregarDados() {
+    if (!supabaseClient) initSupabase();
+    if (!supabaseClient) return;
+
+    gestorConfigurarUI();
+
+    try {
+        // Filtro de equipe por role
+        var _equipeFiltro = null;
+        var _deptsFiltro = null;
+        if (currentRole === 'coordenadora') {
+            _equipeFiltro = currentUser.email;
+        } else if (currentRole === 'lider') {
+            _equipeFiltro = 'thaismaximo@canopus.com.br';
+        } else if (currentRole === 'admin-juridico-contratos') {
+            _deptsFiltro = ['Juridico-Contratos'];
+        } else if (currentRole === 'admin-juridico-credito') {
+            _deptsFiltro = ['Juridico-Credito'];
+        }
+
+        // Buscar colaboradores da equipe
+        var colaboradoresDaEquipe = null;
+        if (_equipeFiltro || _deptsFiltro) {
+            var qProf = supabaseClient.from('profiles').select('nome, departamento, updated_at, ativo').eq('role','user');
+            if (_equipeFiltro) qProf = qProf.eq('gestor_email', _equipeFiltro);
+            if (_deptsFiltro) qProf = qProf.in('departamento', _deptsFiltro);
+            var resEquipe = await qProf;
+            if (!resEquipe.error && resEquipe.data) {
+                colaboradoresDaEquipe = resEquipe.data;
+                window.gestorEquipeMap = {};
+                resEquipe.data.forEach(function(p){
+                    window.gestorEquipeMap[p.nome] = { dept:p.departamento, acesso:p.updated_at, ativo:p.ativo };
+                });
+            }
+        } else {
+            var rAll = await supabaseClient.from('profiles').select('nome, departamento, gestor_email, updated_at, ativo').eq('role','user');
+            if (!rAll.error && rAll.data) {
+                window.gestorEquipeMap = {};
+                rAll.data.forEach(function(p){
+                    window.gestorEquipeMap[p.nome] = { dept:p.departamento, gestor:p.gestor_email, acesso:p.updated_at, ativo:p.ativo };
+                });
+            }
+        }
+
+        // Buscar avaliações
+        var queryAv = supabaseClient.from('avaliacoes_mensais')
+            .select('colaborador_id, colaborador_nome, competencia, nota_monitoria, nota_cliente, nota_final, atendimentos_monitorados')
+            .order('competencia', { ascending: true });
+        if (colaboradoresDaEquipe && colaboradoresDaEquipe.length > 0) {
+            queryAv = queryAv.in('colaborador_nome', colaboradoresDaEquipe.map(function(p){return p.nome;}));
+        }
+        var res = await queryAv;
+
+        if (res.error) {
+            gestorMostrarErro(res.error.message);
+            return;
+        }
+        gestorDados = res.data || [];
+
+        // Departamentos para cargo
+        var resProf = await supabaseClient.from('profiles').select('nome, departamento').eq('role','user');
+        window.gestorCargoMap = {};
+        if (!resProf.error && resProf.data)
+            resProf.data.forEach(function(p){ if(p.nome) window.gestorCargoMap[p.nome]=p.departamento||''; });
+
+        // Processar dados
+        var meses = [...new Set(gestorDados.map(function(d){return d.competencia;}))].sort();
+        var colabs = [...new Set(gestorDados.map(function(d){return d.colaborador_nome;}))].sort();
+        var mesRecente = meses[meses.length-1]||'';
+        var dadosMes = gestorDados.filter(function(d){return d.competencia===mesRecente;});
+        var tendMap = gTendMap();
+
+        // Cards
+        var mediaGeral = dadosMes.length
+            ? (dadosMes.reduce(function(s,d){return s+Number(d.nota_final);},0)/dadosMes.length).toFixed(2).replace('.',',')
+            : '—';
+        var count5E = dadosMes.filter(function(d){return Number(d.nota_final)>=4.80;}).length;
+        var countAtencao = dadosMes.filter(function(d){return Number(d.nota_final)<4.50;}).length;
+
+        var g = function(id){return document.getElementById(id);};
+        if(g('g-total-colab')) g('g-total-colab').textContent = colabs.length;
+        if(g('g-media-geral')) g('g-media-geral').textContent = mediaGeral;
+        if(g('g-count-5e')) g('g-count-5e').textContent = count5E;
+        if(g('g-count-atencao')) g('g-count-atencao').textContent = countAtencao || '0';
+
+        // Select de meses
+        var selMes = g('g-filtro-mes');
+        if(selMes){
+            var mesAnterior = selMes.value;
+            selMes.innerHTML = '<option value="">Todos os meses</option>';
+            meses.forEach(function(m){ selMes.innerHTML += '<option value="'+m+'">'+gCompBR(m)+'</option>'; });
+            // Seleciona o mês mais recente por padrão (não "Todos")
+            selMes.value = mesAnterior || mesRecente;
+        }
+
+        // Select de colaboradores
+        var selColab = g('g-filtro-colab');
+        if(selColab){
+            var colAtual = selColab.value;
+            selColab.innerHTML = '<option value="">Todos os colaboradores</option>';
+            colabs.forEach(function(c){ selColab.innerHTML += '<option value="'+escapeHtml(c)+'">'+escapeHtml(c)+'</option>'; });
+            if(colAtual) selColab.value = colAtual;
+        }
+
+        // Alertas automáticos
+        gestorRenderAlertas(dadosMes, tendMap, mesRecente);
+
+        // Comparativo por área (diretora/gerente/admin)
+        if(['diretora','gerente','admin'].indexOf(currentRole)!==-1) {
+            gestorRenderComparativo(gestorDados);
+        }
+
+        // Cards individuais + Ranking + Tabela
+        gestorRenderCardsEquipe(dadosMes, tendMap);
+        gestorRenderRanking(dadosMes, mesRecente);
+        gestorRenderTabela();
+        gestorRenderGrafico();
+
+        // Mural
+        gestorMuralCarregar();
+
+    } catch(e) {
+        console.error('[Gestor]', e);
+        gestorMostrarErro(e.message);
+    }
+}
+
+function gestorMostrarErro(msg) {
+    var tbody = document.getElementById('g-tabela-body');
+    if(tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#dc2626;">Erro: '+escapeHtml(msg)+'</td></tr>';
+}
+
+// ─── Alertas automáticos ──────────────────────────────────────────────────────
+function gestorRenderAlertas(dadosMes, tendMap, mesRecente) {
+    var wrap = document.getElementById('g-alertas-wrap');
+    var lista = document.getElementById('g-alertas-lista');
+    if(!wrap || !lista) return;
+
+    var alertas = [];
+
+    // Colaboradores abaixo de 4,50
+    dadosMes.forEach(function(d) {
+        var nf = Number(d.nota_final);
+        if(nf < 4.50) {
+            alertas.push({ tipo:'danger', icone:'fa-triangle-exclamation',
+                msg: '<strong>'+escapeHtml(d.colaborador_nome)+'</strong> está em <strong>Em construção</strong> ('+nf.toFixed(2).replace('.',',')+') — abaixo da faixa de Excelência.' });
+        }
+    });
+
+    // Colaboradores caindo 2 meses seguidos
+    var colabs = [...new Set(gestorDados.map(function(d){return d.colaborador_nome;}))];
+    colabs.forEach(function(c) {
+        var hist = gestorDados.filter(function(d){return d.colaborador_nome===c;})
+            .sort(function(a,b){return a.competencia.localeCompare(b.competencia);});
+        if(hist.length>=2) {
+            var ult = Number(hist[hist.length-1].nota_final);
+            var pen = Number(hist[hist.length-2].nota_final);
+            if(ult < pen - 0.005 && hist.length>=3) {
+                var ant = Number(hist[hist.length-3].nota_final);
+                if(pen < ant - 0.005) {
+                    alertas.push({ tipo:'warning', icone:'fa-arrow-trend-down',
+                        msg: '<strong>'+escapeHtml(c)+'</strong> está caindo pelo segundo mês consecutivo. Última nota: '+ult.toFixed(2).replace('.',',')+'.' });
+                }
+            }
+        }
+    });
+
+    // Sem avaliação no mês recente
+    var avaliados = dadosMes.map(function(d){return d.colaborador_nome;});
+    var todosColabs = Object.keys(window.gestorEquipeMap||{});
+    var semAvaliacao = todosColabs.filter(function(c){return avaliados.indexOf(c)===-1;});
+    if(semAvaliacao.length>0 && mesRecente) {
+        alertas.push({ tipo:'info', icone:'fa-clock',
+            msg: semAvaliacao.length+' colaborador(es) ainda não foi(ram) avaliado(s) em '+gCompBR(mesRecente)+': <strong>'+semAvaliacao.slice(0,3).map(escapeHtml).join(', ')+(semAvaliacao.length>3?' e mais '+(semAvaliacao.length-3):'')+'</strong>.' });
+    }
+
+    if(alertas.length===0) { wrap.style.display='none'; return; }
+
+    var cores = { danger:'#FEE2E2', warning:'#FEF9C3', info:'#E0F2FE' };
+    var textCores = { danger:'#dc2626', warning:'#92400e', info:'#0369a1' };
+    lista.innerHTML = alertas.map(function(a) {
+        return '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 16px;background:'+cores[a.tipo]+';border-radius:10px;border-left:4px solid '+textCores[a.tipo]+';">'
+            +'<i class="fas '+a.icone+'" style="color:'+textCores[a.tipo]+';margin-top:2px;flex-shrink:0;"></i>'
+            +'<span style="font-size:13px;color:'+textCores[a.tipo]+';line-height:1.5;">'+a.msg+'</span>'
+            +'</div>';
+    }).join('');
+    wrap.style.display = 'block';
+}
+
+// ─── Comparativo por área (diretora/gerente) ──────────────────────────────────
+function gestorRenderComparativo(dados) {
+    var lista = document.getElementById('g-comparativo-lista');
+    if(!lista) return;
+
+    // Agrupa por gestor_email → área
+    var areaMap = {};
+    var gestorNomes = {
+        'thaismaximo@canopus.com.br': 'Equipe Thais — Relacionamento',
+        'lucimarasantoro@canopus.com.br': 'Equipe Lucimara — Repasse',
+        'amandacunha@canopus.com.br': 'Equipe Amanda Cunha — Jurídico',
+        'anaelisasantos@canopus.com.br': 'Equipe Ana Elisa — Jurídico',
+    };
+    var equipeMap = window.gestorEquipeMap || {};
+
+    dados.forEach(function(d) {
+        var info = equipeMap[d.colaborador_nome];
+        var gestor = info && info.gestor ? info.gestor : 'outros';
+        var label = gestorNomes[gestor] || 'Outras áreas';
+        if(!areaMap[label]) areaMap[label] = [];
+        areaMap[label].push(Number(d.nota_final));
+    });
+
+    if(Object.keys(areaMap).length === 0) { lista.innerHTML = '<p style="color:var(--cinza);font-size:13px;">Sem dados suficientes para comparar.</p>'; return; }
+
+    // Ordena por média desc
+    var areas = Object.keys(areaMap).map(function(k) {
+        var notas = areaMap[k];
+        var media = notas.reduce(function(a,b){return a+b;},0)/notas.length;
+        var count5E = notas.filter(function(n){return n>=4.80;}).length;
+        return { label:k, media:media, total:notas.length, count5E:count5E };
+    }).sort(function(a,b){return b.media-a.media;});
+
+    lista.innerHTML = areas.map(function(a, i) {
+        var pct = Math.max(0,Math.min(100,((a.media-4.0)/1.0)*100));
+        var cor = a.media>=4.80?'#F59E0B':(a.media>=4.50?'#1DBCB0':'#94a3b8');
+        var pos = i===0?'🥇 ':i===1?'🥈 ':i===2?'🥉 ':'';
+        return '<div style="background:var(--cinza-claro);border-radius:10px;padding:14px 16px;">'
+            +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">'
+            +'<span style="font-size:13px;font-weight:600;color:var(--azul-escuro);">'+pos+escapeHtml(a.label)+'</span>'
+            +'<div style="display:flex;align-items:center;gap:10px;">'
+            +'<span style="font-size:11px;color:var(--cinza);">'+a.total+' colab. · '+a.count5E+' no topo</span>'
+            +'<span style="font-family:Oswald,sans-serif;font-size:18px;font-weight:700;color:'+cor+';">'+a.media.toFixed(2).replace('.',',')+'</span>'
+            +'</div></div>'
+            +'<div style="height:8px;background:#e5e7eb;border-radius:50px;overflow:hidden;">'
+            +'<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,'+cor+','+cor+'cc);border-radius:50px;transition:width .6s;"></div>'
+            +'</div></div>';
+    }).join('');
+}
+
+// ─── Ranking clicável ─────────────────────────────────────────────────────────
+function gestorRenderRanking(dados, mesLabel) {
+    var lista = document.getElementById('g-ranking-lista');
+    var label = document.getElementById('g-ranking-mes-label');
+    if(!lista) return;
+    if(label && mesLabel) label.textContent = gCompBR(mesLabel);
+
+    var ordenado = dados.slice().sort(function(a,b){return Number(b.nota_final)-Number(a.nota_final);});
+    if(!ordenado.length){ lista.innerHTML='<div style="text-align:center;padding:24px;color:var(--cinza);font-size:13px;">Nenhum lançamento neste mês.</div>'; return; }
+
+    var pos = ['1°','2°','3°'];
+    lista.innerHTML = '';
+    ordenado.forEach(function(d, i) {
+        var nf = Number(d.nota_final);
+        var cor = nf>=4.80?'#F59E0B':(nf>=4.50?'#1DBCB0':'#94a3b8');
+        var pct = Math.max(0,Math.min(100,((nf-4.0)/1.0)*100));
+        var cargo = (window.gestorCargoMap&&window.gestorCargoMap[d.colaborador_nome])||'';
+        var div = document.createElement('div');
+        div.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;background:white;border:1.5px solid var(--borda);border-radius:12px;cursor:pointer;transition:box-shadow .2s;';
+        div.onmouseover = function(){this.style.boxShadow='0 4px 16px rgba(0,60,80,0.10)';};
+        div.onmouseout = function(){this.style.boxShadow='none';};
+        div.onclick = function(){gestorAbrirHistorico(d.colaborador_nome);};
+        div.innerHTML = '<div style="font-size:18px;width:32px;text-align:center;flex-shrink:0;font-weight:700;color:'+(i<3?cor:'var(--cinza)')+';">'+(pos[i]||String(i+1)+'°')+'</div>'
+            +'<div style="flex:1;min-width:0;">'
+            +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+            +'<div><span style="font-size:13px;font-weight:600;color:var(--azul-escuro);">'+escapeHtml(d.colaborador_nome)+'</span>'
+            +(cargo?'<span style="font-size:10px;color:var(--cinza);margin-left:6px;">'+escapeHtml(cargo)+'</span>':'')
+            +'</div>'
+            +'<div style="display:flex;align-items:center;gap:8px;">'
+            +'<span style="font-family:Oswald,sans-serif;font-size:18px;font-weight:700;color:var(--azul-escuro);">'+nf.toFixed(2).replace('.',',')+'</span>'
+            +'<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+(nf>=4.80?'#FBF1DF':nf>=4.50?'var(--turquesa-claro)':'#f0f2f4')+';color:'+(nf>=4.80?'#B97516':nf>=4.50?'#0F6E56':'#9aacac')+';">'+gFaixaLabel(nf)+'</span>'
+            +'</div></div>'
+            +'<div style="height:6px;background:#f0f2f4;border-radius:50px;overflow:hidden;">'
+            +'<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,'+cor+','+cor+'aa);border-radius:50px;"></div>'
+            +'</div></div>'
+            +'<i class="fas fa-chevron-right" style="font-size:11px;color:var(--cinza);flex-shrink:0;"></i>';
+        lista.appendChild(div);
+    });
+}
+
+// ─── Histórico individual clicável ────────────────────────────────────────────
+function gestorAbrirHistorico(nome) {
+    var modal = document.getElementById('g-modal-historico');
+    if(!modal) return;
+
+    var hist = gestorDados.filter(function(d){return d.colaborador_nome===nome;})
+        .sort(function(a,b){return a.competencia.localeCompare(b.competencia);});
+
+    var nomeEl = document.getElementById('g-modal-nome');
+    var deptEl = document.getElementById('g-modal-dept');
+    var cardsEl = document.getElementById('g-modal-cards');
+    var listaEl = document.getElementById('g-modal-historico-lista');
+
+    if(nomeEl) nomeEl.textContent = nome;
+    var cargo = (window.gestorCargoMap&&window.gestorCargoMap[nome])||'';
+    if(deptEl) deptEl.textContent = cargo;
+
+    // Cards resumo
+    var notas = hist.map(function(d){return Number(d.nota_final);});
+    var media = notas.length ? notas.reduce(function(a,b){return a+b;},0)/notas.length : 0;
+    var melhor = notas.length ? Math.max.apply(null, notas) : 0;
+    var ultNota = notas.length ? notas[notas.length-1] : 0;
+    var t = gTend(notas);
+
+    if(cardsEl) cardsEl.innerHTML = [
+        ['Última nota', ultNota.toFixed(2).replace('.',','), '#1DBCB0'],
+        ['Melhor nota', melhor.toFixed(2).replace('.',','), '#F59E0B'],
+        ['Média geral', media.toFixed(2).replace('.',','), '#0891b2'],
+    ].map(function(c){
+        return '<div style="text-align:center;padding:14px;background:var(--cinza-claro);border-radius:10px;">'
+            +'<div style="font-family:Oswald,sans-serif;font-size:22px;font-weight:700;color:'+c[2]+';">'+c[1]+'</div>'
+            +'<div style="font-size:11px;color:var(--cinza);margin-top:4px;">'+c[0]+'</div></div>';
+    }).join('');
+
+    // Lista de meses
+    if(listaEl) listaEl.innerHTML = hist.length===0
+        ? '<p style="color:var(--cinza);font-size:13px;text-align:center;padding:16px;">Nenhuma avaliação encontrada.</p>'
+        : hist.slice().reverse().map(function(d) {
+            var nf = Number(d.nota_final);
+            var cor = nf>=4.80?'#F59E0B':(nf>=4.50?'#1DBCB0':'#94a3b8');
+            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:8px;background:var(--cinza-claro);margin-bottom:4px;">'
+                +'<span style="font-size:13px;color:var(--azul-escuro);">'+gCompBR(d.competencia)+'</span>'
+                +'<div style="display:flex;align-items:center;gap:10px;">'
+                +'<span style="font-size:11px;color:var(--cinza);">Mon: '+Number(d.nota_monitoria).toFixed(2).replace('.',',')+' | Cli: '+Number(d.nota_cliente).toFixed(2).replace('.',',')+'</span>'
+                +'<span style="font-family:Oswald,sans-serif;font-size:17px;font-weight:700;color:'+cor+';">'+nf.toFixed(2).replace('.',',')+'</span>'
+                +gFaixaTag(nf)
+                +'</div></div>';
+        }).join('');
+
+    modal.style.display = 'flex';
+}
+
+function gestorFecharHistorico() {
+    var modal = document.getElementById('g-modal-historico');
+    if(modal) modal.style.display = 'none';
+}
+
+// ─── Gráfico de evolução ──────────────────────────────────────────────────────
+function gestorRenderGrafico() {
+    var selColab = document.getElementById('g-filtro-colab');
+    var colabSel = selColab ? selColab.value : '';
+    var canvas = document.getElementById('g-grafico-canvas');
+    if(!canvas) return;
+
+    var dados;
+    if(colabSel) {
+        dados = gestorDados.filter(function(d){return d.colaborador_nome===colabSel;});
+    } else {
+        var meses = [...new Set(gestorDados.map(function(d){return d.competencia;}))].sort();
+        dados = meses.map(function(m){
+            var dMes = gestorDados.filter(function(d){return d.competencia===m;});
+            var media = dMes.reduce(function(s,d){return s+Number(d.nota_final);},0)/dMes.length;
+            return {competencia:m, nota_final:media, colaborador_nome:'Média da equipe'};
+        });
+    }
+    dados = dados.sort(function(a,b){return a.competencia.localeCompare(b.competencia);});
+
+    var nomesMes = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    var labels = dados.map(function(d){var p=d.competencia.split('-');return nomesMes[parseInt(p[1])]+'/'+p[0].slice(2);});
+    var valores = dados.map(function(d){return Number(d.nota_final);});
+    var pointColors = valores.map(function(v){return v>=4.80?'#F59E0B':(v>=4.50?'#1DBCB0':'#94a3b8');});
+
+    if(gestorChart){gestorChart.destroy();gestorChart=null;}
+    var ctx = canvas.getContext('2d');
+    gestorChart = new Chart(ctx, {
+        type:'line',
+        data:{
+            labels:labels,
+            datasets:[{
+                label:colabSel||'Média da equipe',
+                data:valores,
+                borderColor:'#1DBCB0',
+                backgroundColor:'rgba(29,188,176,0.08)',
+                borderWidth:2.5,
+                pointBackgroundColor:pointColors,
+                pointBorderColor:pointColors,
+                pointRadius:6,
+                pointHoverRadius:8,
+                tension:0.3,
+                fill:true
+            }]
+        },
+        options:{
+            responsive:true, maintainAspectRatio:false,
+            plugins:{
+                legend:{display:false},
+                tooltip:{callbacks:{label:function(ctx){
+                    var v=ctx.parsed.y;
+                    var f=v>=4.80?'★ 5 Estrelas':(v>=4.50?'★ Excelência':'Em construção');
+                    return ' '+v.toFixed(2).replace('.',',')+' — '+f;
+                }}}
+            },
+            scales:{
+                y:{min:4.0,max:5.0,ticks:{stepSize:0.1,callback:function(v){return v.toFixed(1).replace('.',',');}},grid:{color:'rgba(0,0,0,0.05)'}},
+                x:{grid:{display:false}}
+            }
+        }
+    });
+}
+
+// ─── Tabela completa ──────────────────────────────────────────────────────────
+function gestorRenderTabela() {
+    var tbody = document.getElementById('g-tabela-body');
+    if(!tbody) return;
+
+    var selMes = document.getElementById('g-filtro-mes');
+    var filtroMes = selMes ? selMes.value : '';
+    var dados = filtroMes ? gestorDados.filter(function(d){return d.competencia===filtroMes;}) : gestorDados;
+    dados = dados.slice().sort(function(a,b){
+        return a.competencia.localeCompare(b.competencia)||a.colaborador_nome.localeCompare(b.colaborador_nome);
+    });
+
+    if(!dados.length){ tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--cinza);">Nenhum dado encontrado.</td></tr>'; return; }
+
+    var tendMap = gTendMap();
+    tbody.innerHTML = '';
+    dados.forEach(function(d) {
+        var nf = Number(d.nota_final);
+        var t = tendMap[d.colaborador_nome]||{s:'—',c:'#94a3b8'};
+        var cargo = (window.gestorCargoMap&&window.gestorCargoMap[d.colaborador_nome])||'';
+        var tr = document.createElement('tr');
+        tr.style.cursor = 'pointer';
+        tr.title = 'Clique para ver o histórico de '+d.colaborador_nome;
+        tr.onclick = function(){gestorAbrirHistorico(d.colaborador_nome);};
+        tr.onmouseover = function(){this.style.background='var(--cinza-claro)';};
+        tr.onmouseout = function(){this.style.background='';};
+        tr.innerHTML = '<td><strong>'+escapeHtml(d.colaborador_nome||'')+'</strong>'
+            +(cargo?'<br><span style="font-size:10px;color:var(--cinza);">'+escapeHtml(cargo)+'</span>':'')+'</td>'
+            +'<td>'+gCompBR(d.competencia)+'</td>'
+            +'<td style="text-align:center;">'+Number(d.nota_monitoria).toFixed(2).replace('.',',')+'</td>'
+            +'<td style="text-align:center;">'+Number(d.nota_cliente).toFixed(2).replace('.',',')+'</td>'
+            +'<td style="text-align:center;font-family:Oswald,sans-serif;font-size:16px;font-weight:700;color:var(--azul-escuro);">'+nf.toFixed(2).replace('.',',')+'</td>'
+            +'<td>'+gFaixaTag(nf)+'</td>'
+            +'<td style="text-align:center;font-size:16px;font-weight:700;color:'+t.c+';">'+t.s+'</td>';
+        tbody.appendChild(tr);
+    });
+}
+
+// ─── Mural de avisos ──────────────────────────────────────────────────────────
+function gestorMuralToggleForm() {
+    var form = document.getElementById('g-mural-form');
+    if(!form) return;
+    gestorMuralAberto = !gestorMuralAberto;
+    form.style.display = gestorMuralAberto ? 'block' : 'none';
+}
+
+async function gestorMuralPostar() {
+    var txt = document.getElementById('g-mural-texto');
+    if(!txt || !txt.value.trim()) { showNotification('Digite o aviso antes de publicar.', 'error'); return; }
+    if(!supabaseClient) return;
+
+    try {
+        // Tenta tabela dedicada 'avisos' primeiro; fallback para 'faq'
+        var autor = currentUser ? currentUser.email : 'sistema';
+        var res = await supabaseClient.from('avisos').insert({
+            texto: txt.value.trim(),
+            autor_email: autor,
+            ativo: true,
+            criado_em: new Date().toISOString()
+        });
+        if (res.error && (res.error.code === '42P01' || res.error.message.includes('does not exist'))) {
+            // Tabela não existe ainda — usa faq como fallback
+            res = await supabaseClient.from('faq').insert({
+                pergunta: '[AVISO] ' + txt.value.trim().slice(0, 80),
+                resposta: txt.value.trim(),
+                criado_em: new Date().toISOString()
+            });
+        }
+        if(res.error) throw res.error;
+        txt.value = '';
+        gestorMuralAberto = false;
+        var form = document.getElementById('g-mural-form');
+        if(form) form.style.display = 'none';
+        gestorMuralCarregar();
+        showNotification('Aviso publicado para a equipe!', 'success');
+    } catch(e) {
+        showNotification('Erro ao publicar: ' + e.message, 'error');
+    }
+}
+
+async function gestorMuralCarregar() {
+    var lista = document.getElementById('g-mural-lista');
+    if(!lista || !supabaseClient) return;
+
+    var avisos = [];
+
+    // Tenta tabela 'avisos' primeiro
+    var resAv = await supabaseClient.from('avisos')
+        .select('id, texto, autor_email, criado_em')
+        .eq('ativo', true)
+        .order('criado_em', { ascending: false })
+        .limit(5);
+
+    if (!resAv.error && resAv.data && resAv.data.length > 0) {
+        avisos = resAv.data.map(function(a) {
+            return { texto: a.texto, criado_em: a.criado_em };
+        });
+    } else {
+        // Fallback: busca em faq com prefixo [AVISO]
+        var resFaq = await supabaseClient.from('faq')
+            .select('id, resposta, criado_em')
+            .like('pergunta', '[AVISO]%')
+            .order('criado_em', { ascending: false })
+            .limit(5);
+        if (!resFaq.error && resFaq.data) {
+            avisos = resFaq.data.map(function(a) {
+                return { texto: a.resposta, criado_em: a.criado_em };
+            });
+        }
+    }
+
+    if (!avisos.length) {
+        lista.innerHTML = '<div style="text-align:center;padding:16px;color:var(--cinza);font-size:13px;">Nenhum aviso publicado ainda.</div>';
+        return;
+    }
+
+    lista.innerHTML = avisos.map(function(av) {
+        var data = new Date(av.criado_em).toLocaleDateString('pt-BR');
+        return '<div style="padding:12px 14px;background:var(--cinza-claro);border-radius:10px;">'
+            +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">'
+            +'<p style="font-size:13px;color:var(--azul-escuro);margin:0;line-height:1.5;">'+escapeHtml(av.texto)+'</p>'
+            +'<span style="font-size:10px;color:var(--cinza);white-space:nowrap;flex-shrink:0;">'+data+'</span>'
+            +'</div></div>';
+    }).join('');
+}
+
+
+
+
+
+// ==================== VISÃO EXECUTIVA — DIRETORA ====================
+
+async function executivoCarregar() {
     if (!supabaseClient) initSupabase();
     if (!supabaseClient) return;
 
     try {
         // Busca todas as avaliações
-        var res = await supabaseClient
-            .from('avaliacoes_mensais')
-            .select('colaborador_id, colaborador_nome, competencia, nota_monitoria, nota_cliente, nota_final')
+        var resAv = await supabaseClient.from('avaliacoes_mensais')
+            .select('colaborador_nome, competencia, nota_final, nota_monitoria, nota_cliente')
             .order('competencia', { ascending: true });
+        if (resAv.error) throw resAv.error;
+        var dados = resAv.data || [];
 
-        if (res.error) {
-            console.error('[Gestor] Erro avaliacoes_mensais:', res.error);
-            // Mostra erro na tela do gestor
-            var tbody = document.getElementById('g-tabela-body');
-            if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#dc2626;">'
-                + '<b>Erro ao carregar dados:</b> ' + res.error.message + '<br>'
-                + '<small style="color:var(--cinza);">Verifique a policy RLS de avaliacoes_mensais para role gestor/diretora</small>'
-                + '</td></tr>';
-            var rankEl = document.getElementById('g-ranking-lista');
-            if (rankEl) rankEl.innerHTML = '<div style="padding:20px;text-align:center;color:#dc2626;">Erro: ' + res.error.message + '</div>';
-            ['g-total-colab','g-media-geral','g-count-5e','g-count-subindo'].forEach(function(id){
-                var el = document.getElementById(id);
-                if (el) el.textContent = '!';
-            });
-            return;
-        }
-        gestorDados = res.data || [];
-        if (gestorDados.length === 0) {
-            var tbody2 = document.getElementById('g-tabela-body');
-            if (tbody2) tbody2.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--cinza);">Nenhum lançamento encontrado no banco.</td></tr>';
-            ['g-total-colab','g-media-geral','g-count-5e','g-count-subindo'].forEach(function(id){
-                var el = document.getElementById(id);
-                if (el) el.textContent = '0';
+        // Perfis para gestor_email
+        var resProf = await supabaseClient.from('profiles')
+            .select('nome, gestor_email, departamento')
+            .eq('role', 'user').eq('ativo', 'ativo');
+        var perfilMap = {};
+        var totalAtivos = 0;
+        if (!resProf.error && resProf.data) {
+            totalAtivos = resProf.data.length;
+            resProf.data.forEach(function(p) {
+                if (p.nome) perfilMap[p.nome] = { gestor: p.gestor_email, dept: p.departamento };
             });
         }
 
-        // Popula select de meses
-        var meses = [...new Set(gestorDados.map(function(d){ return d.competencia; }))].sort();
-        var selMes = document.getElementById('g-filtro-mes');
-        if (selMes) {
-            var mesAtual = selMes.value;
-            selMes.innerHTML = '<option value="">Todos os meses</option>';
-            var nomesMes = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-            meses.forEach(function(m) {
-                var p = m.split('-');
-                selMes.innerHTML += '<option value="'+m+'">' + nomesMes[parseInt(p[1])] + ' ' + p[0] + '</option>';
-            });
-            if (mesAtual) selMes.value = mesAtual;
-        }
-
-        // Popula select de colaboradores
-        var colabs = [...new Set(gestorDados.map(function(d){ return d.colaborador_nome; }))].sort();
-        var selColab = document.getElementById('g-filtro-colab');
-        if (selColab) {
-            var colabAtual = selColab.value;
-            selColab.innerHTML = '<option value="">Todos</option>';
-            colabs.forEach(function(c) {
-                selColab.innerHTML += '<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>';
-            });
-            if (colabAtual) selColab.value = colabAtual;
-        }
-
-        // Cards de visão geral
-        var mesMaisRecente = meses[meses.length - 1] || '';
-        var dadosMesRecente = gestorDados.filter(function(d){ return d.competencia === mesMaisRecente; });
-
-        var totalColab = colabs.length;
-        var mediaGeral = dadosMesRecente.length > 0
-            ? (dadosMesRecente.reduce(function(s,d){ return s + Number(d.nota_final); }, 0) / dadosMesRecente.length).toFixed(2).replace('.', ',')
-            : '—';
-        var count5E = dadosMesRecente.filter(function(d){ return Number(d.nota_final) >= 4.80; }).length;
-
-        // Tendência: quem melhorou em relação ao mês anterior
+        var meses = [...new Set(dados.map(function(d){ return d.competencia; }))].sort();
+        var mesRecente = meses[meses.length - 1] || '';
         var mesAnterior = meses.length >= 2 ? meses[meses.length - 2] : null;
-        var countSubindo = 0;
-        if (mesAnterior) {
-            dadosMesRecente.forEach(function(d) {
-                var ant = gestorDados.find(function(x){ return x.colaborador_nome === d.colaborador_nomeorador_nome && x.colaborador_nome === d.colaborador_nome && x.competencia === mesAnterior; });
-                if (ant && Number(d.nota_final) > Number(ant.nota_final)) countSubindo++;
-            });
-        }
+        var dadosMes = dados.filter(function(d){ return d.competencia === mesRecente; });
+        var dadosAnt = mesAnterior ? dados.filter(function(d){ return d.competencia === mesAnterior; }) : [];
+
+        // Métricas
+        var mediaGeral = dadosMes.length
+            ? dadosMes.reduce(function(s,d){ return s+Number(d.nota_final); }, 0) / dadosMes.length : 0;
+        var mediaAnt = dadosAnt.length
+            ? dadosAnt.reduce(function(s,d){ return s+Number(d.nota_final); }, 0) / dadosAnt.length : 0;
+        var diff = mediaGeral - mediaAnt;
+        var count5E = dadosMes.filter(function(d){ return Number(d.nota_final) >= 4.80; }).length;
+        var countRisco = dadosMes.filter(function(d){ return Number(d.nota_final) < 4.50; }).length;
 
         var g = function(id){ return document.getElementById(id); };
-        if (g('g-total-colab')) g('g-total-colab').textContent = totalColab;
-        if (g('g-media-geral')) g('g-media-geral').textContent = mediaGeral;
-        if (g('g-count-5e')) g('g-count-5e').textContent = count5E;
-        if (g('g-count-subindo')) g('g-count-subindo').textContent = countSubindo || '—';
 
-        // Ranking e tabela
-        gestorRenderRanking(dadosMesRecente, mesMaisRecente);
-        gestorRenderTabela();
-        gestorRenderGrafico();
+        if (g('exec-media')) g('exec-media').textContent = mediaGeral.toFixed(2).replace('.', ',');
+        if (g('exec-media-tend')) {
+            var sinal = diff > 0.005 ? '↑ +' : diff < -0.005 ? '↓ ' : '→ ';
+            var cor = diff > 0.005 ? '#1DBCB0' : diff < -0.005 ? '#DC2626' : 'rgba(255,255,255,0.55)';
+            g('exec-media-tend').innerHTML = '<span style="color:'+cor+'">'+sinal+Math.abs(diff).toFixed(2).replace('.',',')+'</span> vs mês anterior';
+        }
+        if (g('exec-count5e')) g('exec-count5e').textContent = count5E;
+        if (g('exec-count5e-pct')) {
+            var pct = dadosMes.length ? Math.round(count5E/dadosMes.length*100) : 0;
+            g('exec-count5e-pct').textContent = pct + '% da equipe';
+        }
+        if (g('exec-risco')) g('exec-risco').textContent = countRisco || '0';
+        if (g('exec-total')) g('exec-total').textContent = totalAtivos;
+
+        // Alertas executivos
+        executivoRenderAlertas(dados, dadosMes, mesRecente, mesAnterior, dadosAnt);
+
+        // Insight do mês
+        executivoRenderInsight(dadosMes, dadosAnt, mesRecente, diff, count5E, countRisco);
+
+        // Comparativo por área
+        executivoRenderAreas(dadosMes, perfilMap);
 
     } catch(e) {
-        console.error('[Gestor] Erro:', e);
+        console.error('[Executivo]', e);
+        showNotification('Erro ao carregar visão executiva: ' + e.message, 'error');
     }
 }
 
-// Renderiza o gráfico de evolução do colaborador selecionado
-function gestorRenderGrafico() {
-    var selColab = document.getElementById('g-filtro-colab');
-    var colabSel = selColab ? selColab.value : '';
-    var canvas = document.getElementById('g-grafico-canvas');
-    if (!canvas) return;
+function executivoRenderAlertas(todos, dadosMes, mesRecente, mesAnterior, dadosAnt) {
+    var wrap = document.getElementById('exec-alertas');
+    if (!wrap) return;
 
-    // Filtra dados do colaborador selecionado
-    var dados;
-    if (colabSel) {
-        dados = gestorDados.filter(function(d){ return d.colaborador_nome === colabSel; });
-    } else {
-        // Sem seleção: mostra média mensal da equipe
-        var meses = [...new Set(gestorDados.map(function(d){ return d.competencia; }))].sort();
-        dados = meses.map(function(m) {
-            var dMes = gestorDados.filter(function(d){ return d.competencia === m; });
-            var media = dMes.reduce(function(s,d){ return s + Number(d.nota_final); }, 0) / dMes.length;
-            return { competencia: m, nota_final: media, colaborador_nome: 'Média da equipe' };
-        });
-    }
+    var alertas = [];
+    var colabs = [...new Set(todos.map(function(d){ return d.colaborador_nome; }))];
 
-    dados = dados.sort(function(a,b){ return a.competencia.localeCompare(b.competencia); });
-
-    var nomesMes = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-    var labels = dados.map(function(d) {
-        var p = d.competencia.split('-');
-        return nomesMes[parseInt(p[1])] + '/' + p[0].slice(2);
-    });
-    var valores = dados.map(function(d){ return Number(d.nota_final); });
-
-    // Cores por faixa
-    var pointColors = valores.map(function(v) {
-        return v >= 4.80 ? '#f59e0b' : v >= 4.50 ? '#1DBCB0' : '#94a3b8';
-    });
-
-    if (gestorChart) {
-        gestorChart.destroy();
-        gestorChart = null;
-    }
-
-    var ctx = canvas.getContext('2d');
-    gestorChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: colabSel || 'Média da equipe',
-                data: valores,
-                borderColor: '#1DBCB0',
-                backgroundColor: 'rgba(29,188,176,0.08)',
-                borderWidth: 2.5,
-                pointBackgroundColor: pointColors,
-                pointBorderColor: pointColors,
-                pointRadius: 6,
-                pointHoverRadius: 8,
-                tension: 0.3,
-                fill: true,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(ctx) {
-                            var v = ctx.parsed.y;
-                            var faixa = v >= 4.80 ? '🏆 5 Estrelas' : v >= 4.50 ? '⭐ Excelência' : '📊 Em construção';
-                            return ' ' + v.toFixed(2).replace('.',',') + ' — ' + faixa;
-                        }
-                    }
-                },
-                annotation: {}
-            },
-            scales: {
-                y: {
-                    min: 4.0,
-                    max: 5.0,
-                    ticks: {
-                        stepSize: 0.1,
-                        callback: function(v) { return v.toFixed(1).replace('.',','); }
-                    },
-                    grid: { color: 'rgba(0,0,0,0.05)' }
-                },
-                x: { grid: { display: false } }
-            }
-        }
-    });
-
-    // Linhas de referência via CSS overlay
-    var wrap = document.getElementById('g-grafico-wrap');
-    var linesEl = document.getElementById('g-grafico-lines');
-    if (!linesEl && wrap) {
-        linesEl = document.createElement('div');
-        linesEl.id = 'g-grafico-lines';
-        linesEl.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;';
-        wrap.appendChild(linesEl);
-    }
-}
-
-// Renderiza o ranking do mês
-function gestorRenderRanking(dados, mesLabel) {
-    var lista = document.getElementById('g-ranking-lista');
-    var label = document.getElementById('g-ranking-mes-label');
-    if (!lista) return;
-
-    var nomesMes = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    if (label && mesLabel) {
-        var p = mesLabel.split('-');
-        label.textContent = nomesMes[parseInt(p[1])] + ' ' + p[0];
-    }
-
-    var ordenado = dados.slice().sort(function(a,b){ return Number(b.nota_final) - Number(a.nota_final); });
-
-    if (ordenado.length === 0) {
-        lista.innerHTML = '<div style="text-align:center;padding:24px;color:var(--cinza);">Nenhum lançamento neste mês.</div>';
-        return;
-    }
-
-    var html = '';
-    ordenado.forEach(function(d, i) {
-        var nf = Number(d.nota_final);
-        var medalha = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1) + 'º';
-        var faixa = nf >= 4.80 ? { label:'5 Estrelas', bg:'#FBF1DF', cor:'#B97516' }
-                  : nf >= 4.50 ? { label:'Excelência', bg:'var(--turquesa-claro)', cor:'#0F6E56' }
-                  : { label:'Em construção', bg:'#f0f2f4', cor:'#9aacac' };
-
-        // Barra de progresso visual
-        var pct = Math.max(0, Math.min(100, ((nf - 4.0) / 1.0) * 100));
-
-        html += '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:white;border:1.5px solid var(--borda);border-radius:12px;">'
-            + '<div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">' + medalha + '</div>'
-            + '<div style="flex:1;min-width:0;">'
-            + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
-            + '<span style="font-size:13px;font-weight:600;color:var(--azul-escuro);">' + d.colaborador_nome + '</span>'
-            + '<div style="display:flex;align-items:center;gap:8px;">'
-            + '<span style="font-size:17px;font-weight:700;font-family:Oswald,sans-serif;color:var(--azul-escuro);">' + nf.toFixed(2).replace('.',',') + '</span>'
-            + '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+faixa.bg+';color:'+faixa.cor+';">' + faixa.label + '</span>'
-            + '</div></div>'
-            + '<div style="height:6px;background:#f0f2f4;border-radius:50px;overflow:hidden;">'
-            + '<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#1DBCB0,#0891b2);border-radius:50px;transition:width .5s;"></div>'
-            + '</div></div></div>';
-    });
-    lista.innerHTML = html;
-}
-
-// Renderiza a tabela completa com filtros
-function gestorRenderTabela() {
-    var tbody = document.getElementById('g-tabela-body');
-    if (!tbody) return;
-
-    var selMes = document.getElementById('g-filtro-mes');
-    var filtroMes = selMes ? selMes.value : '';
-    var dados = filtroMes ? gestorDados.filter(function(d){ return d.competencia === filtroMes; }) : gestorDados;
-    dados = dados.slice().sort(function(a,b){
-        return a.competencia.localeCompare(b.competencia) || a.colaborador_nome.localeCompare(b.colaborador_nome);
-    });
-
-    if (dados.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--cinza);">Nenhum dado encontrado.</td></tr>';
-        return;
-    }
-
-    var nomesMes = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    function compBR(iso) { var p = iso.split('-'); return nomesMes[parseInt(p[1])] + ' ' + p[0]; }
-    function tagFaixa(n) {
-        if(n>=4.80) return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#FBF1DF;color:#B97516;">🏆 5 Estrelas</span>';
-        if(n>=4.50) return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--turquesa-claro);color:#0F6E56;">⭐ Excelência</span>';
-        return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#f0f2f4;color:#9aacac;">Em construção</span>';
-    }
-
-    // Calcula tendência por colaborador
-    var tendMap = {};
-    var mesesList = [...new Set(gestorDados.map(function(d){ return d.competencia; }))].sort();
-    var colabs2 = [...new Set(gestorDados.map(function(d){ return d.colaborador_nome; }))];
-    colabs2.forEach(function(c) {
-        var hist = gestorDados.filter(function(d){ return d.colaborador_nome === c; })
+    // Queda de 2 meses seguidos
+    colabs.forEach(function(c) {
+        var hist = todos.filter(function(d){ return d.colaborador_nome === c; })
             .sort(function(a,b){ return a.competencia.localeCompare(b.competencia); });
         if (hist.length >= 2) {
             var ult = Number(hist[hist.length-1].nota_final);
             var pen = Number(hist[hist.length-2].nota_final);
-            tendMap[c] = ult > pen + 0.005 ? '↑' : ult < pen - 0.005 ? '↓' : '→';
-        } else {
-            tendMap[c] = '—';
+            if (ult < pen - 0.005 && hist.length >= 3) {
+                var ant = Number(hist[hist.length-3].nota_final);
+                if (pen < ant - 0.005) {
+                    alertas.push({ tipo:'danger', msg: '<strong>'+escapeHtml(c)+'</strong> caindo pelo 2º mês consecutivo. Última nota: '+ult.toFixed(2).replace('.',',')+'. Recomenda-se intervenção.' });
+                }
+            }
         }
     });
 
-    tbody.innerHTML = '';
-    dados.forEach(function(d) {
-        var nf = Number(d.nota_final);
-        var tend = tendMap[d.colaborador_nome] || '—';
-        var tendCor = tend === '↑' ? '#059669' : tend === '↓' ? '#dc2626' : '#94a3b8';
-        var tr = document.createElement('tr');
-        tr.innerHTML = '<td><strong>' + d.colaborador_nome + '</strong></td>'
-            + '<td>' + compBR(d.competencia) + '</td>'
-            + '<td style="text-align:center;">' + Number(d.nota_monitoria).toFixed(2).replace('.',',') + '</td>'
-            + '<td style="text-align:center;">' + Number(d.nota_cliente).toFixed(2).replace('.',',') + '</td>'
-            + '<td style="text-align:center;font-family:Oswald,sans-serif;font-size:16px;font-weight:700;color:var(--azul-escuro);">' + nf.toFixed(2).replace('.',',') + '</td>'
-            + '<td>' + tagFaixa(nf) + '</td>'
-            + '<td style="text-align:center;font-size:16px;font-weight:700;color:'+tendCor+';">' + tend + '</td>';
-        tbody.appendChild(tr);
+    // Em risco
+    dadosMes.filter(function(d){ return Number(d.nota_final)<4.50; }).forEach(function(d){
+        alertas.push({ tipo:'warning', msg: '<strong>'+escapeHtml(d.colaborador_nome)+'</strong> abaixo da faixa de Excelência: '+Number(d.nota_final).toFixed(2).replace('.',',') });
     });
+
+    if (!alertas.length) { wrap.style.display='none'; return; }
+
+    var cores = { danger:'#FEE2E2', warning:'#FEF9C3' };
+    var textCores = { danger:'#991b1b', warning:'#92400e' };
+    wrap.innerHTML = '<div style="font-size:11px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Requer atenção</div>'
+        + alertas.map(function(a) {
+            return '<div style="display:flex;gap:10px;align-items:flex-start;padding:12px 16px;background:'+cores[a.tipo]+';border-radius:10px;margin-bottom:6px;border-left:3px solid '+textCores[a.tipo]+';">'
+                +'<span style="font-size:13px;color:'+textCores[a.tipo]+';line-height:1.5;">'+a.msg+'</span></div>';
+        }).join('');
+    wrap.style.display = 'block';
 }
+
+function executivoRenderInsight(dadosMes, dadosAnt, mesRecente, diff, count5E, countRisco) {
+    var wrap = document.getElementById('exec-insight');
+    var txt = document.getElementById('exec-insight-txt');
+    if (!wrap || !txt || !mesRecente) return;
+
+    var MESES = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    var p = mesRecente.split('-');
+    var mesLabel = MESES[parseInt(p[1])] + ' ' + p[0];
+
+    var insights = [];
+
+    // Tendência geral
+    if (Math.abs(diff) > 0.005) {
+        insights.push(diff > 0
+            ? 'A área cresceu <strong>+'+diff.toFixed(2).replace('.',',')+'</strong> em '+mesLabel+' em relação ao mês anterior.'
+            : 'A área recuou <strong>'+diff.toFixed(2).replace('.',',')+'</strong> em '+mesLabel+'. Avaliar com as coordenadoras.');
+    }
+
+    // Destaques
+    if (dadosMes.length) {
+        var top = dadosMes.slice().sort(function(a,b){ return Number(b.nota_final)-Number(a.nota_final); })[0];
+        insights.push('Destaque do mês: <strong>'+escapeHtml(top.colaborador_nome)+'</strong> com nota '+Number(top.nota_final).toFixed(2).replace('.',',')+' ★');
+    }
+
+    if (count5E > 0) {
+        insights.push(count5E + ' colaborador'+(count5E>1?'es':'')+(count5E>1?' atingiram':' atingiu')+' o 5 Estrelas este mês.');
+    }
+
+    if (countRisco > 0) {
+        insights.push(countRisco + ' colaborador'+(countRisco>1?'es':'')+(countRisco>1?' estão abaixo':' está abaixo')+' de 4,50 — recomenda-se acompanhamento próximo.');
+    }
+
+    if (!insights.length) { wrap.style.display='none'; return; }
+
+    txt.innerHTML = insights.join('<br>');
+    wrap.style.display = 'block';
+}
+
+function executivoRenderAreas(dadosMes, perfilMap) {
+    var lista = document.getElementById('exec-areas');
+    if (!lista) return;
+
+    var gestorNomes = {
+        'thaismaximo@canopus.com.br':    'Equipe Thais — Relacionamento',
+        'lucimarasantoro@canopus.com.br':'Equipe Lucimara — Repasse',
+        'amandacunha@canopus.com.br':    'Jurídico — Crédito',
+        'anaelisasantos@canopus.com.br': 'Jurídico — Contratos',
+    };
+
+    var areaMap = {};
+    dadosMes.forEach(function(d) {
+        var info = perfilMap[d.colaborador_nome];
+        var gestor = info ? info.gestor : null;
+        var label = gestorNomes[gestor] || 'Outras áreas';
+        if (!areaMap[label]) areaMap[label] = [];
+        areaMap[label].push(Number(d.nota_final));
+    });
+
+    if (!Object.keys(areaMap).length) {
+        lista.innerHTML = '<p style="color:var(--cinza);font-size:13px;">Sem dados para este mês.</p>';
+        return;
+    }
+
+    var areas = Object.keys(areaMap).map(function(k) {
+        var notas = areaMap[k];
+        var media = notas.reduce(function(a,b){return a+b;},0)/notas.length;
+        var c5E = notas.filter(function(n){return n>=4.80;}).length;
+        var risco = notas.filter(function(n){return n<4.50;}).length;
+        return { label:k, media:media, total:notas.length, c5E:c5E, risco:risco };
+    }).sort(function(a,b){ return b.media-a.media; });
+
+    var pos = ['🥇','🥈','🥉'];
+    lista.innerHTML = areas.map(function(a, i) {
+        var cor = a.media>=4.80?'#F59E0B':(a.media>=4.50?'#1DBCB0':'#DC2626');
+        var pct = Math.max(0,Math.min(100,((a.media-4.0)/1.0)*100));
+        return '<div style="padding:16px;background:var(--cinza-claro);border-radius:12px;">'
+            +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
+            +'<div><span style="font-size:16px;margin-right:8px;">'+(pos[i]||'')+'</span>'
+            +'<span style="font-size:13px;font-weight:600;color:var(--azul-escuro);">'+escapeHtml(a.label)+'</span></div>'
+            +'<div style="display:flex;align-items:center;gap:12px;">'
+            +(a.risco>0?'<span style="font-size:11px;color:#DC2626;font-weight:600;">⚠ '+a.risco+' em risco</span>':'')
+            +'<span style="font-size:11px;color:var(--cinza);">'+a.c5E+' no topo · '+a.total+' colab.</span>'
+            +'<span style="font-family:Oswald,sans-serif;font-size:22px;font-weight:700;color:'+cor+';">'+a.media.toFixed(2).replace('.',',')+'</span>'
+            +'</div></div>'
+            +'<div style="height:8px;background:#e5e7eb;border-radius:50px;overflow:hidden;">'
+            +'<div style="height:100%;width:'+pct+'%;background:'+cor+';border-radius:50px;transition:width .6s;"></div>'
+            +'</div></div>';
+    }).join('');
+}
+
+// ==================== RECOMENDAÇÃO CONTEXTUAL — COLABORADOR ====================
+
+function colaboradorRenderRecomendacao() {
+    var email = currentUser && currentUser.email;
+    var registro = email && window.demo5Estrelas && window.demo5Estrelas[email];
+    if (!registro || !registro.atual) return;
+
+    var nf = registro.atual.nf;
+    var dept = (currentUser && currentUser.departamento) || '';
+
+    // Define recomendação baseada na nota e no departamento
+    var rec = null;
+
+    if (nf >= 4.80) {
+        rec = {
+            icone: 'fa-trophy',
+            cor: '#F59E0B',
+            titulo: 'Você está no 5 Estrelas!',
+            msg: 'Excelente trabalho. Para manter esse padrão, explore os Modelos de Resposta e os fluxos operacionais avançados.',
+            modulo: 'mod-rel-9',
+            trilha: 'trilha-relacionamento',
+            modLabel: 'Modelos de Resposta'
+        };
+    } else if (nf >= 4.70) {
+        rec = {
+            icone: 'fa-arrow-trend-up',
+            cor: '#1DBCB0',
+            titulo: 'Faltam ' + (4.80-nf).toFixed(2).replace('.',',') + ' para o 5 Estrelas',
+            msg: 'Você está muito próximo. Colaboradores em Excelência que estudaram Comunicação Profissional melhoraram a nota do cliente em média 0,12.',
+            modulo: 'mod-rel-4',
+            trilha: 'trilha-relacionamento',
+            modLabel: 'Comunicação Profissional'
+        };
+    } else if (nf >= 4.50) {
+        rec = {
+            icone: 'fa-book-open',
+            cor: '#1DBCB0',
+            titulo: 'Faltam ' + (4.80-nf).toFixed(2).replace('.',',') + ' para o 5 Estrelas',
+            msg: 'Para evoluir de Excelência para 5 Estrelas, o foco em atendimento humanizado faz diferença na nota do cliente.',
+            modulo: 'mod-rel-2',
+            trilha: 'trilha-relacionamento',
+            modLabel: 'Atendimento Humanizado'
+        };
+    } else if (nf >= 4.30) {
+        rec = {
+            icone: 'fa-handshake',
+            cor: '#0891b2',
+            titulo: 'Em construção — foco em Excelência',
+            msg: 'Gestão de conflitos é a competência que mais impacta a nota de monitoria. Recomendamos começar por aqui.',
+            modulo: 'mod-rel-5',
+            trilha: 'trilha-relacionamento',
+            modLabel: 'Gestão de Conflitos'
+        };
+    } else {
+        rec = {
+            icone: 'fa-compass',
+            cor: '#7c3aed',
+            titulo: 'Comece pela base',
+            msg: 'Revise os fundamentos do atendimento Canopus. A jornada do cliente é o ponto de partida para todas as melhorias.',
+            modulo: 'mod-rel-1',
+            trilha: 'trilha-relacionamento',
+            modLabel: 'Jornada do Cliente'
+        };
+    }
+
+    if (!rec) return;
+
+    // Injeta o card de recomendação no dashboard do 5 Estrelas
+    var alvo = document.getElementById('ce-msg');
+    if (!alvo) return;
+
+    var recId = 'ce-recomendacao';
+    var jaExiste = document.getElementById(recId);
+    if (jaExiste) jaExiste.remove();
+
+    var div = document.createElement('div');
+    div.id = recId;
+    div.style.cssText = 'margin-top:20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:16px 18px;text-align:left;cursor:pointer;transition:background .2s;';
+    div.onmouseover = function(){ this.style.background='rgba(255,255,255,0.13)'; };
+    div.onmouseout = function(){ this.style.background='rgba(255,255,255,0.08)'; };
+    div.onclick = function(){ navigateTo(rec.trilha); };
+    div.innerHTML = '<div style="display:flex;align-items:flex-start;gap:12px;">'
+        +'<div style="width:36px;height:36px;border-radius:10px;background:'+rec.cor+';display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+        +'<i class="fas '+rec.icone+'" style="color:'+(rec.cor==='#F59E0B'?'#003C50':'white')+';font-size:15px;"></i></div>'
+        +'<div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Recomendação</div>'
+        +'<div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">'+rec.titulo+'</div>'
+        +'<div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;margin-bottom:8px;">'+rec.msg+'</div>'
+        +'<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:600;color:#fff;">'
+        +'<i class="fas fa-play-circle" style="font-size:11px;"></i> '+escapeHtml(rec.modLabel)+' <i class="fas fa-arrow-right" style="font-size:9px;opacity:.7;"></i>'
+        +'</div></div></div>';
+
+    alvo.parentNode.insertBefore(div, alvo.nextSibling);
+}
+
+
+// ==================== CARDS INDIVIDUAIS DA EQUIPE ====================
+
+function gestorRenderCardsEquipe(dadosMes, tendMap) {
+    var wrap = document.getElementById('g-cards-equipe-wrap');
+    var lista = document.getElementById('g-cards-equipe-lista');
+    if (!wrap || !lista) return;
+
+    // Só mostra para coordenadora e líder
+    var rolesMostrar = ['coordenadora','lider','admin-juridico-contratos','admin-juridico-credito'];
+    if (rolesMostrar.indexOf(currentRole) === -1) { wrap.style.display = 'none'; return; }
+
+    wrap.style.display = 'block';
+    lista.innerHTML = '';
+
+    // Monta lista de colaboradores com e sem avaliação no mês
+    var equipeMap = window.gestorEquipeMap || {};
+    var todosColabs = Object.keys(equipeMap);
+    var avaliadosNomes = dadosMes.map(function(d){ return d.colaborador_nome; });
+
+    // Ordena: alertas primeiro, depois por nota decrescente
+    var comNota = dadosMes.slice().sort(function(a,b){ return Number(b.nota_final)-Number(a.nota_final); });
+    var semNota = todosColabs.filter(function(c){ return avaliadosNomes.indexOf(c) === -1; });
+
+    // Cards com alerta primeiro
+    var emAlerta = comNota.filter(function(d){ return Number(d.nota_final) < 4.50; });
+    var normais = comNota.filter(function(d){ return Number(d.nota_final) >= 4.50; });
+    var ordenados = emAlerta.concat(normais);
+
+    // Renderiza cards com nota
+    ordenados.forEach(function(d) {
+        var nf = Number(d.nota_final);
+        var t = tendMap[d.colaborador_nome] || { s:'—', c:'#94a3b8' };
+        var cor = nf>=4.80?'#F59E0B':(nf>=4.50?'#1DBCB0':'#DC2626');
+        var bgCard = nf<4.50?'#FEF2F2':'white';
+        var borderCard = nf<4.50?'1.5px solid #FCA5A5':'1.5px solid var(--borda)';
+        var cargo = (window.gestorCargoMap&&window.gestorCargoMap[d.colaborador_nome])||'';
+        var pct = Math.max(0,Math.min(100,((nf-4.0)/1.0)*100));
+
+        var card = document.createElement('div');
+        card.style.cssText = 'background:'+bgCard+';border:'+borderCard+';border-radius:14px;padding:16px;cursor:pointer;transition:box-shadow .2s,transform .15s;';
+        card.onmouseover = function(){ this.style.boxShadow='0 6px 20px rgba(0,60,80,0.12)'; this.style.transform='translateY(-2px)'; };
+        card.onmouseout = function(){ this.style.boxShadow='none'; this.style.transform=''; };
+        card.onclick = function(){ gestorAbrirHistorico(d.colaborador_nome); };
+
+        var iniciais = d.colaborador_nome.split(' ').slice(0,2).map(function(n){return n[0];}).join('');
+        var primeiroNome = d.colaborador_nome.split(' ')[0];
+
+        // Calcular último acesso
+        var infoEquipe = window.gestorEquipeMap && window.gestorEquipeMap[d.colaborador_nome];
+        var ultimoAcesso = '';
+        if (infoEquipe && infoEquipe.acesso) {
+            var diasAtras = Math.floor((new Date() - new Date(infoEquipe.acesso)) / (1000*60*60*24));
+            if (diasAtras === 0) ultimoAcesso = 'Acessou hoje';
+            else if (diasAtras === 1) ultimoAcesso = 'Acessou ontem';
+            else if (diasAtras <= 7) ultimoAcesso = 'Há '+diasAtras+' dias';
+            else if (diasAtras <= 30) ultimoAcesso = 'Há '+Math.floor(diasAtras/7)+' sem.';
+            else ultimoAcesso = 'Há '+Math.floor(diasAtras/30)+'m+';
+        }
+        var corAcesso = ultimoAcesso.includes('hoje')||ultimoAcesso.includes('ontem')?'#059669'
+            :ultimoAcesso.includes('dias')?'#F59E0B':'#DC2626';
+
+        card.innerHTML = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">'
+            + '<div style="width:40px;height:40px;border-radius:50%;background:'+cor+';display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:'+(nf<4.80?'white':'#003C50')+';flex-shrink:0;">'+iniciais+'</div>'
+            + '<div style="flex:1;min-width:0;">'
+            + '<div style="font-size:13px;font-weight:700;color:var(--azul-escuro);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+escapeHtml(primeiroNome)+'</div>'
+            + (cargo?'<div style="font-size:10px;color:var(--cinza);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+escapeHtml(cargo)+'</div>':'')
+            + '</div>'
+            + '<div style="text-align:right;flex-shrink:0;">'
+            + '<div style="font-family:Oswald,sans-serif;font-size:20px;font-weight:700;color:'+cor+';">'+nf.toFixed(2).replace('.',',')+'</div>'
+            + '<div style="font-size:14px;color:'+t.c+';">'+t.s+'</div>'
+            + '</div></div>'
+            + '<div style="height:6px;background:#f0f2f4;border-radius:50px;overflow:hidden;margin-bottom:8px;">'
+            + '<div style="height:100%;width:'+pct+'%;background:'+cor+';border-radius:50px;transition:width .5s;"></div>'
+            + '</div>'
+            + '<div style="display:flex;align-items:center;justify-content:space-between;">'
+            + (nf<4.50?'<div style="font-size:11px;font-weight:600;color:#DC2626;">⚠ Atenção</div>':'<div></div>')
+            + (ultimoAcesso?'<div style="font-size:10px;font-weight:600;color:'+corAcesso+';">'+ultimoAcesso+'</div>':'')
+            + '</div>';
+        lista.appendChild(card);
+    });
+
+    // Cards sem avaliação no mês
+    semNota.forEach(function(nome) {
+        var cargo = (window.gestorCargoMap&&window.gestorCargoMap[nome])||'';
+        var iniciais = nome.split(' ').slice(0,2).map(function(n){return n[0];}).join('');
+        var primeiroNome = nome.split(' ')[0];
+        var card = document.createElement('div');
+        card.style.cssText = 'background:#F9FAFB;border:1.5px dashed #D1D5DB;border-radius:14px;padding:16px;cursor:pointer;opacity:0.8;';
+        card.onclick = function(){ gestorAbrirHistorico(nome); };
+        card.innerHTML = '<div style="display:flex;align-items:center;gap:10px;">'
+            + '<div style="width:40px;height:40px;border-radius:50%;background:#E5E7EB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#9CA3AF;flex-shrink:0;">'+iniciais+'</div>'
+            + '<div style="flex:1;min-width:0;">'
+            + '<div style="font-size:13px;font-weight:700;color:var(--azul-escuro);">'+escapeHtml(primeiroNome)+'</div>'
+            + (cargo?'<div style="font-size:10px;color:var(--cinza);">'+escapeHtml(cargo)+'</div>':'')
+            + '</div>'
+            + '<div style="font-size:11px;color:#9CA3AF;font-style:italic;">Sem avaliação</div>'
+            + '</div>';
+        lista.appendChild(card);
+    });
+
+    if (lista.children.length === 0) {
+        wrap.style.display = 'none';
+    }
+}
+
+// ==================== STATUS DO MÊS PARA AVALIADOR ====================
+
+async function avStatusMes() {
+    if (!supabaseClient || currentRole !== 'avaliador') return;
+    try {
+        // Mês atual
+        var hoje = new Date();
+        var mesAtual = hoje.getFullYear()+'-'+(String(hoje.getMonth()+1).padStart(2,'0'));
+
+        // Total de avaliados
+        var rTotal = await supabaseClient.from('profiles')
+            .select('nome').eq('role','user').eq('avaliado',true).eq('ativo','ativo');
+        var total = rTotal.data ? rTotal.data.length : 0;
+        var todosNomes = rTotal.data ? rTotal.data.map(function(p){return p.nome;}) : [];
+
+        // Já avaliados este mês
+        var rLanc = await supabaseClient.from('avaliacoes_mensais')
+            .select('colaborador_nome').eq('competencia',mesAtual);
+        var jaAvaliados = rLanc.data ? rLanc.data.map(function(d){return d.colaborador_nome;}) : [];
+
+        var pendentes = todosNomes.filter(function(n){ return jaAvaliados.indexOf(n)===-1; });
+
+        var el = document.getElementById('av-count-lancados');
+        var elTot = document.getElementById('av-count-total');
+        var elPend = document.getElementById('av-pendentes-lista');
+        var cardPend = document.getElementById('av-pendentes-card');
+
+        if(el) el.textContent = jaAvaliados.length;
+        if(elTot) elTot.textContent = 'de '+total+' colaboradores';
+
+        if(pendentes.length === 0) {
+            if(cardPend) { cardPend.style.background='#D1FAE5'; cardPend.style.border='1.5px solid #059669'; }
+            if(elPend) elPend.innerHTML = '<span style="color:#065F46;font-weight:700;">✅ Todos avaliados este mês!</span>';
+        } else {
+            if(elPend) elPend.innerHTML = pendentes.slice(0,5).map(function(n){
+                return '<div>• '+escapeHtml(n)+'</div>';
+            }).join('') + (pendentes.length>5?'<div style="font-weight:700;margin-top:4px;">+ '+(pendentes.length-5)+' outros</div>':'');
+        }
+    } catch(e) {
+        console.warn('[AvStatus]', e.message);
+    }
+}
+
+
+// ==================== EXPORTAÇÃO EXCEL PROFISSIONAL — GESTOR ====================
+
+async function gestorExportarCSV() {
+    if (!supabaseClient) initSupabase();
+    if (!supabaseClient) { showNotification('Supabase indispon\u00edvel.', 'error'); return; }
+    if (typeof XLSX === 'undefined') { showNotification('Biblioteca Excel ainda carregando. Aguarde.', 'error'); return; }
+
+    showNotification('Buscando dados do Supabase...', 'info');
+
+    try {
+        var resAv = await supabaseClient.from('avaliacoes_mensais')
+            .select('colaborador_nome, competencia, nota_monitoria, nota_cliente, nota_final, atendimentos_monitorados')
+            .order('competencia', { ascending: true });
+        if (resAv.error) throw new Error(resAv.error.message);
+
+        var resProf = await supabaseClient.from('profiles').select('nome, departamento').eq('role','user');
+        var deptMap = {};
+        if (!resProf.error && resProf.data)
+            resProf.data.forEach(function(p){ if(p.nome) deptMap[p.nome]=p.departamento||''; });
+
+        var dados = resAv.data || [];
+        if (!dados.length) { showNotification('Nenhum dado para exportar.', 'error'); return; }
+
+        var MESES = ['','Janeiro','Fevereiro','Marco','Abril','Maio','Junho',
+            'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        function compBR(iso){ var p=iso.split('-'); return MESES[parseInt(p[1])]+' '+p[0]; }
+        function faixaLabel(n){ return n>=4.80?'5 Estrelas':(n>=4.50?'Excelencia':'Em construcao'); }
+
+        var meses = [...new Set(dados.map(function(d){return d.competencia;}))].sort();
+        var colabs = [...new Set(dados.map(function(d){return d.colaborador_nome;}))].sort();
+        var mesRecente = meses[meses.length-1]||'';
+        var dadosMes = dados.filter(function(d){return d.competencia===mesRecente;});
+
+        var tendMap = {};
+        colabs.forEach(function(c){
+            var hist = dados.filter(function(d){return d.colaborador_nome===c;})
+                .sort(function(a,b){return a.competencia.localeCompare(b.competencia);})
+                .map(function(d){return Number(d.nota_final);});
+            tendMap[c] = hist.length<2?'Primeiro mes':
+                hist[hist.length-1]>hist[hist.length-2]+0.005?'Subindo':
+                hist[hist.length-1]<hist[hist.length-2]-0.005?'Caindo':'Estavel';
+        });
+
+        var mediaGeral = dadosMes.length?dadosMes.reduce(function(s,d){return s+Number(d.nota_final);},0)/dadosMes.length:0;
+        var count5E = dadosMes.filter(function(d){return Number(d.nota_final)>=4.80;}).length;
+        var countExc = dadosMes.filter(function(d){var n=Number(d.nota_final);return n>=4.50&&n<4.80;}).length;
+        var countSub = colabs.filter(function(c){return tendMap[c]==='Subindo';}).length;
+
+        var AZUL='003C50',TURQ='1DBCB0',CINZACL='F4F7F8',CINZAM='78909C';
+        var VERDE='059669',AMAR='F59E0B',BRANCO='FFFFFF',AZULCL='E8F4F8';
+
+        function sH(bg,fg,sz,bold){
+            return {font:{name:'Arial',bold:bold!==false,sz:sz||10,color:{rgb:fg||BRANCO}},
+                fill:{fgColor:{rgb:bg||AZUL}},alignment:{horizontal:'center',vertical:'center',wrapText:true},
+                border:{top:{style:'thin',color:{rgb:'DDE2E5'}},bottom:{style:'thin',color:{rgb:'DDE2E5'}},
+                    left:{style:'thin',color:{rgb:'DDE2E5'}},right:{style:'thin',color:{rgb:'DDE2E5'}}}};
+        }
+        function sD(bg,fg,bold,center){
+            return {font:{name:'Arial',bold:!!bold,sz:10,color:{rgb:fg||'1A1A2E'}},
+                fill:{fgColor:{rgb:bg||BRANCO}},alignment:{horizontal:center?'center':'left',vertical:'center'},
+                border:{top:{style:'thin',color:{rgb:'DDE2E5'}},bottom:{style:'thin',color:{rgb:'DDE2E5'}},
+                    left:{style:'thin',color:{rgb:'DDE2E5'}},right:{style:'thin',color:{rgb:'DDE2E5'}}}};
+        }
+        function fc(n){return n>=4.80?AMAR:(n>=4.50?TURQ:CINZAM);}
+        function fg(n){return n>=4.80?AZUL:BRANCO;}
+        function stend(t){return t==='Subindo'?VERDE:(t==='Caindo'?'DC2626':CINZAM);}
+        function cv(v,s){return {v:v,t:typeof v==='number'?'n':'s',s:s||{}};}
+
+        function buildSheet(nome,rows,cols,merges){
+            var ws=XLSX.utils.aoa_to_sheet(rows.map(function(r){return r.map(function(c){return c&&typeof c==='object'&&'v' in c?c.v:c==null?'':c});}));
+            rows.forEach(function(row,ri){row.forEach(function(c,ci){
+                if(c&&typeof c==='object'&&c.s){var ref=XLSX.utils.encode_cell({r:ri,c:ci});if(ws[ref])ws[ref].s=c.s;}
+            });});
+            if(cols)ws['!cols']=cols;
+            if(merges)ws['!merges']=merges;
+            return ws;
+        }
+
+        var wb=XLSX.utils.book_new();
+        var posL=['1o','2o','3o','4o','5o','6o','7o','8o','9o','10o'];
+        var rankS=dadosMes.slice().sort(function(a,b){return Number(b.nota_final)-Number(a.nota_final);});
+
+        // ── ABA 1: Resumo Executivo ──────────────────────────────
+        var s1=[];
+        s1.push([cv('FAROL RELACIONAMENTO - Programa Atendimento 5 Estrelas',sH(AZUL,TURQ,14,true)),'','','','','','']);
+        s1.push([cv('Relatorio gerado em: '+new Date().toLocaleString('pt-BR'),sH(AZUL,'80DEEA',9,false)),'','','','','','']);
+        s1.push(['','','','','','','']);
+        s1.push([cv('METRICAS DO MES - '+compBR(mesRecente).toUpperCase(),sH(AZUL,TURQ,11,true)),'','','','','','']);
+        s1.push([cv('Colaboradores avaliados',sH(AZUL,TURQ,9)),cv(colabs.length,sH(TURQ,BRANCO,14,true)),
+            cv('Media da equipe',sH(AZUL,TURQ,9)),cv(mediaGeral.toFixed(2),sH(mediaGeral>=4.80?AMAR:(mediaGeral>=4.50?TURQ:CINZAM),mediaGeral>=4.80?AZUL:BRANCO,14,true)),
+            cv('No 5 Estrelas',sH(AZUL,TURQ,9)),cv(count5E,sH(AMAR,AZUL,14,true)),'']);
+        s1.push([cv('Em Excelencia',sH(AZUL,TURQ,9)),cv(countExc,sH(TURQ,BRANCO,14,true)),
+            cv('Tendencia Subindo',sH(AZUL,TURQ,9)),cv(countSub,sH(VERDE,BRANCO,14,true)),'','','']);
+        s1.push(['','','','','','','']);
+        s1.push([cv('RANKING - '+compBR(mesRecente).toUpperCase(),sH(AZUL,TURQ,12,true)),'','','','','','']);
+        s1.push([cv('Pos',sH(AZUL,BRANCO)),cv('Colaborador',sH(AZUL,BRANCO)),cv('Departamento',sH(AZUL,BRANCO)),
+            cv('Monitoria',sH(AZUL,BRANCO)),cv('Cliente',sH(AZUL,BRANCO)),cv('Nota Final',sH(AZUL,BRANCO)),cv('Classificacao',sH(AZUL,BRANCO))]);
+        rankS.forEach(function(d,i){
+            var nf=Number(d.nota_final),bg=i%2===0?AZULCL:BRANCO;
+            s1.push([cv(posL[i]||String(i+1)+'o',sD(i===0?AMAR:bg,i===0?AZUL:CINZAM,true,true)),
+                cv(d.colaborador_nome,sD(bg,AZUL,true)),cv(deptMap[d.colaborador_nome]||'',sD(bg,CINZAM,false)),
+                cv(Number(d.nota_monitoria).toFixed(2),sD(bg,'1A1A2E',false,true)),cv(Number(d.nota_cliente).toFixed(2),sD(bg,'1A1A2E',false,true)),
+                cv(Number(d.nota_final).toFixed(2),sD(fc(nf),fg(nf),true,true)),cv(faixaLabel(nf),sD(bg,fc(nf),true))]);
+        });
+        XLSX.utils.book_append_sheet(wb,buildSheet('Resumo Executivo',s1,
+            [{wch:14},{wch:26},{wch:20},{wch:12},{wch:12},{wch:12},{wch:18}],
+            [{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}},{s:{r:3,c:0},e:{r:3,c:6}},{s:{r:7,c:0},e:{r:7,c:6}}]),'Resumo Executivo');
+
+        // ── ABA 2: Historico ────────────────────────────────────
+        var s2=[];
+        s2.push([cv('HISTORICO COMPLETO',sH(AZUL,TURQ,12,true)),'','','','','','','','']);
+        s2.push([cv('Colaborador',sH(AZUL,BRANCO)),cv('Departamento',sH(AZUL,BRANCO)),cv('Competencia',sH(AZUL,BRANCO)),
+            cv('Monitoria (60%)',sH(AZUL,BRANCO)),cv('Cliente (40%)',sH(AZUL,BRANCO)),cv('Nota Final',sH(AZUL,BRANCO)),
+            cv('Classificacao',sH(AZUL,BRANCO)),cv('Tendencia',sH(AZUL,BRANCO)),cv('Atendimentos',sH(AZUL,BRANCO))]);
+        var dOrd=dados.slice().sort(function(a,b){return a.colaborador_nome.localeCompare(b.colaborador_nome)||a.competencia.localeCompare(b.competencia);});
+        dOrd.forEach(function(d,i){
+            var nf=Number(d.nota_final),bg=i%2===0?AZULCL:BRANCO,tc=tendMap[d.colaborador_nome]||'-';
+            s2.push([cv(d.colaborador_nome,sD(bg,AZUL,true)),cv(deptMap[d.colaborador_nome]||'',sD(bg,CINZAM,false)),
+                cv(compBR(d.competencia),sD(bg,'1A1A2E',false,true)),
+                cv(Number(d.nota_monitoria).toFixed(2),sD(bg,'1A1A2E',false,true)),cv(Number(d.nota_cliente).toFixed(2),sD(bg,'1A1A2E',false,true)),
+                cv(Number(d.nota_final).toFixed(2),sD(fc(nf),fg(nf),true,true)),cv(faixaLabel(nf),sD(bg,fc(nf),true)),
+                cv(tc,sD(bg,stend(tc),true,true)),cv(d.atendimentos_monitorados||'',sD(bg,'1A1A2E',false,true))]);
+        });
+        XLSX.utils.book_append_sheet(wb,buildSheet('Historico',s2,
+            [{wch:26},{wch:18},{wch:14},{wch:14},{wch:13},{wch:12},{wch:16},{wch:12},{wch:12}],
+            [{s:{r:0,c:0},e:{r:0,c:8}}]),'Historico');
+
+        // ── ABA 3: Evolucao ──────────────────────────────────────
+        var s3=[];
+        var hEvo=[cv('Colaborador',sH(AZUL,BRANCO)),cv('Departamento',sH(AZUL,BRANCO))];
+        meses.forEach(function(m){hEvo.push(cv(compBR(m),sH(AZUL,BRANCO)));});
+        hEvo.push(cv('Media',sH(TURQ,BRANCO)));
+        s3.push([cv('EVOLUCAO INDIVIDUAL - Nota Final por Mes',sH(AZUL,TURQ,12,true))].concat(new Array(meses.length+1).fill('')));
+        s3.push(hEvo);
+        colabs.forEach(function(c,ci){
+            var bg=ci%2===0?AZULCL:BRANCO,nums=[],row=[cv(c,sD(bg,AZUL,true)),cv(deptMap[c]||'',sD(bg,CINZAM,false))];
+            meses.forEach(function(m){
+                var d=dados.find(function(x){return x.colaborador_nome===c&&x.competencia===m;});
+                if(d){var n=Number(d.nota_final);nums.push(n);row.push(cv(n.toFixed(2),sD(fc(n),fg(n),true,true)));}
+                else{row.push(cv('-',sD(bg,CINZAM,false,true)));}
+            });
+            var avg=nums.length?nums.reduce(function(a,b){return a+b;},0)/nums.length:null;
+            row.push(avg?cv(avg.toFixed(2),sD(fc(avg),fg(avg),true,true)):cv('-',sD(bg,CINZAM,false,true)));
+            s3.push(row);
+        });
+        var colsEvo=[{wch:26},{wch:18}].concat(meses.map(function(){return {wch:13};})).concat([{wch:10}]);
+        XLSX.utils.book_append_sheet(wb,buildSheet('Evolucao',s3,colsEvo,[{s:{r:0,c:0},e:{r:0,c:meses.length+1}}]),'Evolucao');
+
+        // ── ABA 4: Ranking ───────────────────────────────────────
+        var s4=[];
+        s4.push([cv('RANKING - '+compBR(mesRecente).toUpperCase(),sH(AZUL,TURQ,13,true)),'','','','','','']);
+        s4.push([cv('Pos',sH(AZUL,BRANCO)),cv('Colaborador',sH(AZUL,BRANCO)),cv('Departamento',sH(AZUL,BRANCO)),
+            cv('Monitoria (60%)',sH(AZUL,BRANCO)),cv('Cliente (40%)',sH(AZUL,BRANCO)),cv('Nota Final',sH(AZUL,BRANCO)),cv('Classificacao',sH(AZUL,BRANCO))]);
+        rankS.forEach(function(d,i){
+            var nf=Number(d.nota_final),bg=i%2===0?AZULCL:BRANCO;
+            s4.push([cv(posL[i]||String(i+1)+'o',sD(i===0?AMAR:(i===1?CINZAM:bg),i===0?AZUL:(i===1?BRANCO:'1A1A2E'),true,true)),
+                cv(d.colaborador_nome,sD(bg,AZUL,i<3)),cv(deptMap[d.colaborador_nome]||'',sD(bg,CINZAM,false)),
+                cv(Number(d.nota_monitoria).toFixed(2),sD(bg,'1A1A2E',false,true)),cv(Number(d.nota_cliente).toFixed(2),sD(bg,'1A1A2E',false,true)),
+                cv(Number(d.nota_final).toFixed(2),sD(fc(nf),fg(nf),true,true)),cv(faixaLabel(nf),sD(bg,fc(nf),true))]);
+        });
+        XLSX.utils.book_append_sheet(wb,buildSheet('Ranking',s4,
+            [{wch:8},{wch:26},{wch:20},{wch:14},{wch:14},{wch:12},{wch:18}],
+            [{s:{r:0,c:0},e:{r:0,c:6}}]),'Ranking');
+
+        // ── ABA 5: Legenda ───────────────────────────────────────
+        var s5=[];
+        s5.push([cv('LEGENDA E METODOLOGIA',sH(AZUL,TURQ,13,true)),'']);
+        s5.push(['','']);
+        s5.push([cv('FORMULA',sH(AZUL,TURQ,11,true)),'']);
+        s5.push([cv('Nota Final',sD(AZULCL,AZUL,true)),cv('= (Monitoria x 60%) + (Cliente x 40%)',sD(AZULCL,AZUL,false))]);
+        s5.push([cv('Elegibilidade',sD(CINZACL,CINZAM,true)),cv('Minimo 20 atendimentos monitorados no mes',sD(CINZACL,CINZAM,false))]);
+        s5.push(['','']);
+        s5.push([cv('FAIXAS',sH(AZUL,TURQ,11,true)),'']);
+        s5.push([cv('5 Estrelas',sH(AMAR,AZUL,11,true)),cv('Nota 4,80 a 5,00 — Excelencia maxima',sH(AMAR,AZUL,10,false))]);
+        s5.push([cv('Excelencia',sH(TURQ,BRANCO,11,true)),cv('Nota 4,50 a 4,79 — Alta performance',sH(TURQ,BRANCO,10,false))]);
+        s5.push([cv('Em construcao',sH(CINZAM,BRANCO,11,true)),cv('Nota abaixo de 4,50 — Em desenvolvimento',sH(CINZAM,BRANCO,10,false))]);
+        s5.push(['','']);
+        s5.push([cv('Exportado em',sD(CINZACL,CINZAM,true)),cv(new Date().toLocaleString('pt-BR'),sD(CINZACL,CINZAM,false))]);
+        XLSX.utils.book_append_sheet(wb,buildSheet('Legenda',s5,[{wch:20},{wch:48}],
+            [{s:{r:0,c:0},e:{r:0,c:1}},{s:{r:2,c:0},e:{r:2,c:1}},{s:{r:6,c:0},e:{r:6,c:1}}]),'Legenda');
+
+        var dataHoje=new Date().toISOString().slice(0,10);
+        XLSX.writeFile(wb,'Farol_5Estrelas_'+mesRecente+'_'+dataHoje+'.xlsx',{bookType:'xlsx',type:'binary',cellStyles:true});
+        showNotification('Relatorio Excel exportado! ('+dados.length+' registros, '+colabs.length+' colaboradores)', 'success');
+
+    } catch(e) {
+        console.error('[Excel]',e);
+        showNotification('Erro ao gerar relatorio: '+e.message,'error');
+    }
+}
+
 
 // ==================== SUPABASE REALTIME ====================
 
 var realtimeChannel = null;
+
+// Realtime para o gestor: recebe notificação quando colaborador conclui módulo
+async function iniciarRealtimeGestor() {
+    if (!supabaseClient || !currentUser) return;
+    var _rolesComGestor = ['admin','diretora','gerente','coordenadora','lider',
+        'admin-juridico-contratos','admin-juridico-credito','gestor'];
+    if (_rolesComGestor.indexOf(currentRole) === -1) return;
+
+    try {
+        var canalGestor = supabaseClient
+            .channel('progresso_gestor')
+            .on('postgres_changes', {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'progresso_modulos'
+            }, function(payload) {
+                var modId = payload.new.modulo_id || '';
+                var trilha = payload.new.trilha_slug || '';
+                var msg = 'Um colaborador concluiu um módulo';
+                if (modId) msg = 'Módulo <b>' + modId.replace(/-/g,' ') + '</b> concluído por um colaborador';
+                showNotification(msg, 'success');
+                // Atualiza o painel do gestor se estiver aberto
+                if (document.getElementById('page-gestor') &&
+                    document.getElementById('page-gestor').classList.contains('active')) {
+                    setTimeout(gestorCarregarDados, 500);
+                }
+            })
+            .subscribe(function(status) {
+                if (status === 'SUBSCRIBED') console.log('[Realtime] Canal gestor ativo');
+            });
+    } catch(e) {
+        console.warn('[Realtime Gestor]', e.message);
+    }
+}
 
 // Ativa o Realtime para o colaborador receber notificação quando nota for lançada
 async function iniciarRealtime5E() {
@@ -7385,27 +8361,37 @@ function savePhotoCrop() {
 
 // ---------- Persistência (preview + cache + Supabase Storage) ----------
 
+var _fotoUploadEmAndamento = false;
+
 async function persistProfilePhoto(file, dataUrl) {
-    // NÃO aplica preview antes do upload — evita repaint que fecha o modal
-    // Upload para o Supabase Storage
+    // Guard: evita múltiplas chamadas simultâneas que causam piscar no Firefox
+    if (_fotoUploadEmAndamento) return;
+    _fotoUploadEmAndamento = true;
+
     try {
         showNotification('Enviando foto...', 'info');
         const url = await uploadProfilePhotoToSupabase(file);
-        // Só aplica a foto APÓS o upload completar com sucesso
-        applyProfilePhoto(url);
-        // Cache local após confirmação
-        if (currentUser && currentUser.email) {
-            try { localStorage.setItem('re_photo_' + currentUser.email, url); } catch(_) {}
-        }
-        showNotification('Foto de perfil atualizada!', 'success');
+
+        // Aplica em batch — uma única atualização de DOM após o upload
+        requestAnimationFrame(function() {
+            applyProfilePhoto(url);
+            if (currentUser && currentUser.email) {
+                try { localStorage.setItem('re_photo_' + currentUser.email, url); } catch(_) {}
+            }
+            showNotification('Foto de perfil atualizada!', 'success');
+            _fotoUploadEmAndamento = false;
+        });
+
     } catch (err) {
         console.error('Erro ao enviar foto para o Supabase:', err);
-        // Só usa preview local como fallback se o upload falhou
-        applyProfilePhoto(dataUrl);
-        if (currentUser && currentUser.email) {
-            try { localStorage.setItem('re_photo_' + currentUser.email, dataUrl); } catch(_) {}
-        }
-        showNotification('Erro ao salvar no servidor: ' + err.message, 'warning');
+        requestAnimationFrame(function() {
+            applyProfilePhoto(dataUrl);
+            if (currentUser && currentUser.email) {
+                try { localStorage.setItem('re_photo_' + currentUser.email, dataUrl); } catch(_) {}
+            }
+            showNotification('Erro ao salvar no servidor: ' + err.message, 'warning');
+            _fotoUploadEmAndamento = false;
+        });
     }
 
     if (typeof addActivity === 'function') {
@@ -8244,22 +9230,8 @@ function renderAchievements(earned) {
 // Espelha lançamentos do avaliador na tela do colaborador.
 // Agora salvo no localStorage para sobreviver a recarregar a página e troca de login.
 // (Some apenas se limpar os dados do navegador. O Supabase virá depois.)
-var DEMO5_KEY = 'demo5estrelas_store';
-function demo5Salvar(){
-    try { localStorage.setItem(DEMO5_KEY, JSON.stringify(window.demo5Estrelas)); } catch(e){}
-}
-function demo5Carregar(){
-    try {
-        var raw = localStorage.getItem(DEMO5_KEY);
-        if(raw) return JSON.parse(raw);
-    } catch(e){}
-    return null;
-}
-// Inicia vazio: os dados reais vêm do Supabase. Sem nomes/notas fictícios.
-// Sempre inicia vazio — dados vêm exclusivamente do Supabase a cada login
+// Store em memória para o 5 Estrelas — alimentado exclusivamente pelo Supabase
 window.demo5Estrelas = {};
-// Remove cache antigo do localStorage para não contaminar dados reais
-try { localStorage.removeItem(DEMO5_KEY); } catch(e){}
 
 function obter5EstrelasResumo() {
     var email = (currentUser && currentUser.email) ? currentUser.email : null;
@@ -8310,6 +9282,7 @@ async function carregar5EstrelasSupabase(){
         if (!res.data || res.data.length === 0) {
             if (window.demo5Estrelas) delete window.demo5Estrelas[email];
             render5EstrelasTela();
+    setTimeout(colaboradorRenderRecomendacao, 300);
             return;
         }
         // Converte 'YYYY-MM' -> 'Mês AAAA'
@@ -8791,6 +9764,24 @@ function initAvaliador5E(){
     // Preenche a data com hoje por padrão (o avaliador pode mudar).
     var dataEl = document.getElementById('av5-data');
     if(dataEl && !dataEl.value){ dataEl.value = new Date().toISOString().split('T')[0]; }
+
+    // Preenche o select de competência com o mês atual selecionado
+    var compSel = document.getElementById('av5-comp');
+    if (compSel && compSel.options.length === 0) {
+        var MESES_AV = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+            'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        var anoAtual = new Date().getFullYear();
+        var mesAtual = new Date().getMonth(); // 0-based
+        for (var y = anoAtual; y <= anoAtual + 1; y++) {
+            MESES_AV.forEach(function(m, i) {
+                var opt = document.createElement('option');
+                opt.value = m + ' / ' + y;
+                opt.textContent = m + ' / ' + y;
+                if (i === mesAtual && y === anoAtual) opt.selected = true;
+                compSel.appendChild(opt);
+            });
+        }
+    }
     av5Recalc();
     av5RenderLista();
     av5CarregarHistoricoSupabase();
@@ -8813,17 +9804,19 @@ async function av5CarregarColaboradores(){
         var dados = null;
         var erroMsg = '';
 
-        // Tentativa 1: RPC SECURITY DEFINER (bypassa RLS)
+        // Tentativa 1: RPC SECURITY DEFINER (bypassa RLS) — retorna só avaliados
         var r1 = await supabaseClient.rpc('listar_colaboradores_avaliados');
         console.log('[5E] RPC:', r1.error ? r1.error.message : 'OK', 'count:', r1.data ? r1.data.length : 0);
         if (!r1.error && r1.data && r1.data.length > 0) {
             dados = r1.data;
         } else {
             erroMsg = r1.error ? r1.error.message : '';
-            // Tentativa 2: query direta
+            // Tentativa 2: query direta — só avaliados ativos
             var r2 = await supabaseClient.from('profiles')
                 .select('id, email, nome, role')
                 .eq('role', 'user')
+                .eq('avaliado', true)
+                .eq('ativo', 'ativo')
                 .order('nome', { ascending: true });
             console.log('[5E] Query direta:', r2.error ? r2.error.message : 'OK', 'count:', r2.data ? r2.data.length : 0);
             if (!r2.error && r2.data && r2.data.length > 0) {
@@ -9024,27 +10017,7 @@ const SUPABASE_AUTH_CONFIG = {
 
 let supabaseClient = null;
 
-function initSupabase() {
-    if (typeof supabase !== 'undefined' && supabase.createClient) {
-        try {
-            supabaseClient = supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY, {
-                auth: {
-                    autoRefreshToken: true,
-                    persistSession: true,
-                    detectSessionInUrl: true
-                }
-            });
-            console.log('Supabase Auth initialized');
-            return true;
-        } catch(e) {
-            console.error('Supabase init failed:', e);
-            return false;
-        }
-    }
-    console.warn('Supabase library not loaded');
-    return false;
-}
-
+// [initSupabase v2 removida — duplicata da função na linha 6116]
 // ==================== SUPABASE AUTH HELPERS ====================
 
 async function ensureSupabase() {
@@ -9160,50 +10133,7 @@ function saveFileToLocalStorage(file, moduleId) {
     });
 }
 
-// ==================== ENHANCED UPLOAD HANDLER ====================
-async function processUploads() {
-    if (uploadQueue.length === 0) {
-        showNotification('Nenhum arquivo na fila', 'warning');
-        return;
-    }
-
-    const moduleId = document.getElementById('materialModule')?.value || 'general';
-    let successCount = 0;
-
-    for (const item of uploadQueue) {
-        const el = document.getElementById(item.id);
-        if (!el) continue;
-
-        const bar = el.querySelector('.file-progress-bar');
-        const status = el.querySelector('.file-status');
-
-        status.textContent = 'Enviando...';
-        status.className = 'file-status pending';
-
-        // Try Supabase first, fallback to localStorage
-        let result;
-        if (supabaseClient) {
-            result = await uploadToSupabase(item.file, moduleId);
-        } else {
-            // Simulate progress then save locally
-            await simulateFileProgress(el);
-            result = await saveFileToLocalStorage(item.file, moduleId);
-        }
-
-        if (result.success) {
-            successCount++;
-            status.textContent = 'Concluído';
-            status.className = 'file-status done';
-            bar.style.width = '100%';
-        } else {
-            status.textContent = 'Erro';
-            status.className = 'file-status error';
-        }
-    }
-
-    showNotification(`${successCount} de ${uploadQueue.length} arquivos enviados!`, 'success');
-    uploadQueue = [];
-}
+// [processUploads v2 removida — não é chamada externamente, duplicata obsoleta]
 
 function simulateFileProgress(el) {
     return new Promise((resolve) => {
