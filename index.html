@@ -4307,10 +4307,9 @@ function podeConcluirModulo(moduleId) {
     if (MODULOS_COM_QUIZ.indexOf(moduleId) === -1) return true; // sem quiz, libera
     var nota = obterNotaQuiz(moduleId);
     if (nota === null) {
-        // Quiz ainda não foi feito nesta sessão — exige que faça
-        return false;
+        return false; // Quiz não feito
     }
-    return nota >= window.NOTA_MINIMA;
+    return nota >= window.NOTA_MINIMA; // 70% mínimo
 }
 
 function markComplete(moduleId) {
@@ -4619,7 +4618,7 @@ function updateOnboardingLocks() {
         const btn = document.getElementById('btn-complete-mod-' + modId);
         const isCompleted = userProgress[modId] && userProgress[modId].completed;
         // Admins see all modules as unlocked; users follow sequential rules
-        const isUnlocked = currentRole === 'admin' || idx === 0 || (userProgress[ONBOARDING_MODULES[idx - 1]] && userProgress[ONBOARDING_MODULES[idx - 1]].completed);
+        const isUnlocked = true; // Todos os módulos liberados — remover quando reativar bloqueio
 
         if (card) {
             if (isUnlocked) {
@@ -4709,7 +4708,7 @@ function updateTrailLocks(trailName) {
         const card = document.getElementById('card-' + prefix + '-' + (idx + 1));
         const btn = document.getElementById('btn-complete-' + modId);
         const isCompleted = userProgress[modId] && userProgress[modId].completed;
-        const isUnlocked = currentRole === 'admin' || idx === 0 || (userProgress[modules[idx - 1]] && userProgress[modules[idx - 1]].completed);
+        const isUnlocked = true; // Todos os módulos liberados — remover quando reativar bloqueio
 
         if (card) {
             if (isUnlocked) {
